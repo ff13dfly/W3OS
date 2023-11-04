@@ -1,5 +1,5 @@
 import { Col } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 //import Stage from '../layout/stage';
 import Page from '../layout/page';

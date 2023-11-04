@@ -31,6 +31,14 @@ const config = {
     system: require("../data/setting"),         //Official settings for both system and Dapps
 }
 
+// const AnchorJS = require("../../public/package/anchor.min");
+// const Easy=require("../../public/package/easy.min");
+// const Pok=require("../../public/package/polkadot.min");
+
+const AnchorJS=window.AnchorJS;
+const Easy=window.Easy;
+const Pok=window.Polkadot;
+
 const RUNTIME = {
     /************************************************/
     /********** System initialization ***************/
@@ -336,7 +344,7 @@ const RUNTIME = {
     },
     getAPIs: (ck) => {
         if (API === null) {
-            const AnchorJS = window.AnchorJS;
+            
             const easyAPI = {
                 common: {
                     "latest": AnchorJS.latest,
@@ -348,10 +356,11 @@ const RUNTIME = {
                 }
             };
             API = {
-                Polkadot: window.Polkadot,
+                Polkadot: Pok,
                 AnchorJS: AnchorJS,
                 Easy: (anchorLinker, ck) => {
-                    window.Easy.easyRun(anchorLinker, easyAPI, ck);
+                    
+                    Easy.easyRun(anchorLinker, easyAPI, ck);
                 },
                 system:{
                     pay:(param,ck)=>{   //transaction API for cApps

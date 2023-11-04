@@ -1,5 +1,5 @@
 import { Row } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import Cell from './cell';
 //import Device from '../lib/device';

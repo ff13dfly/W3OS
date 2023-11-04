@@ -18,6 +18,7 @@ function Balance(props) {
   const self={
     balance:(address,ck)=>{
       RUNTIME.getAPIs((API) => {
+        //console.log(API);
         if(API.AnchorJS.ready()){
           return API.AnchorJS.balance(address,ck);
         }

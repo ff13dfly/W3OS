@@ -1,13 +1,13 @@
 import { Container,Row, Col, Button, Form } from 'react-bootstrap';
 import { useState } from 'react';
 
-import { Keyring } from '@polkadot/api';
+
 import { mnemonicGenerate } from '@polkadot/util-crypto';
 
 import RUNTIME from '../lib/runtime';
 import Password from './password';
-//import WORDS from '../lib/words';
 
+const Keyring=window.Polkadot.Keyring;
 function Login(props){
     const funs=props.funs;
 

@@ -1,9 +1,11 @@
 
 import { Row, Col,Form,Button } from 'react-bootstrap';
-import { Keyring } from '@polkadot/api';
+//import { Keyring } from '@polkadot/api';
 import { useState,useEffect } from 'react';
 
 import STORAGE from '../lib/storage.js';
+
+const Keyring=window.Polkadot.Keyring;
 
 function Sign(props) {
 	let [password,setPassword]   =useState('');
