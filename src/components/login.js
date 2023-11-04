@@ -7,7 +7,7 @@ import { mnemonicGenerate } from '@polkadot/util-crypto';
 import RUNTIME from '../lib/runtime';
 import Password from './password';
 
-const Keyring=window.Polkadot.Keyring;
+
 function Login(props){
     const funs=props.funs;
 
@@ -25,16 +25,20 @@ function Login(props){
         RUNTIME.getAPIs((API) => {
           const mnemonic = mnemonicGenerate(12, true);
           const keyring = new API.Polkadot.Keyring({ type: 'sr25519' });
-          const pair = keyring.addFromUri(mnemonic);
-          funs.dialog.show(
-            (<Password callback={(pass) =>{
-              funs.dialog.hide();
-              const sign=pair.toJson(pass);
-              sign.meta.name=self.randomName();
-              RUNTIME.setAccount(sign);
-              props.fresh();
-            }} account={pair.address} mnemonic={mnemonic} funs={funs} />),"New account"
-          );
+          try {
+            const pair = keyring.addFromUri(mnemonic);
+            funs.dialog.show(
+              (<Password callback={(pass) =>{
+                funs.dialog.hide();
+                const sign=pair.toJson(pass);
+                sign.meta.name=self.randomName();
+                RUNTIME.setAccount(sign);
+                props.fresh();
+              }} account={pair.address} mnemonic={mnemonic} funs={funs} />),"New account"
+            );
+          } catch (error) {
+            console.log(error);
+          }
         });
       },
 
@@ -68,17 +72,18 @@ function Login(props){
       save:()=>{
         if(!password) return false;
         if(!encoded) return setInfo('Load encoded JSON file first');
-        const keyring = new Keyring({ type: 'sr25519' });
-        const pair = keyring.createFromJson(encoded);
-        try {
-            pair.decodePkcs8(password);
-            self.setSignJSON(encoded);
-            props.fresh();      //父组件传过来的
-        } catch (error) {
-            setInfo('Password error');
-            if(error) return false;
-        }
-
+        RUNTIME.getAPIs((API) => {
+          const keyring = new API.Polkadot.Keyring({ type: 'sr25519' });
+          const pair = keyring.createFromJson(encoded);
+          try {
+              pair.decodePkcs8(password);
+              self.setSignJSON(encoded);
+              props.fresh();      //父组件传过来的
+          } catch (error) {
+              setInfo('Password error');
+              if(error) return false;
+          }
+        });
       },
       setSignJSON:(fa)=>{
         RUNTIME.setAccount(fa);
