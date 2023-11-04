@@ -12,4 +12,4 @@ yarn-error.log
 
 /build/
 /public/icons
-/test/
+/service/chat/chat_server.min.js
