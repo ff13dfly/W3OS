@@ -14,7 +14,7 @@
 const {output}=require("./lib/output");
 const Valid = require("./lib/valid");
 const Chat=require("./lib/chat");
-const Paytovertify=require("../nodejs/paytovertify");
+const Paytovertify=require("./lib/paytovertify");
 const Chain=require("./lib/chk_polkadot");
 const History=require("./lib/history");
 
