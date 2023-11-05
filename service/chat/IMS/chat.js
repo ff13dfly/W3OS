@@ -1,5 +1,5 @@
 const { WebSocketServer } = require('ws');
-const { output } = require("./output");
+const { output } = require("../lib/output");
 
 const clients = {};
 const accountSpam = {}, spamToAccount = {};

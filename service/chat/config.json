@@ -14,5 +14,9 @@
     "reg":{
         "max":20000,
         "level":"all"
+    },
+    "GCS":{
+        "prefix":"GC",
+        "length":18
     }
 }
