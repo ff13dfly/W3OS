@@ -164,13 +164,13 @@
             for(var i=0;i<accounts.length;i++){
                 const agent={
                     open:(res,index)=>{
-                        console.log(res.data);
                         const welcome=`<p class="live">Client actived, welcome!</p>`;
                         $("#screen_"+index).prepend(welcome);
                     },
                     message:(res,index)=>{
                         const input=JSON.parse(res.data);
                         if(!input) return false;
+                        console.log(input);
                         switch (input.act) {
                             case "init":
                                 spams[index]=input.spam;

@@ -11,57 +11,67 @@
 // ## server iptables
 // iptables -I INPUT -p tcp --dport 7788 -j ACCEPT
 
-
-//1.start websocket, manage the relationship of customers
-//2.
 const { WebSocketServer } = require('ws');
 
 const Valid = require("./common/valid");        //check config file
 const Client = require("./common/client");      //comman websocket client management
 const { output } = require("./common/output");  //console output function
 
+const Chat = require("./service/chat");        //check config file
+const Group = require("./service/group");        //check config file
+
+//Functions group here.
 const delegate={
     chat:{              //normal chat functions
-
+        to:null,
+        active:Chat.active,
+        notification:null,
+        offline:null,
     },
     group:{             //normal group functions
-
+        create:Group.create,
+        join:null,
+        leave:null,
+        destory:null,
     },
     veritfy:{           //server vertification functions
-
+        init:null,
+        reg:null,
+        token:null,
     },
     debug:{             //debug functions
-
+        status:null,
     }
 }
 
 Valid(process.argv.slice(2),(res)=>{
     const cfg=res.data;
-    const wss = new WebSocketServer({ port: cfg.server.port});
-    wss.on('connection', Client.connection);
-    wss.on('close', Client.close);
-    wss.on('error', Client.error);
+    const port=cfg.server.port;
+    const wss = new WebSocketServer({ port: port});
+    output(`Websocket server start on ${port}.`, "dark", true);
+    output(`ws://127.0.0.1:${port}`, "primary", true);
 
-    wss.on('message', (res)=>{
-        const str = res.toString();
-        if (!str) return output(`Empty request.`, "error");
-        try {
-            const input = JSON.parse(str);
-            if(!input.spam) return output(`Invalid request.`, "error");     //check spam
-
-            const cat=!input.cat?"chat":input.cat;  //router to different service
-            const act=input.act;                    //action 
-            if(!delegate[cat] || !delegate[cat][act]){ 
-                return output(`Unknown request.`, "error");     //check spam
-            }
-
-            const fun=delegate[cat][act];
-            const result=fun(input,input.spam);
-
-            console.log(result);
-
-        }catch (error) {
-            output(`Error: ${error}`, "error");
-        }
+    wss.on('connection',(ws,request,client)=>{
+        Client.connection(ws,(uid)=>{
+            ws.on('close', (res) => {
+                Client.close(uid,res);
+            });
+            ws.on('error', (err) => {
+                Client.error(err);
+            });
+            ws.on('message', (res)=>{
+                const str = res.toString();
+                if (!str) return output(`Empty request.`, "error");
+                try {
+                    const input = JSON.parse(str);
+                    if(!input.spam) return output(`Invalid request.`, "error");     //check spam
+                    if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
+                    delete input.spam;
+                    Client.message(input,uid,delegate);
+                }catch (error) {
+                    output(`Error: ${error}`, "error");
+                }
+            });
+        });
     });
 });
