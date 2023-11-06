@@ -17,6 +17,7 @@ const agent = {
     active: null,
     leave: null,
     get: null,
+    group:null,         //group support
 };
 
 const self = {
@@ -167,7 +168,7 @@ module.exports = {
                             self.send({ act: "chat", msg: input.msg, from: spamToAccount[input.spam] }, accountSpam[to], input.order);
                             self.success({}, input.spam, input.order);
                             break;
-
+                            
                         default:
                             output(`Unknow request: ${JSON.stringify(input)}`, "error");
                             break;
