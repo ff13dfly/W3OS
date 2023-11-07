@@ -221,6 +221,7 @@
     <body style="width: 90%;margin: 0 auto;">
         <div class="row pt-2">
             <div class="col-12 pt-2 pb-2">
+                <small>The create account is index 1 : <span id="from">5FQmGPk7qGBmU3K6kDfMSBiUHBYq5NqXpx93KFEvDvyz5sRJ</span></small>
                 <textarea id="accounts" class="form-control" rows="2" style="width: 100%;" 
                     placeholder="Please input the accounts list, seperate by ,"></textarea>
             </div>
@@ -244,7 +245,9 @@
                         if(nlist.length===0 || nlist.length===1) return $("#create_info").html("Empty accounts");
                         $("#create_info").html(JSON.stringify(nlist));
 
-
+                        const from=$("#from").html();
+                        const from_index=0;
+                        self.send({list:nlist,cat:"group",act:"create",spam:spams[from_index]},from_index);
                     });
                 </script>
             </div>

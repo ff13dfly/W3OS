@@ -18,6 +18,9 @@ const self = {
         obj.act = "error";
         self.send(obj, spam, order);
     },
+    decode:(list)=>{    //the task need to do
+
+    },
 }
 
 module.exports = {
@@ -67,6 +70,11 @@ module.exports = {
         if (!result || result.error) {
             self.failed(result, spam, input.order);
         } else {
+            if(result.task){
+                const task=result.task;
+                delete result.task;
+                self.decode(task);
+            }
             self.success(result, spam, input.order);
         }
     },
