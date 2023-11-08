@@ -29,7 +29,7 @@ const self={
 }
 
 module.exports = {
-    active:(obj,from)=>{
+    online:(obj,from)=>{
         const todo=self.getFormat("notification");
         todo.params.msg={count:1};
         todo.params.to=from;
@@ -42,9 +42,7 @@ module.exports = {
         todo.params.from=from;
         return [todo];
     },
-    online:(obj,from)=>{
 
-    },
     offline:(obj,from)=>{
 
     },

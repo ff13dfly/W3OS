@@ -22,7 +22,7 @@ const delegate={
     chat:{              //normal chat functions
         chat:Chat.to,               //single chat function
         to:Chat.to,                 //single chat function
-        active:Chat.active,         //set the SS58 user active on server
+        active:Chat.online,         //set the SS58 user active on server
         notification:null,
         offline:Chat.offline,       //set the SS58 user offline on server
         block:Chat.block,           //set the block SS58 list on server

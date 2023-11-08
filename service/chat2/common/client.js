@@ -6,8 +6,6 @@ const clients = {};
 const accountSpam = {}, spamToAccount = {};
 
 
-
-
 //!important, the module of IMS and GCS will return the list of actions
 //!important, client here to check the status and decode the task to do real work of network
 
@@ -15,20 +13,20 @@ const actions={
     message:(params)=>{
         console.log(params);
         if(!accountSpam[params.to]){
-            console.log("Not active");
+            console.log("Not active, ready to push history");
         }else{
-            console.log("Ready to send");
+            self.send(params,accountSpam[params.to]);
         }
     },
     notification:(params)=>{
-        const data=params.msg;
+        const data={}
+        data.msg=params.msg;
         data.act=params.act;
         data.cat=params.cat;
 
         if(!accountSpam[params.to]){
             console.log("Not active");
         }else{
-            console.log("Ready to send notification");
             self.success(data,accountSpam[params.to]);
         }
     },
@@ -52,12 +50,17 @@ const self = {
         self.send(obj, spam, order);
     },
     decode:(list)=>{    //the task need to do
-        //console.log(`Standard action to do:`);
-        for(let i=0;i<list.length;i++){
-            const todo=list[i];
-            if(actions[todo.action]){
-                actions[todo.action](todo.params); 
+        if(Array.isArray(list)){
+            for(let i=0;i<list.length;i++){
+                const todo=list[i];
+                if(actions[todo.action]){
+                    actions[todo.action](todo.params); 
+                }else{
+                    console.log(`success send directly`);
+                }
             }
+        }else{
+            console.log(`success done.`);
         }
     },
 }
