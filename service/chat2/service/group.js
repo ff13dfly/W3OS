@@ -2,15 +2,21 @@ const tools = require("../common/tools");
 const DB = require("../common/mndb");
 const {format,task,error}=require("./std");
 
+const prefix="GD";
 const self={
     getGID:()=>{
-        return "GD"+tools.char(10);
+        const unique=prefix+tools.char(10);
+        if(DB.key_get(unique)!==null) return self.getGID();
+        return unique;
     },
     validAccounts:(list)=>{
         for(let i=0;i<list.length;i++){
 
         }
         return true;
+    },
+    validGID:(gid)=>{
+
     },
 }
 
@@ -36,7 +42,23 @@ module.exports = {
         return [todo];
     },
     chat:(obj,from)=>{
+        const gid=obj.to;
+        const data=DB.key_get(gid);
+        console.log(`From group.js, input: ${JSON.stringify(obj)}`);
+        if(data===null) return error("INPUT_INVALID_GROUP_ID");
 
+        const todos=[];
+        for(let i=0;i<data.group.length;i++){
+            const to=data.group[i];
+            if(to===from) continue;
+
+            const todo=task("message");
+            todo.params.msg=obj.msg;
+            todo.params.to=to;
+            todo.params.from=from;
+            todos.push(todo);
+        }
+        return todos;
     },
     notice:(obj,from)=>{
 

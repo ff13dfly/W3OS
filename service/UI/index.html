@@ -116,6 +116,7 @@
                 const ctx=$("#content_"+index).val();
                 const data={
                     act:"chat",
+                    cat:target.length===48?"chat":"group",
                     to:target,
                     msg:ctx,
                     spam:spams[index],

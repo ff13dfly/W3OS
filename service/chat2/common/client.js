@@ -11,7 +11,6 @@ const accountSpam = {}, spamToAccount = {};
 
 const actions={
     message:(params)=>{
-        console.log(params);
         if(!accountSpam[params.to]){
             console.log("Not active, ready to push history");
         }else{
@@ -60,9 +59,9 @@ const self = {
                 }
             }
         }else{
-            console.log(`success done.`);
-            console.log(list);
-            console.log(accountSpam[list.to])
+            //console.log(`success done.`);
+            //console.log(list);
+            //console.log(accountSpam[list.to])
             self.send(list, accountSpam[list.to]);
         }
     },

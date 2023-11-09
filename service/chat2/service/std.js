@@ -74,6 +74,11 @@ const errors={
     "INPUT_INVALID_ACCOUNT":{
         error:"Invalid SS58 account format.",
         code:44009,
+    },
+
+    "INPUT_INVALID_GROUP_ID":{
+        error:"Invalid Group ID.",
+        code:44100,
     }
 }
 
