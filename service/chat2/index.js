@@ -16,6 +16,7 @@ const { output } = require("./common/output");  //console output function
 
 const Chat = require("./service/chat");        //check config file
 const Group = require("./service/group");        //check config file
+const {error} = require("./service/std");        //Standard error message
 
 //Functions group here.
 const delegate={
@@ -28,11 +29,13 @@ const delegate={
         block:Chat.block,           //set the block SS58 list on server
     },
     group:{             //normal group functions
-        create:Group.create,
-        detail:Group.detail,
-        join:Group.join,
-        leave:Group.leave,
-        destory:Group.destory,
+        create:Group.create,        //create a chat group, the owner must be in 
+        detail:Group.detail,        //get the group detail by GID
+        join:Group.join,            //join a target group
+        leave:Group.leave,          //leave a target group 
+        destory:Group.destory,      //destory a group
+        chat:Group.chat,            //chat in a group
+        notice:Group.notice,        //sent notice to a target
     },
     veritfy:{           //server vertification functions
         init:null,
@@ -66,7 +69,7 @@ Valid(process.argv.slice(2),(res)=>{
                     try {
                         const input = JSON.parse(str);
                         console.log(str);
-                        if(!input.spam) return output(`Invalid request.`, "error");     //check spam
+                        if(!input.spam) return output(error("SYSTEM_INVALID_REQUEST"), "error");     //check spam
                         if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
                         delete input.spam;
                         Client.message(input,uid,delegate);
