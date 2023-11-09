@@ -1,4 +1,4 @@
-const format={
+const task={
     "message":{
         action:"message",
         params:{
@@ -49,8 +49,13 @@ const storage={
 }
 
 module.exports={
+    format:(type)=>{
+        if(!storage[type]) return false;
+        return JSON.parse(JSON.stringify(storage[type]));
+    },
     task:(type)=>{
-
+        if(!task[type]) return false;
+        return JSON.parse(JSON.stringify(task[type]));
     },
     content:(type)=>{
 

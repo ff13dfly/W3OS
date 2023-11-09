@@ -29,6 +29,7 @@ const delegate={
     },
     group:{             //normal group functions
         create:Group.create,
+        detail:Group.detail,
         join:Group.join,
         leave:Group.leave,
         destory:Group.destory,

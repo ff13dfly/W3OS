@@ -61,6 +61,9 @@ const self = {
             }
         }else{
             console.log(`success done.`);
+            console.log(list);
+            console.log(accountSpam[list.to])
+            self.send(list, accountSpam[list.to]);
         }
     },
 }

@@ -1,23 +1,6 @@
 const tools = require("../common/tools");
 const DB = require("../common/mndb");
-
-const format={
-    group:{
-        id:"",              //group unique id
-        group:[],           //group account list
-        status:1,           //group status
-        create:0,           //group create time
-        update:0,           //group update time
-        announce:[],        //announce list
-        permit:{},          //permit setting
-    },
-}
-
-const self={
-    format:(type)=>{
-
-    },
-}
+const {format,task}=require("./std");
 
 module.exports = {
     message:(obj,from)=>{
@@ -28,14 +11,22 @@ module.exports = {
         const accs=obj.list;
 
         const gid=tools.char(10);
-        const data=self.format("group");
+        const data=format("group");
         data.update=tools.stamp();
         data.create=tools.stamp();
         data.group=accs;
 
         DB.key_set(gid,data);
 
-        return {count:1,act: "create",cat:"group",id:gid };
+        const todo=task("notification");
+        todo.params.msg={id:gid};
+        todo.params.to=from;
+        return [todo];
+    },
+    detail:(obj,from)=>{
+        const gid=obj.id;
+        const data=DB.key_get(gid);
+        return {act: "detail",cat:"group",data:data};
     },
     join:(obj,from)=>{
         console.log(obj);
