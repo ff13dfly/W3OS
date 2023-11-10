@@ -1,29 +1,49 @@
 const {task,error}=require("./std");
+const {online,offline,count,toast,status}=require("./state");
 
 module.exports = {
-    online:(obj,from)=>{
+    online:(input,from)=>{
+        const data=status();        //get the server status
+
         const todo=task("notice");
-        todo.params.msg={count:1};
+        todo.params.msg={count:data.alive+1};
         todo.params.to=from;
+
+        online();   //set online amount
+        toast();    //ince notice amount
         return [todo];
     },
-    to:(obj,from)=>{
-        if(!obj.to) return error("INPUT_MISSING_PARAMETERS");
-        if(!obj.msg) return error("INPUT_MISSING_PARAMETERS");
+    to:(input,from)=>{
+        if(!input.to) return error("INPUT_MISSING_PARAMETERS");
+        if(!input.msg) return error("INPUT_MISSING_PARAMETERS");
 
+        //1.format message 
         const todo=task("message");
-        todo.params.msg=obj.msg;
-        todo.params.to=obj.to;
+        todo.params.msg=input.msg;
+        todo.params.to=input.to;
         todo.params.from=from;
 
+        count();        //inc message account;
+
         return [todo];
     },
 
-    offline:(obj,from)=>{
+    offline:(input,from)=>{
         const todo=task("notice");
-        todo.params.msg={count:1};
+        todo.params.msg="Be off-line.";
+        todo.params.to=from;
+
+        offline();   //set online amount
+        toast();    //ince notice amount
+
+        return [todo];
     },
-    block:(obj,from)=>{
+
+    /*****************************************************/
+    /**************** addional functions *****************/
+    /*****************************************************/
+
+    block:(input,from)=>{
         const todo=task("notice");
         todo.params.msg={count:1};
     },

@@ -29,7 +29,9 @@ const task={
 //Storage Data Structure
 //The data storaged on server standard format
 const storage={
-    group:{
+
+    //group data structure storage on server
+    group:{         
         id:"",              //group unique id
         group:[],           //group account list
         status:1,           //group status
@@ -37,17 +39,32 @@ const storage={
         update:0,           //group update time
         notice:[],          //announce list
         manager:"",         //group manager, only this one can destory the group
+        announce:{          //group announce setting
+            content:"",     //announce content
+            expired:0,      //the announce expired time
+        },
         permit:{            //permit setting
             free:true,      //free to join
-            notice:false,   //free to set notice
-        },          
+            announce:false, //free to set notice
+        }, 
+        block:[],           //block list         
     },
+
+    //account setting on server
+    account:{                   //account setting after vertification
+        expired:0,              //message expired on server
+        block_stranger:false,   //wether block stranger
+    },
+
+    //chat message format, both on server and send to client
     chat:{
         from:"",            //SS58 message sender
         to:"",              //SS58 message acceptor
         msg:"",             //Chat content
         expired:0,          //Message expire time, if not sent
     },
+
+    //notice format, both on server and send to client
     notice:{
         to:"",              //SS58 message acceptor
         type:"",            //
@@ -56,7 +73,7 @@ const storage={
         more:{
             from:"",        //if there is sender, put here
         },
-    }
+    },
 }
 
 //Error

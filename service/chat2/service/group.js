@@ -1,29 +1,39 @@
 const tools = require("../common/tools");
 const DB = require("../common/mndb");
 const {format,task,error}=require("./std");
+const {count,toast}=require("./state");
 
 const prefix="GD";
 const self={
+    //get unique group id
     getGID:()=>{
         const unique=prefix+tools.char(10);
         if(DB.key_get(unique)!==null) return self.getGID();
         return unique;
     },
+
+    //check input accounts validity
     validAccounts:(list)=>{
         for(let i=0;i<list.length;i++){
 
         }
         return true;
     },
+
+    //check input group ID validity
     validGID:(gid)=>{
 
     },
+
+    //check wether account not in account list
     validNewAccount:(acc,list)=>{
         for(let i=0;i<list.length;i++){
             if(acc===list[i]) return false;
         }
         return true;
     },
+
+    //check wether account in account list
     validInAccount:(acc,list)=>{
         for(let i=0;i<list.length;i++){
             if(acc===list[i]) return true;
@@ -33,17 +43,24 @@ const self={
 }
 
 module.exports = {
-    create:(obj,from)=>{
-        console.log(`From group.js/chat, input: ${JSON.stringify(obj)}`);
 
-        if(!self.validAccounts(obj.list)) return error("INPUT_INVALID_ACCOUNT");
+    /*****************************************************/
+    /***************** group operations ******************/
+    /*****************************************************/
+
+    //create a new group
+    create:(input,from)=>{
+        console.log(`From group.js/chat, input: ${JSON.stringify(input)}`);
+
+        if(!self.validAccounts(input.list)) return error("INPUT_INVALID_ACCOUNT");
 
         //1.prepare the group default data
         const gid=self.getGID();
         const data=format("group");
-        data.update=tools.stamp();
+        data.update=tools.stamp();      
         data.create=tools.stamp();
-        data.group=obj.list;
+        data.group=input.list;
+        data.manager=from;
         DB.key_set(gid,data);
 
         //2.sent notification to customer
@@ -52,92 +69,65 @@ module.exports = {
         todo.params.to=from;
         return [todo];
     },
-    message:(obj,from)=>{
-        console.log(`From group.js/chat, input: ${JSON.stringify(obj)}`);
 
-        const gid=obj.to;
+    //get the group details
+    detail:(input,from)=>{
+        const gid=input.id;
         const data=DB.key_get(gid);
-        if(data===null) return error("INPUT_INVALID_GROUP_ID");
 
-        const todos=[];
-        for(let i=0;i<data.group.length;i++){
-            const to=data.group[i];
-            if(to===from) continue;
-
-            const todo=task("message");
-            todo.params.msg=obj.msg;
-            todo.params.to=to;
-            todo.params.from=from;
-            todos.push(todo);
-        }
-        return todos;
-    },
-    notice:(obj,from)=>{
-        console.log(`From group.js/notice, input: ${JSON.stringify(obj)}`);
-
-        const gid=obj.to;
-        const data=DB.key_get(gid);
-        if(data===null) return error("INPUT_INVALID_GROUP_ID");
-
-        const todos=[];
-        for(let i=0;i<data.group.length;i++){
-            const to=data.group[i];
-            if(to===from) continue;
-
-            const todo=task("notice");
-            todo.params.msg=obj.msg;            //notic message from input
-            todo.params.to=to;
-            todos.push(todo);
-        }
-        return todos;
-    },
-    detail:(obj,from)=>{
-        const gid=obj.id;
-        const data=DB.key_get(gid);
         //1.check valid, only member of group can get it
-
+        if(!self.validInAccount(from,data.group)) return error("INPUT_UNEXCEPT");
 
         return {act: "detail",cat:"group",data:data};
     },
-    join:(obj,from)=>{
-        console.log(`From group.js/join, input: ${JSON.stringify(obj)}`);
+
+    //join a group
+    join:(input,from)=>{
+        console.log(`From group.js/join, input: ${JSON.stringify(input)}`);
 
         //1.save new account
-        const gid=obj.to;
+        const gid=input.to;
         const data=DB.key_get(gid);
-        if(!self.validNewAccount(obj.account,data.group)) return error("INPUT_UNEXCEPT");
-        data.group.push(obj.account);
+        if(!self.validNewAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
+        data.group.push(input.account);
         DB.key_set(gid,data);
 
-        //2.sent notice to all
+        //2.check the block list
+
+        //3.sent notice to all
         const todos=[];
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
             if(to===from) continue;
 
             const todo=task("notice");
-            todo.params.msg=`${obj.account} join to chat`;
+            todo.params.msg=`${input.account} join to chat`;
             todo.params.to=to;
             todos.push(todo);
         }
+
+        toast(todos.length);    //inc the notice amount
+
         return todos;
     },
-    leave:(obj,from)=>{
-        console.log(`From group.js/leave, input: ${JSON.stringify(obj)}`);
 
-        const gid=obj.to;
+    //member leave the group
+    leave:(input,from)=>{
+        console.log(`From group.js/leave, input: ${JSON.stringify(input)}`);
+
+        const gid=input.to;
         const data=DB.key_get(gid);
-        if(!self.validInAccount(obj.account,data.group)) return error("INPUT_UNEXCEPT");
+        if(!self.validInAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
 
         //1.notice to all and move target account
         const todos=[];
         const ngroup=[];
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
-            if(to===obj.account) continue;
+            if(to===input.account) continue;
 
             const todo=task("notice");
-            todo.params.msg=`${obj.account} leave`;
+            todo.params.msg=`${input.account} leave`;
             todo.params.to=to;
             todos.push(todo);
             ngroup.push(to);
@@ -146,18 +136,22 @@ module.exports = {
         data.group=ngroup;
         DB.key_set(gid,data);       //set the new group
 
+        toast(todos.length);    //inc the notice amount
+
         return todos;
         
     },
-    divert:(obj,from)=>{
-        console.log(`From group.js/divert, input: ${JSON.stringify(obj)}`);
+
+    //transfer the manager 
+    divert:(input,from)=>{
+        console.log(`From group.js/divert, input: ${JSON.stringify(input)}`);
 
         //1.check the permit and set new manager
-        const gid=obj.to;
+        const gid=input.to;
         const data=DB.key_get(gid);
         if(!data) return error("INPUT_UNEXCEPT");
         if(data.manager!==from) return error("INPUT_UNEXCEPT");
-        data.manager=obj.manager;
+        data.manager=input.manager;
         DB.key_set(gid,data);
 
         //2.sent notice to related member
@@ -166,7 +160,7 @@ module.exports = {
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
             const todo=task("notice");
-            todo.params.msg=`Group manager is ${obj.manager} now`;
+            todo.params.msg=`Group manager is ${input.manager} now`;
             todo.params.to=to;
             todos.push(todo);
         }
@@ -174,7 +168,7 @@ module.exports = {
         //2.2.sent notice to new manager
         const n_new=task("notice");
         n_new.params.msg=`You are the new group manager`;
-        n_new.params.to=obj.manager;
+        n_new.params.to=input.manager;
         todos.push(n_new);
 
         //2.3.sent notice to old manager
@@ -182,14 +176,23 @@ module.exports = {
         o_new.params.msg=`You are not the group manager`;
         o_new.params.to=from;
         todos.push(o_new);
+
+        toast(todos.length);    //inc the notice amount
         
         return todos;
     },
-    destory:(obj,from)=>{
-        console.log(`From group.js/destory, input: ${JSON.stringify(obj)}`);
+
+    //deport target account from group, the account will be set to block list
+    deport:(input,from)=>{
+
+    },
+
+    //destory the group on server
+    destory:(input,from)=>{
+        console.log(`From group.js/destory, input: ${JSON.stringify(input)}`);
 
         //1.check the permit to remove group
-        const gid=obj.to;
+        const gid=input.to;
         const data=DB.key_get(gid);
         if(!data) return error("INPUT_UNEXCEPT");
         if(data.manager!==from) return error("INPUT_UNEXCEPT");
@@ -204,7 +207,66 @@ module.exports = {
             todo.params.to=to;
             todos.push(todo);
         }
+        toast(todos.length);    //inc the notice amount
+
         return todos;
 
     },
+
+    /*****************************************************/
+    /***************** message functions *****************/
+    /*****************************************************/
+
+    //sent message to group
+    message:(input,from)=>{
+        console.log(`From group.js/chat, input: ${JSON.stringify(input)}`);
+
+        const gid=input.to;
+        const data=DB.key_get(gid);
+        if(data===null) return error("INPUT_INVALID_GROUP_ID");
+
+        const todos=[];
+        for(let i=0;i<data.group.length;i++){
+            const to=data.group[i];
+            if(to===from) continue;
+
+            const todo=task("message");
+            todo.params.msg=input.msg;
+            todo.params.to=to;
+            todo.params.from=from;
+            todos.push(todo);
+        }
+        count(todos.length);    //inc the message send amount
+
+        return todos;
+    },
+
+    //sent notice to group
+    notice:(input,from)=>{
+        console.log(`From group.js/notice, input: ${JSON.stringify(input)}`);
+
+        const gid=input.to;
+        const data=DB.key_get(gid);
+        if(data===null) return error("INPUT_INVALID_GROUP_ID");
+
+        const todos=[];
+        for(let i=0;i<data.group.length;i++){
+            const to=data.group[i];
+            if(to===from) continue;
+
+            const todo=task("notice");
+            todo.params.msg=input.msg;            //notic message from input
+            todo.params.to=to;
+            todos.push(todo);
+        }
+
+        toast(todos.length);    //inc the notice send amount
+
+        return todos;
+    },
+
+    //set the announcement of the group
+    announce:(input,from)=>{
+
+    }
 }
