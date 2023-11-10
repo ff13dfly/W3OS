@@ -24,7 +24,7 @@ const delegate={
         chat:Chat.to,               //single chat function
         to:Chat.to,                 //single chat function
         active:Chat.online,         //set the SS58 user active on server
-        notification:null,
+        notice:null,
         offline:Chat.offline,       //set the SS58 user offline on server
         block:Chat.block,           //set the block SS58 list on server
     },
@@ -34,7 +34,7 @@ const delegate={
         join:Group.join,            //join a target group
         leave:Group.leave,          //leave a target group 
         destory:Group.destory,      //destory a group
-        chat:Group.chat,            //chat in a group
+        chat:Group.message,         //chat in a group
         notice:Group.notice,        //sent notice to a target
     },
     veritfy:{           //server vertification functions

@@ -191,7 +191,7 @@
                                 $("#screen_"+index).prepend(act);
                                 break;
                             case "notice":
-                                const notice=`<p class="notice">${input.msg}</p>`;
+                                const notice=`<p class="notice">${JSON.stringify(input.msg)}</p>`;
                                 $("#screen_"+index).prepend(notice);
 
                                 break;

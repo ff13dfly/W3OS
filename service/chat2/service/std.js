@@ -14,10 +14,10 @@ const task={
             to:"SS58_ACCOUNT",
         },
     },
-    "notification":{
-        action:"notification",
+    "notice":{
+        action:"notice",
         params:{
-            act:"notification",
+            act:"notice",
             cat:"chat",
             msg:{},
             from:"System",
@@ -36,6 +36,7 @@ const storage={
         create:0,           //group create time
         update:0,           //group update time
         notice:[],          //announce list
+        manager:"",         //group manager, only this one can destory the group
         permit:{            //permit setting
             free:true,      //free to join
             notice:false,   //free to set notice
@@ -47,7 +48,7 @@ const storage={
         msg:"",             //Chat content
         expired:0,          //Message expire time, if not sent
     },
-    notification:{
+    notice:{
         to:"",              //SS58 message acceptor
         type:"",            //
         msg:"",             //Chat content
@@ -79,7 +80,12 @@ const errors={
     "INPUT_INVALID_GROUP_ID":{
         error:"Invalid Group ID.",
         code:44100,
-    }
+    },
+
+    "INPUT_UNEXCEPT":{
+        error:"Invalid Group ID.",
+        code:44744,
+    },
 }
 
 module.exports={

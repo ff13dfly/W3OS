@@ -17,7 +17,7 @@ const actions={
             self.send(params,accountSpam[params.to]);
         }
     },
-    notification:(params)=>{
+    notice:(params)=>{
         const data={}
         data.msg=params.msg;
         data.act=params.act;
@@ -59,9 +59,6 @@ const self = {
                 }
             }
         }else{
-            //console.log(`success done.`);
-            //console.log(list);
-            //console.log(accountSpam[list.to])
             self.send(list, accountSpam[list.to]);
         }
     },
