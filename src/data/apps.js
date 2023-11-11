@@ -60,6 +60,21 @@ module.exports = [
       short: "Contact",
       desc: "",
     },
+    {
+      name: "groupChat",
+      src: "",
+      block: 0,
+      base: true,
+      status: "normal",
+      type: "system",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
+      },
+      icon: "icons/sys_contact.svg",
+      short: "groupChat",
+      desc: "",
+    },
     // {
     //   "name":"document",
     //   "src":"anchor://document",
