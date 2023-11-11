@@ -10,5 +10,4 @@ package-lock.json
 yarn.lock
 yarn-error.log
 
-/build/
-/service/chat/chat_server.min.js
+/package/w3os

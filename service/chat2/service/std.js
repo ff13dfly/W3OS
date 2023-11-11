@@ -59,7 +59,7 @@ const storage={
     //chat message format, both on server and send to client
     chat:{
         from:"",            //SS58 message sender
-        to:"",              //SS58 message acceptor
+        to:"",              //SS58 message acceptor / group id ( 12 bytes)
         msg:"",             //Chat content
         expired:0,          //Message expire time, if not sent
     },

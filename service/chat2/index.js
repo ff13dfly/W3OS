@@ -1,12 +1,15 @@
 //########## RUNNING ##########
 // node index.js
 
-// ## build command
+//########## BUILD ##########
 // yarn add esbuild
 // ../../node_modules/esbuild/bin/esbuild server.js --bundle --minify --outfile=./chat_server.min.js --platform=node
 
 // ## server iptables, without set the permit, firewall will block the request
 // iptables -I INPUT -p tcp --dport 7788 -j ACCEPT
+
+//########## LOADER ##########
+// node loader.nodejs.js anchor://chat/
 
 const { WebSocketServer } = require('ws');
 
