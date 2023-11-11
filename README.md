@@ -11,8 +11,8 @@
 ## Encrypto
 
 - The encry logical on Anchor Network.
-    1. The anchor owner can set the password to decode the data on chain.
-    2. Only authed viewer can get the decoded data. Or, will get the encoded data.
+  1. The anchor owner can set the password to decode the data on chain.
+  2. Only authed viewer can get the decoded data. Or, will get the encoded data.
 
 ## Resource
 

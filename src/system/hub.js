@@ -1,11 +1,5 @@
-module.exports={
-    RUNTIME:{
-
-    },
-    APP:{
-
-    },
-    DEVICE:{
-
-    }
+module.exports = {
+  RUNTIME: {},
+  APP: {},
+  DEVICE: {},
 };

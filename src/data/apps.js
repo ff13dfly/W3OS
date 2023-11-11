@@ -1,64 +1,64 @@
-module.exports=[
+module.exports = [
   [
     {
-      "name":"setting",
-      "src":"",
-      "block":0,
-      "base":true,
-      "status":"normal",
-      "type":"system",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "setting",
+      src: "",
+      block: 0,
+      base: true,
+      status: "normal",
+      type: "system",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/sys_setting.svg",
-      "short":"Setting",
-      "desc":""
+      icon: "icons/sys_setting.svg",
+      short: "Setting",
+      desc: "",
     },
     {
-      "name":"account",
-      "src":"",
-      "block":0,
-      "base":true,
-      "status":"normal",
-      "type":"system",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "account",
+      src: "",
+      block: 0,
+      base: true,
+      status: "normal",
+      type: "system",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/sys_account.svg",
-      "short":"Account",
-      "desc":""
+      icon: "icons/sys_account.svg",
+      short: "Account",
+      desc: "",
     },
     {
-      "name":"payment",
-      "src":"",
-      "block":0,
-      "base":true,
-      "status":"normal",
-      "type":"system",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "payment",
+      src: "",
+      block: 0,
+      base: true,
+      status: "normal",
+      type: "system",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/sys_payment.png",
-      "short":"Payment",
-      "desc":""
+      icon: "icons/sys_payment.png",
+      short: "Payment",
+      desc: "",
     },
     {
-      "name":"contact",
-      "src":"",
-      "block":0,
-      "base":true,
-      "status":"normal",
-      "type":"system",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "contact",
+      src: "",
+      block: 0,
+      base: true,
+      status: "normal",
+      type: "system",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/sys_contact.svg",
-      "short":"Contact",
-      "desc":""
+      icon: "icons/sys_contact.svg",
+      short: "Contact",
+      desc: "",
     },
     // {
     //   "name":"document",
@@ -117,32 +117,32 @@ module.exports=[
     //   "desc":""
     // },
     {
-      "name":"talking",
-      "src":"anchor://homepage",
-      "base":false,
-      "status":"installing",
-      "type":"app",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "talking",
+      src: "anchor://homepage",
+      base: false,
+      status: "installing",
+      type: "app",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/app_06.jpg",
-      "short":"talking",
-      "desc":""
+      icon: "icons/app_06.jpg",
+      short: "talking",
+      desc: "",
     },
     {
-      "name":"homepage",
-      "src":"anchor://homepage",
-      "base":false,
-      "status":"installing",
-      "type":"link",
-      "grid":{
-        "size":[1,1],
-        "position":[0,0],
+      name: "homepage",
+      src: "anchor://homepage",
+      base: false,
+      status: "installing",
+      type: "link",
+      grid: {
+        size: [1, 1],
+        position: [0, 0],
       },
-      "icon":"icons/app_05.jpg",
-      "short":"homepage",
-      "desc":""
-    }
-  ]
-]
+      icon: "icons/app_05.jpg",
+      short: "homepage",
+      desc: "",
+    },
+  ],
+];
