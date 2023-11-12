@@ -221,7 +221,7 @@ function App() {
       {ctx_stage}
       {ctx_mask}
       {ctx_page}
-      <div className="opts">
+      <div className="opts flex items-center">
         {/* <img src="icons/edit.svg" className='opt_button' alt="" /> */}
         <img
           src="icons/remove.svg"

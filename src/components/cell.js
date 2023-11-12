@@ -112,7 +112,7 @@ function Cell(props) {
       lg={size}
       xl={size}
       xxl={size}
-      className="pt-4 cell"
+      className="pt-4 cell flex flex-col items-center"
     >
       <span
         hidden={true}
