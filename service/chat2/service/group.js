@@ -57,6 +57,7 @@ module.exports = {
         //1.prepare the group default data
         const gid=self.getGID();
         const data=format("group");
+        data.id=gid;
         data.update=tools.stamp();      
         data.create=tools.stamp();
         data.group=input.list;
@@ -67,6 +68,11 @@ module.exports = {
         const todo=task("notice");
         todo.params.msg={id:gid};
         todo.params.to=from;
+        todo.params.method={
+            act:"create",
+            cat:"group"
+        };
+        //if(input.callback)todo.callback=input.callback;
         return [todo];
     },
 
@@ -78,7 +84,14 @@ module.exports = {
         //1.check valid, only member of group can get it
         if(!self.validInAccount(from,data.group)) return error("INPUT_UNEXCEPT");
 
-        return {act: "detail",cat:"group",data:data};
+        const todo=task("notice");
+        todo.params.msg=data;
+        todo.params.to=from;
+        todo.params.method={
+            act:"detail",
+            cat:"group"
+        };
+        return [todo];
     },
 
     //join a group

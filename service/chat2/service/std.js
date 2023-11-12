@@ -22,6 +22,7 @@ const task={
             msg:{},
             from:"System",
             to:"SS58_ACCOUNT",
+            method:{},
         },
     },
 }
@@ -70,10 +71,28 @@ const storage={
         type:"",            //
         msg:"",             //Chat content
         expired:0,          //Message expire time, if not sent
-        more:{
+        method:{
+            act:"",
+            cat:"",
             from:"",        //if there is sender, put here
         },
     },
+}
+
+//Websocket API calls parameters
+const APIs={
+    group:{
+        create:{
+            cat:"group",
+            act:"create",
+            list:[],
+            spam:"",
+        },
+        join:{
+            cat:"group",
+            act:"join",
+        }
+    }
 }
 
 //Error

@@ -1,5 +1,13 @@
 //! Function test of W3OS IMS ( Instance Message Service );
 
+//# Overview
+// Will mock the target accounts to chat with each other.
+// 1. record the send/receive amount to check IMS
+// 2. will disconnect live account, to check IMS history functions
+
+//## Running
+// node benchmark_IMS.js
+
 const { WebSocket } = require('ws');
 
 const theme = {

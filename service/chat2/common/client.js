@@ -5,7 +5,6 @@ const History =require("./history");
 const clients = {};
 const accountSpam = {}, spamToAccount = {};
 
-
 //!important, the module of IMS and GCS will return the list of actions
 //!important, client here to check the status and decode the task to do real work of network
 
@@ -19,9 +18,9 @@ const actions={
     },
     notice:(params)=>{
         const data={}
+        data.type="notice";
         data.msg=params.msg;
-        data.act=params.act;
-        data.cat=params.cat;
+        data.method=params.method;
 
         if(!accountSpam[params.to]){
             console.log("Not active");
@@ -30,7 +29,8 @@ const actions={
         }
     },
     announce:(params)=>{
-
+        const data={}
+        data.type="announce";
     }
 }
 
