@@ -37,6 +37,17 @@ const config={
     account:10,                     //client numbers
 };
 
+const env={
+    accounts:[],
+    active:{},
+    spams:{},
+    spamToWebsocket:{},
+    accountToSpam:{},
+    groups:[],
+    details:{}
+}
+
+
 const mock={
     accounts:(n)=>{
         const list=[];
@@ -55,6 +66,7 @@ const mock={
         return acc;
     },
 }
+
 
 //Websocket link
 const active={}         //active websocket links
@@ -213,10 +225,35 @@ function test_group_create(order,ck){
 function test_group_details(order,ck){
     output(`------------------- [${order}] test_group_details start -------------------`,"info",true);
     const gid=gs[0];
+    const group=details[gid];
+    const creator=group.manager;
+    const spam=accountToSpam[creator];
+    output(`Group Manager: ${creator}, spam: ${spam}`);
 
+    const ws=spamToWebsocket[spam];
+    ws.onmessage=(res)=>{
+        output(res.data,"primary");
+        try {
+            const rsp=JSON.parse(res.data);
+            if(rsp.type==="notice"){
+                
+            }
+        } catch (error) {
+            output(`Error from test_group_create`,"error",true);
+            output(error);
+        }
+    }
 
-    output(`------------------- [${order}] test_group_details end ---------------------\n`,"info",true);
-    return ck && ck();
+    const req={
+        cat:"group",
+        act:"detail",
+        id:gid,
+        spam:spam,
+    }
+    self.send(req,spam);
+
+    //output(`------------------- [${order}] test_group_details end ---------------------\n`,"info",true);
+    //return ck && ck();
 }
 
 function test_group_join(order,ck){

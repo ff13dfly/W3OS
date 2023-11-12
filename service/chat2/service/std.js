@@ -40,6 +40,7 @@ const storage={
         update:0,           //group update time
         notice:[],          //announce list
         manager:"",         //group manager, only this one can destory the group
+        founder:"",         //group init account
         announce:{          //group announce setting
             content:"",     //announce content
             expired:0,      //the announce expired time
@@ -85,12 +86,64 @@ const APIs={
         create:{
             cat:"group",
             act:"create",
-            list:[],
+            list:[],                //SS58 list
             spam:"",
         },
         join:{
             cat:"group",
             act:"join",
+            id:"",
+            spam:"",
+        },
+        leave:{
+            cat:"group",
+            act:"leave",
+            id:"",
+            spam:"",
+        },
+        divert:{
+            cat:"group",
+            act:"divert",
+            id:"",
+            spam:"",
+        },
+        deport:{
+            cat:"group",
+            act:"divert",
+            acc:"",             //SS58 account need to block
+            spam:"",
+        },
+        destory:{
+            cat:"group",
+            act:"divert",
+            id:"", 
+            spam:"",
+        },
+
+        message:{
+            cat:"group",
+            act:"message",
+            id:"",
+            ctx:"",
+            spam:"",
+        },
+
+        notice:{
+            cat:"group",
+            act:"notice",
+            id:"",
+            ctx:"",
+            spam:"",
+        },
+
+        announce:{
+            cat:"group",
+            act:"announce",
+            id:"",
+            ctx:"",
+            start:0,
+            expired:0,
+            spam:"",
         }
     }
 }
@@ -137,4 +190,8 @@ module.exports={
         if(!errors[type]) return false;
         return !toString?JSON.parse(JSON.stringify(errors[type])):JSON.stringify(errors[type]);
     },
+    params:(cat,action)=>{
+        if(!task[cat] || task[cat][action]) return false;
+        return JSON.parse(JSON.stringify(task[cat][action]));
+    }
 }
