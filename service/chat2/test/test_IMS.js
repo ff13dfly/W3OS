@@ -1,5 +1,7 @@
 //! Function test of W3OS IMS ( Instance Message Service );
 
+const { WebSocket } = require('ws');
+
 const theme = {
     error: '\x1b[31m%s\x1b[0m',
     success: '\x1b[36m%s\x1b[0m',
@@ -20,6 +22,7 @@ console.clear()
 output(`Start to test W3OS IMS ( Instance Message Service ) functions`);
 
 //setting part
+
 const URI="ws://localhost:7788";
 const accounts={    //default encry file accounts/SS58.json
     "5FQmGPk7qGBmU3K6kDfMSBiUHBYq5NqXpx93KFEvDvyz5sRJ":{
