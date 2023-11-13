@@ -93,6 +93,7 @@ const APIs={
             cat:"group",
             act:"join",
             id:"",
+            account:"",
             spam:"",
         },
         leave:{

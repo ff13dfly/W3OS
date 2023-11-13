@@ -44,7 +44,7 @@ function App() {
     page: (ctx) => {
       setPageContent(ctx);
     },
-    dialog: {
+    dialog:{
       show: (ctx, title, center) => {
         setContent(ctx);
         if (title) setTitle(title);

@@ -99,7 +99,7 @@ module.exports = {
         console.log(`From group.js/join, input: ${JSON.stringify(input)}`);
 
         //1.save new account
-        const gid=input.to;
+        const gid=input.id;
         const data=DB.key_get(gid);
         if(!self.validNewAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
         data.group.push(input.account);
@@ -109,6 +109,7 @@ module.exports = {
 
         //3.sent notice to all
         const todos=[];
+        
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
             if(to===from) continue;
@@ -116,6 +117,10 @@ module.exports = {
             const todo=task("notice");
             todo.params.msg=`${input.account} join to chat`;
             todo.params.to=to;
+            todo.params.method={
+                act:"join",
+                cat:"group"
+            };
             todos.push(todo);
         }
 
