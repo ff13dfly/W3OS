@@ -16,8 +16,11 @@ module.exports={
             try {
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
-                    output(`------------------- [${order}] test_group_details end ---------------------\n`,"info",true);
-                    return ck && ck();
+                    if(rsp.method.act==="detail"){
+                        env.details[gid]=rsp.msg;
+                        output(`------------------- [${order}] test_group_details end ---------------------\n`,"info",true);
+                        return ck && ck();
+                    }
                 }
             } catch (error) {
                 output(`Error from test_group_create`,"error",true);

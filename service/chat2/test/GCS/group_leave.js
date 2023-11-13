@@ -10,12 +10,13 @@ const self={
 }
 
 module.exports={
-    test_group_join_free:(env,order,ck)=>{
-        output(`------------------- [${order}] test_group_join_free start -------------------`,"info",true);
+    test_group_leave:(env,order,ck)=>{
+        output(`------------------- [${order}] test_group_leave start -------------------`,"info",true);
         const gid=env.groups[0];
-        const group=env.details[gid];
-        const creator=group.manager;
-        const from=self.getRandomAccount(env.accounts,creator);
+        const detail=env.details[gid];
+        
+        const creator=detail.manager;
+        const from=self.getRandomAccount(detail.group,creator);
         const spam=env.accountToSpam[from];
         output(`New member: ${from}, spam: ${spam}`);
 
@@ -25,30 +26,25 @@ module.exports={
             try {
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
-                    if(rsp.method.act==="join"){
-                        output(`------------------- [${order}] test_group_join_free end ---------------------\n`,"info",true);
+                    if(rsp.method.act==="leave"){
+                        //env.details[gid]=rsp.msg;
+                        output(`------------------- [${order}] test_group_leave end ---------------------\n`,"info",true);
                         return ck && ck();
                     }
                 }
             } catch (error) {
-                output(`Error from test_group_join_free`,"error",true);
+                output(`Error from test_group_leave`,"error",true);
                 output(error);
             }
         }
     
         const req={
             cat:"group",
-            act:"join",
+            act:"leave",
             id:gid,
             account:from,
             spam:spam,
         }
         env.send(req,spam);
-    },
-    test_error_group_id:(env,order,ck)=>{
-
-    },
-    test_account_blocked:(env,order,ck)=>{
-
-    },
+    }
 }

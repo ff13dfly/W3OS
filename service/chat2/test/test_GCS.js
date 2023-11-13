@@ -139,9 +139,12 @@ self.link(config.url,config.account,()=>{
             const {test_group_create}=require("./GCS/group_create");
             const {test_group_details}=require("./GCS/group_detail");
             const {test_group_join_free}=require("./GCS/group_join");
+            const {test_group_leave}=require("./GCS/group_leave");
             const ts=[
                 test_group_create,
                 test_group_join_free,
+                test_group_details,
+                test_group_leave,
                 test_group_details,
             ]
 

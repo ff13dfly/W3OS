@@ -112,8 +112,6 @@ module.exports = {
         
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
-            if(to===from) continue;
-
             const todo=task("notice");
             todo.params.msg=`${input.account} join to chat`;
             todo.params.to=to;
@@ -133,22 +131,28 @@ module.exports = {
     leave:(input,from)=>{
         console.log(`From group.js/leave, input: ${JSON.stringify(input)}`);
 
-        const gid=input.to;
+        const gid=input.id;
         const data=DB.key_get(gid);
         if(!self.validInAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
 
         //1.notice to all and move target account
         const todos=[];
         const ngroup=[];
+        console.log(data.group);
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
-            if(to===input.account) continue;
-
             const todo=task("notice");
-            todo.params.msg=`${input.account} leave`;
+            todo.params.msg={
+                from:from,
+                group:gid,
+            };
             todo.params.to=to;
+            todo.params.method={
+                act:"leave",
+                cat:"group"
+            };
             todos.push(todo);
-            ngroup.push(to);
+            if(to!==input.account) ngroup.push(to);
         }
 
         data.group=ngroup;
