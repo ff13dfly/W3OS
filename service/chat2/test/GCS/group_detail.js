@@ -6,9 +6,10 @@ module.exports={
         output(`------------------- [${order}] test_group_details start -------------------`,"info",true);
         const gid=env.groups[0];
         const group=env.details[gid];
+        console.log(group);
         const creator=group.manager;
         const spam=env.accountToSpam[creator];
-        output(`Group Manager: ${creator}, spam: ${spam}`);
+        output(`Group ID: ${gid}, manager: ${creator}, spam: ${spam}`);
     
         const ws=env.spamToWebsocket[spam];
         ws.onmessage=(res)=>{

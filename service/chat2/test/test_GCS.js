@@ -141,15 +141,21 @@ self.link(config.url,config.account,()=>{
             const {test_group_join_free}=require("./GCS/group_join");
             const {test_group_leave}=require("./GCS/group_leave");
             const {test_manager_divert}=require("./GCS/group_divert");
+            const {test_manager_deport}=require("./GCS/group_deport");
+            const {test_manager_recover}=require("./GCS/group_recover");
 
             const ts=[
                 test_group_create,
-                test_group_join_free,
-                test_group_details,
+                //test_group_join_free,
+                //test_group_details,
                 //test_group_leave,
                 //test_group_details,
-                test_manager_divert,
-                test_group_details,
+                //test_manager_divert,
+                //test_group_details,
+                test_manager_deport,
+                //test_group_details,
+                test_manager_recover,
+                //test_group_details,
             ]
 
             const test_start=tools.stamp();

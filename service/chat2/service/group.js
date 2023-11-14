@@ -218,7 +218,51 @@ module.exports = {
 
     //deport target account from group, the account will be set to block list
     deport:(input,from)=>{
+        //1.check the permit and set new manager
+        const gid=input.id;
+        const data=DB.key_get(gid);
+        if(!data) return error("INPUT_UNEXCEPT");
+        if(data.manager!==from) return error("INPUT_UNEXCEPT");
 
+        //2.add the account to block list
+        data.block.push(input.account);
+        DB.key_set(gid,data);
+
+        //3.sent notice to proper accounts.
+        const todo=task("notice");
+        todo.params.msg=`${input.account} is added to block list`;
+        todo.params.to=from;
+        todo.params.method={
+            act:"deport",
+            cat:"group"
+        };
+        return [todo];
+    },
+
+    recover:(input,from)=>{
+        //1.check the permit and set new manager
+        const gid=input.id;
+        const data=DB.key_get(gid);
+        if(!data) return error("INPUT_UNEXCEPT");
+        if(data.manager!==from) return error("INPUT_UNEXCEPT");
+
+        //2.remove the account from block list
+        const nlist=[];
+        for(let i=0;i<data.block.length;i++){
+            if(data.block[i]!==input.account) nlist.push(data.block[i]);
+        }
+        data.block=nlist;
+        DB.key_set(gid,data);
+
+        //3.sent notice to proper accounts.
+        const todo=task("notice");
+        todo.params.msg=`${input.account} is removed from block list`;
+        todo.params.to=from;
+        todo.params.method={
+            act:"recover",
+            cat:"group"
+        };
+        return [todo];
     },
 
     //destory the group on server

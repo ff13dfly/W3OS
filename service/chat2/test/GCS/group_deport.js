@@ -10,14 +10,14 @@ const self={
 }
 
 module.exports={
-    test_manager_divert(env,order,ck){
-        output(`------------------- [${order}] test_manager_divert start -------------------`,"info",true);
+    test_manager_deport(env,order,ck){
+        output(`------------------- [${order}] test_manager_deport start -------------------`,"info",true);
         const gid=env.groups[0];
         const detail=env.details[gid];
         const creator=detail.manager;
-        const new_manager=self.getRandomAccount(detail.group,creator);
+        const block_account=self.getRandomAccount(env.accounts,creator);
         const spam=env.accountToSpam[creator];
-        output(`Group manager: ${creator}, new manager: ${new_manager}, spam: ${spam}`);
+        output(`Group manager: ${creator}, block account: ${block_account}, spam: ${spam}`);
         
         const ws=env.spamToWebsocket[spam];
         ws.onmessage=(res)=>{
@@ -26,9 +26,7 @@ module.exports={
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
                     //1.check devert resutl
-                    if(rsp.method.act==="devert"){
-                        env.details[gid]=rsp.msg;
-
+                    if(rsp.method.act==="deport"){
                         //2.update the group details
                         const req_update={
                             cat:"group",
@@ -37,29 +35,26 @@ module.exports={
                             spam:spam,
                         }
                         env.send(req_update,spam);
-
-                        // output(`------------------- [${order}] test_manager_divert end ---------------------\n`,"info",true);
-                        // return ck && ck();
                     }
 
                     if(rsp.method.act==="detail"){
                         env.details[gid]=rsp.msg;
-                        output(`Group ${gid} data updated`);
-                        output(`------------------- [${order}] test_manager_divert end ---------------------\n`,"info",true);
+                        output(`Group ${gid} data updated. Data: ${JSON.stringify(env.details[gid])}`);
+                        output(`------------------- [${order}] test_manager_deport end ---------------------\n`,"info",true);
                         return ck && ck();
                     }
                 }
             } catch (error) {
-                output(`Error from test_manager_divert`,"error",true);
+                output(`Error from test_manager_deport`,"error",true);
                 output(error);
             }
         }
     
         const req={
             cat:"group",
-            act:"divert",
+            act:"deport",
             id:gid,
-            manager:new_manager,
+            account:block_account,
             spam:spam,
         }
         env.send(req,spam);
