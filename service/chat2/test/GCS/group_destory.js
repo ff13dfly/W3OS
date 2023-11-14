@@ -10,14 +10,13 @@ const self={
 }
 
 module.exports={
-    test_manager_divert(env,order,ck){
-        output(`------------------- [${order}] test_manager_divert start -------------------`,"info",true);
+    test_group_destory(env,order,ck){
+        output(`------------------- [${order}] test_group_destory start -------------------`,"info",true);
         const gid=env.groups[0];
         const detail=env.details[gid];
-        const creator=detail.manager;
-        const new_manager=self.getRandomAccount(detail.group,creator);
-        const spam=env.accountToSpam[creator];
-        output(`Group manager: ${creator}, new manager: ${new_manager}, spam: ${spam}`);
+        const manager=detail.manager;
+        const spam=env.accountToSpam[manager];
+        output(`Group ID: ${gid} ,manager: ${manager}, spam: ${spam}`);
         
         const ws=env.spamToWebsocket[spam];
         ws.onmessage=(res)=>{
@@ -26,7 +25,7 @@ module.exports={
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
                     //1.check devert resutl
-                    if(rsp.method.act==="divert"){
+                    if(rsp.method.act==="destory"){
                         env.details[gid]=rsp.msg;
 
                         //2.update the group details
@@ -38,25 +37,25 @@ module.exports={
                         }
                         env.send(req_update,spam);
                     }
-
-                    if(rsp.method.act==="detail"){
-                        env.details[gid]=rsp.msg;
-                        output(`Group ${gid} data updated. Data: ${JSON.stringify(env.details[gid])}`);
-                        output(`------------------- [${order}] test_manager_divert end ---------------------\n`,"info",true);
-                        return ck && ck();
-                    }
                 }
+
+                if(rsp.type==="error"){
+                    delete env.details[gid];
+                    output(`Group ${gid} data deleted.`);
+                    output(`------------------- [${order}] test_group_destory end ---------------------\n`,"info",true);
+                    return ck && ck();
+                }
+                
             } catch (error) {
-                output(`Error from test_manager_divert`,"error",true);
+                output(`Error from test_group_destory`,"error",true);
                 output(error);
             }
         }
     
         const req={
             cat:"group",
-            act:"divert",
+            act:"destory",
             id:gid,
-            manager:new_manager,
             spam:spam,
         }
         env.send(req,spam);

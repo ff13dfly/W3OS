@@ -39,7 +39,7 @@ const delegate={
         divert:Group.divert,        //change the group manager
         deport:Group.deport,        //add account to the block list
         recover:Group.recover,      //remove account from block list
-        destory:Group.destory,      //destory a group
+        destory:Group.destory,      //destory a group 
         chat:Group.message,         //chat in a group
         notice:Group.notice,        //sent notice to a target
     },

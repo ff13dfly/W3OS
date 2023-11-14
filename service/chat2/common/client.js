@@ -45,7 +45,7 @@ const self = {
         self.send(obj, spam, order);
     },
     failed: (obj, spam, order) => {
-        obj.act = "error";
+        obj.type = "error";
         self.send(obj, spam, order);
     },
     decode:(list)=>{    //the task need to do
@@ -93,7 +93,6 @@ module.exports = {
             if (!input.acc) return output(`Invalid active. request: ${JSON.stringify(input)}`, "error");
             spamToAccount[spam] = input.acc;
             accountSpam[input.acc] = spam;
-
         } else {
             if (!spamToAccount[spam]) return output(`Unknown spam. request: ${JSON.stringify(input)}`, "error");
         }

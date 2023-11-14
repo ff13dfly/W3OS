@@ -80,6 +80,7 @@ module.exports = {
     detail:(input,from)=>{
         const gid=input.id;
         const data=DB.key_get(gid);
+        if(data===null) return error("INPUT_INVALID_GROUP_ID");
 
         //1.check valid, only member of group can get it
         if(!self.validInAccount(from,data.group)) return error("INPUT_UNEXCEPT");
@@ -239,6 +240,7 @@ module.exports = {
         return [todo];
     },
 
+    //remove the target account from block list
     recover:(input,from)=>{
         //1.check the permit and set new manager
         const gid=input.id;
@@ -270,7 +272,7 @@ module.exports = {
         console.log(`From group.js/destory, input: ${JSON.stringify(input)}`);
 
         //1.check the permit to remove group
-        const gid=input.to;
+        const gid=input.id;
         const data=DB.key_get(gid);
         if(!data) return error("INPUT_UNEXCEPT");
         if(data.manager!==from) return error("INPUT_UNEXCEPT");
@@ -283,12 +285,15 @@ module.exports = {
             const todo=task("notice");
             todo.params.msg=`Group destoried`;
             todo.params.to=to;
+            todo.params.method={
+                act:"destory",
+                cat:"group"
+            };
             todos.push(todo);
         }
         toast(todos.length);    //inc the notice amount
 
         return todos;
-
     },
 
     /*****************************************************/

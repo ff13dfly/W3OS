@@ -143,6 +143,7 @@ self.link(config.url,config.account,()=>{
             const {test_manager_divert}=require("./GCS/group_divert");
             const {test_manager_deport}=require("./GCS/group_deport");
             const {test_manager_recover}=require("./GCS/group_recover");
+            const {test_group_destory}=require("./GCS/group_destory");
 
             const ts=[
                 test_group_create,
@@ -156,6 +157,7 @@ self.link(config.url,config.account,()=>{
                 //test_group_details,
                 test_manager_recover,
                 //test_group_details,
+                test_group_destory,
             ]
 
             const test_start=tools.stamp();
