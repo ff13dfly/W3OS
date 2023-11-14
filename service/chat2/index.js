@@ -36,6 +36,7 @@ const delegate={
         detail:Group.detail,        //get the group detail by GID
         join:Group.join,            //join a target group
         leave:Group.leave,          //leave a target group 
+        divert:Group.divert,        //
         destory:Group.destory,      //destory a group
         chat:Group.message,         //chat in a group
         notice:Group.notice,        //sent notice to a target

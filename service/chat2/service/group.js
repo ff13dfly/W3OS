@@ -169,7 +169,7 @@ module.exports = {
         console.log(`From group.js/divert, input: ${JSON.stringify(input)}`);
 
         //1.check the permit and set new manager
-        const gid=input.to;
+        const gid=input.id;
         const data=DB.key_get(gid);
         if(!data) return error("INPUT_UNEXCEPT");
         if(data.manager!==from) return error("INPUT_UNEXCEPT");
@@ -184,6 +184,10 @@ module.exports = {
             const todo=task("notice");
             todo.params.msg=`Group manager is ${input.manager} now`;
             todo.params.to=to;
+            todo.params.method={
+                act:"devert",
+                cat:"group"
+            };
             todos.push(todo);
         }
 
@@ -191,12 +195,20 @@ module.exports = {
         const n_new=task("notice");
         n_new.params.msg=`You are the new group manager`;
         n_new.params.to=input.manager;
+        n_new.params.method={
+            act:"devert",
+            cat:"group"
+        };
         todos.push(n_new);
 
         //2.3.sent notice to old manager
         const o_new=task("notice");
         o_new.params.msg=`You are not the group manager`;
         o_new.params.to=from;
+        o_new.params.method={
+            act:"devert",
+            cat:"group"
+        };
         todos.push(o_new);
 
         toast(todos.length);    //inc the notice amount
