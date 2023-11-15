@@ -314,6 +314,7 @@ module.exports = {
             if(to===from) continue;
 
             const todo=task("message");
+            todo.params.cat="group";
             todo.params.msg=input.msg;
             todo.params.to=to;
             todo.params.from=from;
