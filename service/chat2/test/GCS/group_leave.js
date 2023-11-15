@@ -18,7 +18,7 @@ module.exports={
         const creator=detail.manager;
         const from=self.getRandomAccount(detail.group,creator);
         const spam=env.accountToSpam[from];
-        output(`New member: ${from}, spam: ${spam}`);
+        output(`Group ID: ${gid}, member: ${from}, spam: ${spam}`);
 
         const ws=env.spamToWebsocket[spam];
         ws.onmessage=(res)=>{
@@ -27,17 +27,29 @@ module.exports={
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
                     if(rsp.method.act==="leave"){
-                        //env.details[gid]=rsp.msg;
-                        output(`------------------- [${order}] test_group_leave end ---------------------\n`,"info",true);
-                        return ck && ck();
+                        //update the group details
+                        const req_update={
+                            cat:"group",
+                            act:"detail",
+                            id:gid,
+                            spam:spam,
+                        }
+                        env.send(req_update,spam);
                     }
+                }
+
+                if(rsp.type==="error"){
+                    output(`Group ${gid} is not valid now. Need to update group details by other account.`);
+                    output(`------------------- [${order}] test_group_leave end ---------------------\n`,"info",true);
+                    return ck && ck();
                 }
             } catch (error) {
                 output(`Error from test_group_leave`,"error",true);
                 output(error);
             }
         }
-    
+        
+        //API request params
         const req={
             cat:"group",
             act:"leave",

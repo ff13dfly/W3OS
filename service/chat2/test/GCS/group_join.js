@@ -17,7 +17,7 @@ module.exports={
         const creator=group.manager;
         const from=self.getRandomAccount(env.accounts,creator);
         const spam=env.accountToSpam[from];
-        output(`New member: ${from}, spam: ${spam}`);
+        output(`Group ID: ${gid}, new member: ${from}, spam: ${spam}`);
 
         const ws=env.spamToWebsocket[spam];
         ws.onmessage=(res)=>{
@@ -26,7 +26,21 @@ module.exports={
                 const rsp=JSON.parse(res.data);
                 if(rsp.type==="notice"){
                     if(rsp.method.act==="join"){
-                        output(`------------------- [${order}] test_group_join_free end ---------------------\n`,"info",true);
+
+                        //2.update the group details
+                        const req_update={
+                            cat:"group",
+                            act:"detail",
+                            id:gid,
+                            spam:spam,
+                        }
+                        env.send(req_update,spam);
+                    }
+
+                    if(rsp.method.act==="detail"){
+                        env.details[gid]=rsp.msg;
+                        output(`Group ${gid} data updated. Data: ${JSON.stringify(env.details[gid])}`);
+                        output(`------------------- [${order}] test_manager_deport end ---------------------\n`,"info",true);
                         return ck && ck();
                     }
                 }

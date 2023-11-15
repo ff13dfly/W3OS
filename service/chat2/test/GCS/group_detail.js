@@ -6,7 +6,7 @@ module.exports={
         output(`------------------- [${order}] test_group_details start -------------------`,"info",true);
         const gid=env.groups[0];
         const group=env.details[gid];
-        console.log(group);
+        //console.log(group);
         const creator=group.manager;
         const spam=env.accountToSpam[creator];
         output(`Group ID: ${gid}, manager: ${creator}, spam: ${spam}`);

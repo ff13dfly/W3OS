@@ -139,7 +139,6 @@ module.exports = {
         //1.notice to all and move target account
         const todos=[];
         const ngroup=[];
-        console.log(data.group);
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
             const todo=task("notice");
@@ -156,8 +155,9 @@ module.exports = {
             if(to!==input.account) ngroup.push(to);
         }
 
+        //set the new group
         data.group=ngroup;
-        DB.key_set(gid,data);       //set the new group
+        DB.key_set(gid,data);       
 
         toast(todos.length);    //inc the notice amount
 
