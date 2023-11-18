@@ -124,16 +124,16 @@ const APIs={
         message:{
             cat:"group",
             act:"message",
-            id:"",
-            ctx:"",
+            to:"",
+            msg:"",
             spam:"",
         },
 
         notice:{
             cat:"group",
             act:"notice",
-            id:"",
-            ctx:"",
+            to:"",
+            msg:"",
             spam:"",
         },
 

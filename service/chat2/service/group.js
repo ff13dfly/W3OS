@@ -318,6 +318,10 @@ module.exports = {
             todo.params.msg=input.msg;
             todo.params.to=to;
             todo.params.from=from;
+            todo.params.method={
+                act:"message",
+                cat:"group"
+            };
             todos.push(todo);
         }
         count(todos.length);    //inc the message send amount
