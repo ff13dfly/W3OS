@@ -39,7 +39,8 @@ function Account(props) {
     RUNTIME.networkStatus("anchor", (res) => {
       //console.log(res);
     });
-  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div id="page" className={animation}>

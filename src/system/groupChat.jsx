@@ -146,13 +146,13 @@ function GroupChat({ funs, fresh }) {
         open={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
       >
-        <div className="px-2 flex items-center">
-          <button onClick={() => setIsDialogOpen(false)}>
+        <div className="bg-body-tertiary px-2 d-flex align-items-center">
+          <button className="btn" onClick={() => setIsDialogOpen(false)}>
             <AiOutlineLeft size={24}></AiOutlineLeft>
           </button>
           <DialogTitle>{selectedGroup.title}</DialogTitle>
         </div>
-        <DialogContent className="py-4 bg-gray-200">
+        <DialogContent className="py-4">
           <MyMessageList
             className="message-list"
             lockable={false}
@@ -162,7 +162,7 @@ function GroupChat({ funs, fresh }) {
           {/* Invisible element, at the bottom of messages */}
           <p ref={dialogScrollRef}></p>
         </DialogContent>
-        <DialogActions className="flex gap-3">
+        <DialogActions className="">
           <input
             className="form-control"
             type="text"
