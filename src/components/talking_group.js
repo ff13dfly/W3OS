@@ -18,7 +18,7 @@ function TalkingGroup(props) {
       //console.log(`Click to open the talking page`);
       setTimeout(()=>{
         const acc="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v"
-        props.page(<Chat address={acc}/>,acc);
+        props.page(<Chat address={acc} height={700}/>,acc);
       },300);
     },
   }
