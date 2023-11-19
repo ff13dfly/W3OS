@@ -2,6 +2,7 @@ import { Container, Row, Col,Navbar } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
+import GroupAdd from "../components/group_add";
 
 function Talking(props) {
     const size = {
@@ -13,11 +14,13 @@ function Talking(props) {
     let [animation, setAnimation] = useState("ani_scale_in");
     let [framework, setFramework] = useState("");
     let [active, setActive] = useState("");
+    let [hidden, setHidden] = useState(false);
 
     const self = {
       page:(ctx,address)=>{
         setActive(address);
         setFramework(ctx);
+        setHidden(true);
       },
       entry:()=>{
         setFramework(
@@ -26,6 +29,10 @@ function Talking(props) {
             <TalkingGroup to={"GROUP_ID"} page={self.page}/>
           </div>
         );
+      },
+      newGroup:()=>{
+        console.log(`Ready to create new group`);
+        self.page(<GroupAdd />,"group_add");
       },
     }
     
@@ -84,6 +91,7 @@ function Talking(props) {
                     }, 300);
                   }else{
                     setActive("");
+                    setHidden(false);
                     self.entry();
                   }
                 }}
@@ -97,16 +105,16 @@ function Talking(props) {
         <Container>
           {framework}
         </Container>
-        {/* <div className="opts">
+        <div className="opts" hidden={hidden}>
           <img
-            src="icons/remove.svg"
+            src="icons/edit.svg"
             className="opt_button"
             alt=""
             onClick={(ev) => {
-              self.clickEdit(ev);
+              self.newGroup(ev);
             }}
           />
-        </div> */}
+        </div>
       </div>
     );
 }
