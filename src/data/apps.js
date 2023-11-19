@@ -61,7 +61,7 @@ module.exports = [
       desc: "",
     },
     {
-      name: "groupChat",
+      name: "talking",
       src: "",
       block: 0,
       base: true,
@@ -72,7 +72,7 @@ module.exports = [
         position: [0, 0],
       },
       icon: "icons/sys_contact.svg",
-      short: "groupChat",
+      short: "talking",
       desc: "",
     },
     // {
@@ -131,20 +131,20 @@ module.exports = [
     //   "short":"Easy",
     //   "desc":""
     // },
-    {
-      name: "talking",
-      src: "anchor://homepage",
-      base: false,
-      status: "installing",
-      type: "app",
-      grid: {
-        size: [1, 1],
-        position: [0, 0],
-      },
-      icon: "icons/app_06.jpg",
-      short: "talking",
-      desc: "",
-    },
+    // {
+    //   name: "talking",
+    //   src: "anchor://homepage",
+    //   base: false,
+    //   status: "installing",
+    //   type: "app",
+    //   grid: {
+    //     size: [1, 1],
+    //     position: [0, 0],
+    //   },
+    //   icon: "icons/app_06.jpg",
+    //   short: "talking",
+    //   desc: "",
+    // },
     {
       name: "homepage",
       src: "anchor://homepage",

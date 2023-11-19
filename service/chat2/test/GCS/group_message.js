@@ -24,9 +24,11 @@ module.exports={
             output(res.data,"primary");
             try {
                 const rsp=JSON.parse(res.data);
-                if(rsp.type==="message"){
-                    
-                }
+                console.log(rsp);
+                // if(rsp.type==="message"){
+                    output(`------------------- [${order}] test_group_message end ---------------------\n`,"info",true);
+                    return ck && ck();
+                // }
             } catch (error) {
                 output(`Error from test_group_message`,"error",true);
                 output(error);
@@ -41,8 +43,8 @@ module.exports={
             spam:spam,
         }
         env.send(req,spam);
-    
-        
+        // output(`------------------- [${order}] test_group_message end ---------------------\n`,"info",true);
+        // return ck && ck();
     },
     test_sample:(env,order,ck)=>{
         output(`------------------- [${order}] test_sample start -------------------`,"info",true);

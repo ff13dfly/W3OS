@@ -11,9 +11,10 @@ import Setting from "../system/setting";
 import Account from "../system/account";
 import Payment from "../system/payment";
 import Contact from "../system/contact";
+import Talking from "../system/talking";
 
 import TypeData from "./type_data";
-import GroupChat from "../system/groupChat";
+
 
 function Cell(props) {
   const size = props.size;
@@ -29,7 +30,7 @@ function Cell(props) {
     account: <Account funs={funs} />,
     payment: <Payment funs={funs} amount={0} target={""} />,
     contact: <Contact funs={funs} />,
-    groupChat: <GroupChat funs={funs} />,
+    talking: <Talking funs={funs} />,
   };
 
   const self = {

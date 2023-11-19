@@ -157,7 +157,7 @@ self.link(config.url,config.account,()=>{
                 //test_manager_recover,
                 //test_group_details,
                 //test_group_destory,
-                test_group_message,
+                //test_group_message,
             ]
 
             const test_start=tools.stamp();

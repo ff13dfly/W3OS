@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Login from "../components/login";
 import User from "../components/user";
 import RUNTIME from "../lib/runtime";
-import SystemHeader from "./header";
+import SystemHeader from "../components/header";
 
 function Account(props) {
   const funs = props.funs;

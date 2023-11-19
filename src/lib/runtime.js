@@ -20,6 +20,7 @@ const keys = {
   apps: `${prefix}_apps_list`,
   salt: `${prefix}_salt`,
   vertify: `${prefix}_check`,
+  talking:`${prefix}_talking`,
 };
 STORAGE.setMap(keys);
 

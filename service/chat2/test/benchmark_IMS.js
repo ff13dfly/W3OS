@@ -42,7 +42,6 @@ const mock={
     },
 }
 
-
 const active={}         //active websocket links
 const spams={}
 const self={

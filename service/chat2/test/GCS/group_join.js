@@ -40,7 +40,7 @@ module.exports={
                     if(rsp.method.act==="detail"){
                         env.details[gid]=rsp.msg;
                         output(`Group ${gid} data updated. Data: ${JSON.stringify(env.details[gid])}`);
-                        output(`------------------- [${order}] test_manager_deport end ---------------------\n`,"info",true);
+                        output(`------------------- [${order}] test_group_join_free end ---------------------\n`,"info",true);
                         return ck && ck();
                     }
                 }
