@@ -1,12 +1,7 @@
-import { Navbar, Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col,Navbar } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import SystemHeader from "../components/header";
 import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
-
-const self = {
-    
-}
 
 function Talking(props) {
     const size = {
@@ -16,25 +11,103 @@ function Talking(props) {
     
     const funs = props.funs;
     let [animation, setAnimation] = useState("ani_scale_in");
+    let [framework, setFramework] = useState("");
+    let [active, setActive] = useState("");
+
+    const self = {
+      page:(ctx,address)=>{
+        setActive(address);
+        setFramework(ctx);
+      },
+      entry:()=>{
+        setFramework(
+          <div>
+            <TalkingSingle to={"SS58_ACCOUNT"} page={self.page}/>
+            <TalkingGroup to={"GROUP_ID"} page={self.page}/>
+          </div>
+        );
+      },
+    }
+    
+    useEffect(() => {
+      self.entry();
+    },[]);
+    
 
     return (
-    <div id="page" className={animation}>
-      <SystemHeader funs={funs} setAnimation={setAnimation} title="Talking" />
-      <Container>
-        <TalkingSingle to={"SS58_ACCOUNT"}/>
-        <TalkingGroup to={"GROUP_ID"}/>
-      </Container>
-      {/* <div className="opts">
-        <img
-          src="icons/remove.svg"
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
-            self.clickEdit(ev);
-          }}
-        />
-      </div> */}
-    </div>
+      <div id="page" className={animation}>
+        <Navbar className="bg-body-tertiary">
+        <Container>
+          <Row style={{ width: "100%", margin: "0 auto" }}>
+            <Col
+              xs={size.header[0]}
+              sm={size.header[0]}
+              md={size.header[0]}
+              lg={size.header[0]}
+              xl={size.header[0]}
+              xxl={size.header[0]}
+              style={{ paddingTop: "6px" }}
+            >
+              <Navbar.Brand href="#">
+                W<span className="logo">3</span>OS
+              </Navbar.Brand>
+            </Col>
+            <Col
+              xs={size.header[1]}
+              sm={size.header[1]}
+              md={size.header[1]}
+              lg={size.header[1]}
+              xl={size.header[1]}
+              xxl={size.header[1]}
+              style={{ paddingTop: "10px" }}
+              className="text-center"
+            >
+              Talking
+            </Col>
+            <Col
+              xs={size.header[2]}
+              sm={size.header[2]}
+              md={size.header[2]}
+              lg={size.header[2]}
+              xl={size.header[2]}
+              xxl={size.header[2]}
+              className="text-end pb-2"
+              style={{ paddingTop: "10px" }}
+            >
+              <span
+                className="close"
+                onClick={(ev) => {
+                  if(!active){
+                    setAnimation("ani_scale_out");
+                    setTimeout(() => {
+                      props.funs.page("");
+                    }, 300);
+                  }else{
+                    setActive("");
+                    self.entry();
+                  }
+                }}
+              >
+                <button className="btn btn-sm btn-default">X</button>
+              </span>
+            </Col>
+          </Row>
+        </Container>
+      </Navbar>
+        <Container>
+          {framework}
+        </Container>
+        {/* <div className="opts">
+          <img
+            src="icons/remove.svg"
+            className="opt_button"
+            alt=""
+            onClick={(ev) => {
+              self.clickEdit(ev);
+            }}
+          />
+        </div> */}
+      </div>
     );
 }
 

@@ -1,9 +1,13 @@
 import { Row, Col, Image } from "react-bootstrap";
 
+import Chat from "./chat";
+import Trend from "../system/trend";
+
 function TalkingGroup(props) {
 
   const address = props.address;
-  
+  const funs=props.funs;
+
   const size = {
     content: [2, 10],
     row:12,
@@ -11,7 +15,11 @@ function TalkingGroup(props) {
 
   const self={
     click:(ev)=>{
-      console.log(`Click to open the talking page`);
+      //console.log(`Click to open the talking page`);
+      setTimeout(()=>{
+        const acc="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v"
+        props.page(<Chat address={acc}/>,acc);
+      },300);
     },
   }
 
