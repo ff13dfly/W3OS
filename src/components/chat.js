@@ -152,13 +152,11 @@ function Chat(props) {
     });
   }, []);
 
-  const h=props.height?props.height:400;
-  console.log(h);
   return (
     <Row className="pb-2">
       <Col
         className="chat_container"
-        style={{height:`${h}px`}}
+        style={{height:`${props.height?props.height:400}px`}}
         id={`con_${props.address}`}
         xs={size.row[0]}
         sm={size.row[0]}

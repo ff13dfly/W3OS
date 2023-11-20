@@ -1,7 +1,8 @@
 module.exports = {
   basic: {
     //OS basic parameters
-    endpoint: ["wss://dev2.metanchor.net", "ws://127.0.0.1:9944"],
+    //endpoint: ["wss://dev2.metanchor.net", "ws://127.0.0.1:9944"],
+    endpoint: ["ws://127.0.0.1:9944","wss://dev2.metanchor.net"],
     name: "W3OS",
     desc: "Full on chain OS for Web3.0, base on Anchor Network.",
     version: "1.0.1",
