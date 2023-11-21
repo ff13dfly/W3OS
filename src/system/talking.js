@@ -46,38 +46,19 @@ function Talking(props) {
         <Navbar className="bg-body-tertiary">
         <Container>
           <Row style={{ width: "100%", margin: "0 auto" }}>
-            <Col
-              xs={size.header[0]}
-              sm={size.header[0]}
-              md={size.header[0]}
-              lg={size.header[0]}
-              xl={size.header[0]}
-              xxl={size.header[0]}
+            <Col xs={size.header[0]} sm={size.header[0]} md={size.header[0]} lg={size.header[0]} xl={size.header[0]} xxl={size.header[0]}
               style={{ paddingTop: "6px" }}
             >
-              <Navbar.Brand href="#">
-                W<span className="logo">3</span>OS
-              </Navbar.Brand>
+              <Navbar.Brand href="#">W<span className="logo">3</span>OS</Navbar.Brand>
             </Col>
-            <Col
-              xs={size.header[1]}
-              sm={size.header[1]}
-              md={size.header[1]}
-              lg={size.header[1]}
-              xl={size.header[1]}
-              xxl={size.header[1]}
+            <Col xs={size.header[1]} sm={size.header[1]} md={size.header[1]} lg={size.header[1]} xl={size.header[1]} xxl={size.header[1]}
               style={{ paddingTop: "10px" }}
               className="text-center"
             >
               Talking
             </Col>
-            <Col
-              xs={size.header[2]}
-              sm={size.header[2]}
-              md={size.header[2]}
-              lg={size.header[2]}
-              xl={size.header[2]}
-              xxl={size.header[2]}
+            <Col xs={size.header[2]} sm={size.header[2]} md={size.header[2]}
+              lg={size.header[2]}  xl={size.header[2]} xxl={size.header[2]}
               className="text-end pb-2"
               style={{ paddingTop: "10px" }}
             >

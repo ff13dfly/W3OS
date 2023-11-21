@@ -119,7 +119,12 @@ code {
   line-height: 18px;
   margin-top: -60px;
 }
-
+.thumbnail{
+  background: #EEEEEE;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+}
 .fixfooter{
   position:fixed;
   left: 0px;
