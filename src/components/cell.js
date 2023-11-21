@@ -138,7 +138,7 @@ function Cell(props) {
           <input
             hidden={props.edit ? (row.type === "system" ? true : false) : true}
             type="checkbox"
-            onChange={(ev) => {}}
+            onChange={(ev) => { }}
             checked={check}
             style={{ marginRight: "5px" }}
           />

@@ -1,16 +1,16 @@
 {  
-    "name":"saying",
+    "name":"w3os",
     "framework":"frame_react.js",
     "version":"1.0.1",
     "related":{
-        "js":"sy_js",
-        "css":"sy_css",
-        "resource":"sy_data",
-        "resource_ref":"sy_map"
+        "js":"w3_js",
+        "css":"w3_css",
+        "resource":"w3_data",
+        "resource_ref":"w3_map"
     },
-    "directory":"package",
+    "directory":"package/w3os",
     "asset":"asset-manifest.json",
-    "globalVars":["Polkadot","AnchorJS"],
+    "globalVars":["polkadot","anchorJS","easy"],
     "blockmax":1500000,
     "ignor":{
         "files":{
@@ -34,7 +34,7 @@
             ".DS_Store":true
         }
     },
-    "server":"wss://dev.metanchor.net",
+    "server":"ws://127.0.0.1:9944",
     "account":{
         "password":"",
         "seed":"Alice"
