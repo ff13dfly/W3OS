@@ -19,8 +19,8 @@ function Vertify(props) {
   let [password, setPassword] = useState("");
   let [disable, setDisable] = useState(true);
 
-  const avatar_from = `https://robohash.org/${props.from}.png`;
-  const avatar_to = `https://robohash.org/${props.target}.png`;
+  const avatar_from =RUNTIME.getAvatar(props.from);
+  const avatar_to = RUNTIME.getAvatar(props.target);
 
   const self = {
     change: (ev) => {

@@ -127,7 +127,7 @@ function ContactList(props) {
               className="pt-2 text-center"
             >
               <Image
-                src={`https://robohash.org/${row.address}.png`}
+                src={RUNTIME.getAvatar(row.address)}
                 rounded
                 width="100%"
                 style={{ minHeight: "80px" }}

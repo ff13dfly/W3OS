@@ -41,9 +41,6 @@ function Payment(props) {
     amount: { background: "#FFFFFF" },
   });
 
-  //const avatar_from=`https://robohash.org/${from}.png`;
-  //const avatar_to=`https://robohash.org/${props.target}.png`;
-
   const desc =
     "The payment can not be called back, please confirm the account you want to pay.";
   const self = {
@@ -259,7 +256,7 @@ function Payment(props) {
               style={amap}
               src={
                 account.length === 48
-                  ? `https://robohash.org/${account}.png`
+                  ? RUNTIME.getAvatar(account)
                   : "icons/empty.png"
               }
               alt="user logo"

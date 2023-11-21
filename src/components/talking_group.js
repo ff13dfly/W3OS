@@ -26,8 +26,8 @@ function TalkingGroup(props) {
   //const list=["a_0","a_1",];
   //const list=["a_0","a_1","a_2"];
   //const list=["a_0","a_1","a_2","a_3"];
-  const list=["a_0","a_1","a_2","a_3","a_4"];
-  //const list=["a_0","a_1","a_2","a_3","a_4","a_5"];
+  //const list=["a_0","a_1","a_2","a_3","a_4"];
+  const list=["a_0","a_1","a_2","a_3","a_4","a_5"];
   //const list=["a_0","a_1","a_2","a_3","a_4","a_5","a_6"];
   //const list=["a_0","a_1","a_2","a_3","a_4","a_5","a_6","a_7"];
   //const list=["a_0","a_1","a_2","a_3","a_4","a_5","a_6","a_7","a_8"];

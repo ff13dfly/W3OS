@@ -161,7 +161,7 @@ function StrangerList(props) {
               className="pt-2"
             >
               <Image
-                src={`https://robohash.org/${row.address}.png`}
+                src={RUNTIME.getAvatar(row.address)}
                 rounded
                 width="100%"
                 style={{ minHeight: "80px" }}

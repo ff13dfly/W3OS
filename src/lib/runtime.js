@@ -12,6 +12,9 @@ let nets = {};
 let UI = null;
 let mailer = {}; //mailer cache
 
+let base="";  //avatar base URL
+let type="";  //avatar type set
+
 //keys and prefix for localstorage
 const prefix = "w3os";
 const keys = {
@@ -382,6 +385,14 @@ const RUNTIME = {
       return RUNTIME.link(endpoint, ck);
     }
     return ck && ck(API);
+  },
+  setAvatar:(uri,id)=>{
+    base=uri;
+    type="?set=set"+id;
+    return true;
+  },
+  getAvatar:(str)=>{
+    return `${base}/${str}.png${type}`;
   },
 };
 

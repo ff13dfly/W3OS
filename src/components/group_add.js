@@ -87,7 +87,7 @@ function GroupAdd(props) {
             </Col>
             <Col xs={size.list[1]} sm={size.list[1]} md={size.list[1]} lg={size.list[1]} xl={size.list[1]} xxl={size.list[1]}>
               <Image
-                  src={`https://robohash.org/${row.address}.png`}
+                  src={RUNTIME.getAvatar(row.address)}
                   rounded
                   width="100%"
                   style={{maxWidth:"60px",marginTop:"-15px"}}

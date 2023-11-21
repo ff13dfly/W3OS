@@ -35,7 +35,7 @@ const storage={
     group:{         
         id:"",              //group unique id
         group:[],           //group account list
-        status:1,           //group status
+        status:1,           //group status [ 1:normal; 0:removed, 4:unknown ]
         create:0,           //group create time
         update:0,           //group update time
         notice:[],          //announce list

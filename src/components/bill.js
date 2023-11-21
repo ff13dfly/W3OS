@@ -159,7 +159,7 @@ function Bill(props) {
                     <img
                       className="pb-2"
                       style={{ width: "60px" }}
-                      src={`https://robohash.org/${row.to}.png`}
+                      src={RUNTIME.getAvatar(row.to)}
                       alt="user logo"
                       onClick={(ev) => {
                         props.agent.setAccount(row.to);

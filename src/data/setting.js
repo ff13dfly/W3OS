@@ -9,6 +9,8 @@ module.exports = {
     auth: ["Fuu"],
     loader: "loader.html",
     protocol: ["Easy Protocol"],
+    avatar: "https://robohash.org",
+    theme:2,
   },
   APIs: {
     Polkadot: {
@@ -88,12 +90,10 @@ module.exports = {
       ],
       max: 500,
       permit: {},
-      icon: "https://robohash.org/",
       format: "png",
     },
     account: {
       max: 10,
-      icon: "https://robohash.org/",
       format: "png",
     },
     trend: {

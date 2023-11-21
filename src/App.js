@@ -190,11 +190,19 @@ function App() {
         },
       ]);
     },
+
+    system:(ck)=>{
+      const cfg=RUNTIME.getConfig("system");
+      RUNTIME.setAvatar(cfg.basic.avatar,cfg.basic.theme);
+      return ck && ck();
+    },
   };
 
   useEffect(() => {
-    self.login();
-    self.linkNetwork();
+    self.system(()=>{
+      self.login();
+      self.linkNetwork();
+    });
   }, []);
 
   return (

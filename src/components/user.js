@@ -72,7 +72,7 @@ function User(props) {
           setAmount(parseFloat(res.free * 0.000000000001).toLocaleString());
         }
       });
-      setAvatar(`https://robohash.org/${address}.png`);
+      setAvatar(RUNTIME.getAvatar(address));
     });
   });
 

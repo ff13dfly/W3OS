@@ -1,4 +1,5 @@
 import { Row, Col, Image } from "react-bootstrap";
+import RUNTIME from "../lib/runtime";
 
 function From(props) {
   const address = props.address;
@@ -17,7 +18,7 @@ function From(props) {
       >
         <Image
           className="from_icon"
-          src={`https://robohash.org/${address}.png`}
+          src={RUNTIME.getAvatar(address)}
           rounded
           width="100%"
         />
