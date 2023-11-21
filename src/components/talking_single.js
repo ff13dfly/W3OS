@@ -1,6 +1,7 @@
 import { Row, Col, Image } from "react-bootstrap";
 
 import Chat from "./chat";
+import Thumbnail from "./thumbnail";
 
 function TalkingSingle(props) {
   const address = props.address;
@@ -31,12 +32,7 @@ function TalkingSingle(props) {
         xl={size.content[0]}
         xxl={size.content[0]}
       >
-         <Image
-          className="to_icon"
-          src={`https://robohash.org/${address}.png`}
-          rounded
-          width="100%"
-        />
+        <Thumbnail list={[address]} />
       </Col>
       <Col
         xs={size.content[1]}

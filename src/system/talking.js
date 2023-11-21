@@ -27,6 +27,7 @@ function Talking(props) {
           <div>
             <TalkingSingle to={"SS58_ACCOUNT"} page={self.page}/>
             <TalkingGroup to={"GROUP_ID"} page={self.page}/>
+            <TalkingGroup to={"GROUP_ID"} page={self.page}/>
           </div>
         );
       },

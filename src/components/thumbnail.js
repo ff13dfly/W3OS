@@ -85,58 +85,85 @@ function Thumbnail(props) {
                 </Row>);
             break;
         case 7:
-            dom=(<Row className="text-center">
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
-                    </Col>
-                </Row>);
+            dom=(<Row>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                    <Image
+                    src={`${url}/${props.group}.png?set=set4`}
+                    rounded
+                    width="100%"
+                    />
+                </Col>
+            </Row>);
+            // dom=(<Row className="text-center">
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
+            //         </Col>
+            //     </Row>);
             break;
         case 8:
-            dom=(<Row className="text-center">
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[7]}.png`} rounded width="32%" />
-                    </Col>
-                </Row>);
+            dom=(<Row>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                    <Image
+                    src={`${url}/${props.group}.png?set=set4`}
+                    rounded
+                    width="100%"
+                    />
+                </Col>
+            </Row>);
+            // dom=(<Row className="text-center">
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[7]}.png`} rounded width="32%" />
+            //         </Col>
+            //     </Row>);
             break;
         case 9:
-            dom=(<Row className="text-center">
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
-                    </Col>
-                    <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                        <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[7]}.png`} rounded width="32%" />
-                        <Image src={`${url}/${list[9]}.png`} rounded width="32%" />
-                    </Col>
-                </Row>);
+            dom=(<Row>
+                <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+                    <Image
+                    src={`${url}/${props.group}.png?set=set4`}
+                    rounded
+                    width="100%"
+                    />
+                </Col>
+            </Row>);
+            // dom=(<Row className="text-center">
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[0]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[1]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[2]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[3]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[4]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[5]}.png`} rounded width="32%" />
+            //         </Col>
+            //         <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
+            //             <Image src={`${url}/${list[6]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[7]}.png`} rounded width="32%" />
+            //             <Image src={`${url}/${list[9]}.png`} rounded width="32%" />
+            //         </Col>
+            //     </Row>);
             break;
         default:
 
