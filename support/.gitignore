@@ -10,6 +10,9 @@ package-lock.json
 yarn.lock
 yarn-error.log
 
+# package file to check result
+hello.js
+
 /package/w3os
 /package/vara
 /package/homepage

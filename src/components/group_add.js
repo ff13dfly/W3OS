@@ -8,37 +8,52 @@ function GroupAdd(props) {
     row: [12],
     list: [1,3,8],
     opt: [7, 5],
+    header: [10,2],
   };
-
   let [list, setList]=useState([]);
   let [info, setInfo]=useState("Message herer");
-  let [address, setAddress] = useState("");
   let [disable, setDisalbe] = useState(true);
+  let [my, setMy] = useState("");
 
   const self = {
-    change: (ev) => {
-      setAddress(ev.target.value);
+    click: (index) => {
+      list[index].selected=!list[index].selected;
+      self.fresh();
     },
-    click: (ev) => {
-      //console.log(address);
-      if (!address) return false;
-      RUNTIME.addContact(address, (res) => {
-        if (res === true) props.fresh();
-        setAddress("");
-      });
+    clickAdd:()=>{
+      const accs=self.getSelected(list);
+      console.log(accs);
+    },
+    fresh:()=>{
+      const nlist=JSON.parse(JSON.stringify(list));
+      setList(nlist);
+    },
+    getSelected:(accs)=>{
+      if(!my) return false;
+      const list=[my];
+      for(let i=0;i<accs.length;i++){
+        if(accs[i].selected) list.push(accs[i].address);
+      }
+      return list;
     },
   };
 
   useEffect(() => {
     RUNTIME.getAccount((acc) => {
-      if (acc && acc.address) setDisalbe(false);
+      if (acc && acc.address){
+        setDisalbe(false);
+        setMy(acc.address);
+      }else{
+        setInfo(`Please set your account first.`);
+      }
     });
     RUNTIME.getContact((res) => {
-      console.log(res);
+      //console.log(res);
       const nlist=[];
       for(let acc in res){
         const row=res[acc];
         row.address=acc;
+        row.selected=false;
         nlist.push(row)
       }
       setList(nlist);
@@ -47,13 +62,23 @@ function GroupAdd(props) {
 
   return (
     <Row>
+      <Col className="pt-2 pb-2 text-secondary" xs={size.header[0]} sm={size.header[0]} md={size.header[0]} lg={size.header[0]} xl={size.header[0]} xxl={size.header[0]}>
+      Your address: {tools.shorten(my)}
+      </Col>
+      <Col className="pt-2 pb-2 text-secondary text-end" xs={size.header[1]} sm={size.header[1]} md={size.header[1]} lg={size.header[1]} xl={size.header[1]} xxl={size.header[1]}>
+        <span className="status green" style={{margin:"0 auto"}}></span>
+      </Col>
       {list.map((row, index) => (
-        <Col className="pt-2" key={index} xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+        <Col className="pt-2" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}
+        key={index} onClick={(ev)=>{
+          self.click(index);
+        }}>
           <Row>
             <Col className="text-center" xs={size.list[0]} sm={size.list[0]} md={size.list[0]} lg={size.list[0]} xl={size.list[0]} xxl={size.list[0]}>
               <input  type="checkbox"
               onChange={(ev) => { }}
-              style={{marginTop:"30px"}}/>
+              checked={row.selected}
+              style={{marginTop:"15px"}}/>
             </Col>
             
             <Col xs={size.list[2]} sm={size.list[2]} md={size.list[2]} lg={size.list[2]} xl={size.list[2]} xxl={size.list[2]}>
@@ -61,12 +86,12 @@ function GroupAdd(props) {
               {row.intro},{tools.shorten(row.address)}
             </Col>
             <Col xs={size.list[1]} sm={size.list[1]} md={size.list[1]} lg={size.list[1]} xl={size.list[1]} xxl={size.list[1]}>
-            <Image
-                src={`https://robohash.org/${row.address}.png`}
-                rounded
-                width="100%"
-                style={{maxWidth:"60px"}}
-              />
+              <Image
+                  src={`https://robohash.org/${row.address}.png`}
+                  rounded
+                  width="100%"
+                  style={{maxWidth:"60px",marginTop:"-15px"}}
+                />
             </Col>
           </Row>
           <hr />
@@ -78,7 +103,9 @@ function GroupAdd(props) {
             {info}
           </Col>
           <Col className="text-end" xs={size.opt[1]} sm={size.opt[1]} md={size.opt[1]} lg={size.opt[1]} xl={size.opt[1]} xxl={size.opt[1]}>
-            <button className="btn btn-md btn-primary">New Group</button>
+            <button disabled={disable} className="btn btn-md btn-primary" onClick={(ev)=>{
+              self.clickAdd();
+            }}>New Group</button>
           </Col>
         </Row>
       </div>

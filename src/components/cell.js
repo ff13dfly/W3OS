@@ -100,6 +100,7 @@ function Cell(props) {
       onSelect(props.index);
     },
     tail: (str) => {
+      if(!str) return '...';
       if (str.length <= 6) return str;
       return str.substr(0, 4) + "..";
     },
