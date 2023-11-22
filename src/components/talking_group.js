@@ -28,8 +28,8 @@ function TalkingGroup(props) {
     },
     getDate:(stamp)=>{
       const now=tools.stamp();
-      console.log(now);
-      const diff=now-stamp
+      const diff=now-stamp;
+      
       const min=1000*60;
       const hour=60*min;
       const day=24*hour;
@@ -55,7 +55,7 @@ function TalkingGroup(props) {
         }
         return `[${group.length}]${list.join(",")}...`;
       }
-      return nick;
+      return `[${group.length}]${nick}`;
     },
   }
 

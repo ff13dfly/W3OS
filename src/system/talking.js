@@ -112,10 +112,10 @@ function Talking(props) {
         }
         const ct_1=JSON.parse(JSON.stringify(contact));
         ct_1.id="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v";
-        ct_1.update=0;
+        ct_1.update=1700389755483;
         ct_1.last="你要参加比赛不？啥项目啊？";
 
-        return [gp_1,gp_2,ct_1,gp_3];
+        return [gp_1,gp_3,ct_1,gp_2];
       },
       entry:()=>{
         RUNTIME.getTalking((list)=>{
