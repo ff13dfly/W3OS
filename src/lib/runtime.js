@@ -207,15 +207,34 @@ const RUNTIME = {
   },
 
   /************************************************/
+  /*************** Talking Setting ****************/
+  /************************************************/
+
+  getTalking:(ck)=>{
+    const key="talking";
+    const list = STORAGE.getKey(key);
+    if (list === null) {
+      STORAGE.setKey(key,[]);
+    }
+    return ck && ck(STORAGE.getKey(key));
+  },
+  setTalking:(list,ck)=>{
+    const key="talking";
+    STORAGE.setKey(key,list);
+    return ck && ck();
+  },
+
+  /************************************************/
   /************ Application Launch ****************/
   /************************************************/
 
   getApps: (ck) => {
-    const list = STORAGE.getKey("apps");
+    const key="apps";
+    const list = STORAGE.getKey(key);
     if (list === null) {
-      STORAGE.setKey("apps", config.apps);
+      STORAGE.setKey(key, config.apps);
     }
-    return ck && ck(STORAGE.getKey("apps"));
+    return ck && ck(STORAGE.getKey(key));
   },
   inArray: (index, arr) => {
     for (let i = 0; i < arr.length; i++) {
@@ -224,8 +243,8 @@ const RUNTIME = {
     return false;
   },
   removeApp: (map, ck) => {
-    //console.log(map);
-    const list = STORAGE.getKey("apps");
+    const key="apps";
+    const list = STORAGE.getKey(key);
     //console.log(JSON.stringify(list));
     for (var page in map) {
       if (!list[page]) break;
@@ -236,19 +255,21 @@ const RUNTIME = {
         if (!RUNTIME.inArray(i, todo)) nlist.push(row);
       }
       list[page] = nlist;
-      STORAGE.setKey("apps", list);
+      STORAGE.setKey(key, list);
       //console.log(nlist);
       return ck && ck(true);
     }
   },
   installApp: (obj, page, ck) => {
-    const list = STORAGE.getKey("apps");
+    const key="apps";
+    const list = STORAGE.getKey(key);
     list[page].push(obj);
-    STORAGE.setKey("apps", list);
+    STORAGE.setKey(key, list);
     return ck && ck(true);
   },
   clearApps: () => {
-    STORAGE.removeKey("apps");
+    const key="apps";
+    STORAGE.removeKey(key);
   },
   formatApp: () => {
     const str = JSON.stringify(Config.format.app);

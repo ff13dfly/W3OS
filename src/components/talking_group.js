@@ -2,6 +2,7 @@ import { Row, Col } from "react-bootstrap";
 
 import Chat from "./chat";
 import Thumbnail from "./thumbnail";
+import Announce from "./announce";
 
 function TalkingGroup(props) {
 
@@ -17,8 +18,12 @@ function TalkingGroup(props) {
     click:(ev)=>{
       //console.log(`Click to open the talking page`);
       setTimeout(()=>{
-        const acc="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v"
-        props.page(<Chat address={acc} height={700}/>,acc);
+        const acc="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v";
+        const dom=(<div>
+          <Announce content="This is an announce"/>
+          <Chat address={acc} height={700}/>
+        </div>);
+        props.page(dom,acc);
       },300);
     },
   }

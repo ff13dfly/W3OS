@@ -49,7 +49,8 @@ const storage={
             free:true,      //free to join
             announce:false, //free to set notice
         }, 
-        block:[],           //block list         
+        block:[],           //block list     
+        nick:"",            //group nickname    
     },
 
     //account setting on server

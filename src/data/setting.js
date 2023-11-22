@@ -96,6 +96,9 @@ module.exports = {
       max: 10,
       format: "png",
     },
+    talking:{
+      AI:"",
+    },
     trend: {
       list: ["BTC", "ETH", "DOT"],
       node: ["ws://localhost:7788", "wss://hub.metanchor.net"],
