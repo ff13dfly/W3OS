@@ -42,8 +42,12 @@ function Talking(props) {
               announce:false, //free to set announce
           }, 
           block:[],           //block list    
+          nick:"",            //Group nickname
 
-          last:"",            //last message  
+          last:{              //last message
+            from:"",
+            msg:""
+          },            
           type:"group",       //talking type  
         };
         const contact={
@@ -63,8 +67,12 @@ function Talking(props) {
         ];
         gp_1.founder="5mockRVETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
         gp_1.manager="5mockRVETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
-        gp_1.update=1700388555483;
-        gp_1.last="Enjoy the best days!";
+        gp_1.update=1700615743020;
+        gp_1.nick="Travelling happy days";
+        gp_1.last={
+          msg:"Enjoy the best days!",
+          from:"5mockapbQ9BQcGIuQ9NFjSSvYHxr6NQERc47kWMD4FeDwKeL",
+        }
         
         const gp_2=JSON.parse(JSON.stringify(group));
         gp_2.id="GDkCdYrCqRvX";
@@ -82,7 +90,11 @@ function Talking(props) {
         gp_2.founder="5mockRVETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
         gp_2.manager="5mockRVETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
         gp_2.update=1700399555483;
-        gp_2.last="波卡2023冬季的黑客松";
+        gp_2.nick="W3OS波卡黑客松";
+        gp_2.last={
+          msg:"波卡2023冬季的黑客松",
+          from:"7ockRVETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788",
+        }
 
         const gp_3=JSON.parse(JSON.stringify(group));
         gp_3.id="GDkCdYrCqRvX";
@@ -94,7 +106,10 @@ function Talking(props) {
         gp_3.founder="5mockBaETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
         gp_3.manager="5mockBaETAEcF56UHhAUNNvcZEejjJvixN8v4mwJRCXDf788";
         gp_3.update=1700389555483;
-
+        gp_3.last={
+          msg:"重要的是把分工处理好，这样大家都好控制自己的时间",
+          from:"5mock3DKUJzIpuzFn7vQJPeLAEdUMZiwfFARFrHYzccGiIhx",
+        }
         const ct_1=JSON.parse(JSON.stringify(contact));
         ct_1.id="5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v";
         ct_1.update=0;
