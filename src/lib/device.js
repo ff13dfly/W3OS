@@ -10,6 +10,11 @@ const DEVICE = {
     return details;
   },
 
+  getDevice:(name)=>{
+    if(!details[name]) return false;
+    return details[name];
+  },
+
   grids: () => {
     return [4, 8];
   },

@@ -7,6 +7,7 @@ import To from "./chat_to";
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
+import DEVICE from "../lib/device";
 
 let chatWS = null;
 let spam = "";
@@ -17,7 +18,7 @@ function Chat(props) {
     content: [9, 3],
     row: [12],
   };
-  const dv = { xs: 4, sm: 4, md: 4, lg: 4, xl: 6, xxl: 6 };
+  //const dv = { xs: 4, sm: 4, md: 4, lg: 4, xl: 6, xxl: 6 };
   let [content, setContent] = useState("");
   let [list, setList] = useState([]);
 
@@ -152,19 +153,13 @@ function Chat(props) {
     });
   }, []);
 
+  const dv=DEVICE.getDevice("screen");
+
   return (
     <Row className="pb-2">
-      <Col
-        className="chat_container"
-        style={{height:`${props.height?props.height:400}px`}}
-        id={`con_${props.address}`}
-        xs={size.row[0]}
-        sm={size.row[0]}
-        md={size.row[0]}
-        lg={size.row[0]}
-        xl={size.row[0]}
-        xxl={size.row[0]}
-      >
+      <Col className="chat_container" style={{height:`${dv[1]-140}px`}} id={`con_${props.address}`}
+        xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
+        lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
         <div id={`scroll_${props.address}`}>
           {list.map((row, key) =>
             row.type === "from" ? (
@@ -175,52 +170,28 @@ function Chat(props) {
           )}
         </div>
       </Col>
-      <Col
-        xs={size.row[0]}
-        sm={size.row[0]}
-        md={size.row[0]}
-        lg={size.row[0]}
-        xl={size.row[0]}
-        xxl={size.row[0]}
-      >
-        <hr />
-      </Col>
-      <Col
-        xs={size.content[0]}
-        sm={size.content[0]}
-        md={size.content[0]}
-        lg={size.content[0]}
-        xl={size.content[0]}
-        xxl={size.content[0]}
-        className=""
-      >
-        <input
-          type="text"
-          className="form-control"
-          value={content}
+      <div className="fixfooter">
+      <Row className="pb-2 pt-2">
+      <Col xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
+        lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
+        <input type="text"  className="form-control" value={content}
           onChange={(ev) => {
             self.onChange(ev);
           }}
         />
       </Col>
-      <Col
-        xs={size.content[1]}
-        sm={size.content[1]}
-        md={size.content[1]}
-        lg={size.content[1]}
-        xl={size.content[1]}
-        xxl={size.content[1]}
-        className="text-end"
+      <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]} lg={size.content[1]}
+        xl={size.content[1]} xxl={size.content[1]} className="text-end"
       >
-        <button
-          className="btn btn-md btn-primary"
+        <button className="btn btn-md btn-primary"
           onClick={(ev) => {
             self.chat(ev);
           }}
-        >
-          Send
-        </button>
+        >Send</button>
       </Col>
+      </Row>
+      </div>
+      
     </Row>
   );
 }

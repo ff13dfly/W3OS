@@ -552,7 +552,7 @@ file.read(cfgFile, (xcfg) => {
                             const reg = new RegExp(`${row.replace}`, "g");
                             code_js = code_js.replace(reg, `anchor://${related.resource}|${row.hash}`);
                         }
-                        file.save("hello.js", code_js);
+                        //file.save("hello.js", code_js);
 
                         list.push({ name: xcfg.name, raw: code_js, protocol: protocol });
                         output(`JS task ready, 1 task, total ${list.length}`);
