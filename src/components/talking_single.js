@@ -23,7 +23,6 @@ function TalkingSingle(props) {
     },
     getDate:(stamp)=>{
       const now=tools.stamp();
-      console.log(now);
       const diff=now-stamp
       const min=1000*60;
       const hour=60*min;

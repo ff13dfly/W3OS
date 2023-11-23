@@ -7,7 +7,7 @@ function From(props) {
     content: [2, 10],
   };
   return (
-    <Row className="pb-2">
+    <Row className="pb-2 chat_row">
       <Col
         xs={size.content[0]}
         sm={size.content[0]}

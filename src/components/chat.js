@@ -95,7 +95,7 @@ function Chat(props) {
     toBottom: () => {
       setTimeout(() => {
         const ele = document.getElementById(`con_${props.address}`);
-        if (ele !== null) ele.scrollTop = ele.scrollHeight;
+        if (ele !== null) ele.scrollTop = ele.scrollHeight+50;
       }, 100);
     },
     linker: () => {
@@ -171,25 +171,25 @@ function Chat(props) {
         </div>
       </Col>
       <div className="fixfooter">
-      <Row className="pb-2 pt-2">
-      <Col xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
-        lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
-        <input type="text"  className="form-control" value={content}
-          onChange={(ev) => {
-            self.onChange(ev);
-          }}
-        />
-      </Col>
-      <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]} lg={size.content[1]}
-        xl={size.content[1]} xxl={size.content[1]} className="text-end"
-      >
-        <button className="btn btn-md btn-primary"
-          onClick={(ev) => {
-            self.chat(ev);
-          }}
-        >Send</button>
-      </Col>
-      </Row>
+        <Row className="pb-2 pt-2">
+        <Col xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
+          lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
+          <input type="text"  className="form-control" value={content}
+            onChange={(ev) => {
+              self.onChange(ev);
+            }}
+          />
+        </Col>
+        <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]} lg={size.content[1]}
+          xl={size.content[1]} xxl={size.content[1]} className="text-end"
+        >
+          <button className="btn btn-md btn-primary"
+            onClick={(ev) => {
+              self.chat(ev);
+            }}
+          >Send</button>
+        </Col>
+        </Row>
       </div>
       
     </Row>

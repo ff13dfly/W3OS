@@ -215,6 +215,9 @@ code {
   overflow-y: scroll !important;
   background: #eeeeee;
 }
+.chat_row {
+  min-height: 54px;
+}
 .modal-body {
   background: #eeeeee;
 }

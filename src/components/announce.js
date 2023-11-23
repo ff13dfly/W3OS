@@ -14,7 +14,7 @@ function Announce(props) {
   };
 
   const dv=DEVICE.getDevice("screen");
-  console.log(dv);
+  //console.log(dv);
 
   return (
     <Row className="pt-2 pb-2 fixAnnounce" style={{background:"#fae9e9",width:`${dv[0]}px`}} onClick={(ev)=>{

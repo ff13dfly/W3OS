@@ -7,7 +7,7 @@ function To(props) {
     content: [10, 2],
   };
   return (
-    <Row className="pb-2">
+    <Row className="pb-2 chat_row">
       <Col
         className="text-end"
         xs={size.content[0]}

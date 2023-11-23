@@ -167,68 +167,34 @@ function Vertify(props) {
   return (
     <Container>
       <Row>
-        <Col
-          xs={size.head[0]}
-          sm={size.head[0]}
-          md={size.head[0]}
-          lg={size.head[0]}
-          xl={size.head[0]}
-          xxl={size.head[0]}
-        >
+        <Col xs={size.head[0]} sm={size.head[0]} md={size.head[0]}
+          lg={size.head[0]} xl={size.head[0]} xxl={size.head[0]}>
           <img style={amap} src={avatar_from} alt="user logo" />
           <p style={cmap} className="pt-2">
             {props.from}
           </p>
         </Col>
-        <Col
-          className="text-center"
-          xs={size.head[1]}
-          sm={size.head[1]}
-          md={size.head[1]}
-          lg={size.head[1]}
-          xl={size.head[1]}
-          xxl={size.head[1]}
-        >
+        <Col className="text-center" xs={size.head[1]} sm={size.head[1]} md={size.head[1]}
+          lg={size.head[1]} xl={size.head[1]} xxl={size.head[1]}>
           <h5 className="pt-4">{props.amount}</h5>
           <p>{"------>"}</p>
         </Col>
-        <Col
-          xs={size.head[2]}
-          sm={size.head[2]}
-          md={size.head[2]}
-          lg={size.head[2]}
-          xl={size.head[2]}
-          xxl={size.head[2]}
-        >
+        <Col xs={size.head[2]} sm={size.head[2]} md={size.head[2]}
+          lg={size.head[2]} xl={size.head[2]} xxl={size.head[2]}>
           <img style={amap} src={avatar_to} alt="user logo" />
           <p style={cmap} className="pt-2">
             {props.target}
           </p>
         </Col>
 
-        <Col
-          xs={size.row[0]}
-          sm={size.row[0]}
-          md={size.row[0]}
-          lg={size.row[0]}
-          xl={size.row[0]}
-          xxl={size.row[0]}
-        >
+        <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
+          lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]} >
           <Badge bg="warning">Warning</Badge> <h5>{props.desc}</h5>
         </Col>
 
-        <Col
-          className="pt-2"
-          xs={size.row[0]}
-          sm={size.row[0]}
-          md={size.row[0]}
-          lg={size.row[0]}
-          xl={size.row[0]}
-          xxl={size.row[0]}
-        >
-          <input
-            type="password"
-            className="form-control"
+        <Col className="pt-2" xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
+          lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+          <input type="password" className="form-control"
             placeholder={`Password of ${tools.shorten(props.from)}`}
             onChange={(ev) => {
               self.change(ev);
@@ -236,36 +202,18 @@ function Vertify(props) {
           />
         </Col>
 
-        <Col
-          className="pt-2"
-          xs={size.password[0]}
-          sm={size.password[0]}
-          md={size.password[0]}
-          lg={size.password[0]}
-          xl={size.password[0]}
-          xxl={size.password[0]}
-        >
+        <Col className="pt-2" xs={size.password[0]} sm={size.password[0]} md={size.password[0]}
+          lg={size.password[0]} xl={size.password[0]} xxl={size.password[0]} >
           {info}
         </Col>
 
-        <Col
-          className="pt-2 text-end"
-          xs={size.password[1]}
-          sm={size.password[1]}
-          md={size.password[1]}
-          lg={size.password[1]}
-          xl={size.password[1]}
-          xxl={size.password[1]}
-        >
-          <Button
-            size="md"
-            variant="primary"
-            disabled={disable}
+        <Col className="pt-2 text-end" xs={size.password[1]} sm={size.password[1]} md={size.password[1]}
+          lg={size.password[1]} xl={size.password[1]} xxl={size.password[1]}>
+          <Button size="md" variant="primary" disabled={disable}
             onClick={(ev) => {
               self.onClick(ev);
             }}
-          >
-            {" "}
+          >{" "}
             Pay Now{" "}
           </Button>
         </Col>
