@@ -1,15 +1,15 @@
 import RUNTIME from "../lib/runtime";
-import INDEXED from "../lib/indexed";
-import tools from "../lib/tools";
+//import INDEXED from "../lib/indexed";
+//import tools from "../lib/tools";
 
 let SVC=null;
 let spam="";
 let mine="";
-let map={};
 
 const self={
   send:(obj)=>{
     if(!spam) return false;
+    obj.spam=spam;
     if(SVC!==null) SVC.send(JSON.stringify(obj));
     return true;
   },
@@ -19,16 +19,37 @@ const self={
   },
 };
 
+const router={
+  group_create:(res)=>{
+    IMGC.group.detail(res.id);
+
+  },
+  group_detail:(res)=>{
+    console.log(res);
+    //1.check the group exsist
+
+    //2.update group information
+  },
+};
+
 const decoder={
   try:(input)=>{
     console.log(input);
+    switch (input.type) {
+      case "notice":
+        const name=`${input.method.cat}_${input.method.act}`;
+        if(router[name])router[name](input.msg);
+        break;
+    
+      default:
+        break;
+    }
   },
-}
+};
 
+// agent to websocket to accept the input
 const agent={
-  open:(res)=>{
-    console.log(res);
-  },
+  open:(res)=>{},
   message:(res)=>{
     try {
       const input=JSON.parse(res.data);
@@ -46,7 +67,7 @@ const agent={
     SVC=null;   //set websocket
   },
   error:(res)=>{
-
+    console.log(res);
   },
 };
 
@@ -62,23 +83,35 @@ const IMGC={
         SVC=ws;
       },agent)
     });
-    
   },
   group:{
-    create:(accounts,ck)=>{
-      const key="group_create";
+    create:(accounts)=>{
       const req={
         cat:"group",
         act:"create",
         list:accounts,
-        spam:spam,
       }
       self.send(req);
-      map[key]=ck;
     },
-    leave:()=>{
+    detail:(id)=>{
+      const req={
+        cat:"group",
+        act:"detail",
+        id:id,
+      }
+      self.send(req);
+    },
+    leave:(id)=>{
+      const req={
+        cat:"group",
+        act:"leave",
+        id:id,
+      }
+      self.send(req);
+    },
+    chat:(ctx)=>{
 
-    }
+    },
   },
   chat:{
 
