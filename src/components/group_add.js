@@ -2,6 +2,7 @@ import { Row, Col, Image } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import RUNTIME from "../lib/runtime";
 import tools from "../lib/tools";
+import IMGC from "../open/IMGC";
 
 function GroupAdd(props) {
   const size = {
@@ -22,7 +23,10 @@ function GroupAdd(props) {
     },
     clickAdd:()=>{
       const accs=self.getSelected(list);
-      console.log(accs);
+      //console.log(accs);
+      IMGC.group.create(accs,(res)=>{
+        console.log(res);
+      });
     },
     fresh:()=>{
       const nlist=JSON.parse(JSON.stringify(list));

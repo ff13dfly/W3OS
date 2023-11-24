@@ -9,7 +9,8 @@ module.exports = {
     auth: ["Fuu"],
     loader: "loader.html",
     protocol: ["Easy Protocol"],
-    avatar: "https://robohash.org",
+    avatar: ["https://robohash.org"],
+    talking:["ws://127.0.0.1:7788","wss://chat.metanchor.net"],
     theme:2,
   },
   APIs: {

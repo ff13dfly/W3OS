@@ -6,6 +6,9 @@ const details = {
 };
 
 const DEVICE = {
+  init:()=>{
+
+  },
   details: () => {
     return details;
   },

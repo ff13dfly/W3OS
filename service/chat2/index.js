@@ -74,7 +74,7 @@ Valid(process.argv.slice(2),(res)=>{
                     if (!str) return output(`Empty request.`, "error");
                     try {
                         const input = JSON.parse(str);
-                        console.log(str);
+                        //console.log(str);
                         if(!input.spam) return output(error("SYSTEM_INVALID_REQUEST"), "error");     //check spam
                         if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
                         delete input.spam;

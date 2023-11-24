@@ -4,6 +4,8 @@ import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
 import RUNTIME from "../lib/runtime";
+import IMGC from "../open/IMGC";
+
 
 function Talking(props) {
     const size = {
@@ -144,9 +146,9 @@ function Talking(props) {
     
     useEffect(() => {
       self.entry();
+      IMGC.init();
     },[]);
     
-
     return (
       <div id="page" className={animation}>
         <Navbar className="bg-body-tertiary">

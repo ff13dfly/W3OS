@@ -193,7 +193,7 @@ function App() {
 
     system:(ck)=>{
       const cfg=RUNTIME.getConfig("system");
-      RUNTIME.setAvatar(cfg.basic.avatar,cfg.basic.theme);
+      RUNTIME.setAvatar(cfg.basic.avatar[0],cfg.basic.theme);
       return ck && ck();
     },
   };
