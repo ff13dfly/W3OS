@@ -144,7 +144,12 @@ const self = {
                         const row = ts[j];
                         const tmp = row.split('.');
                         const suffix = tmp.pop();
-                        todo.push({ file: `${sub}/${dir}/${row}`, suffix: suffix, replace: `static/${dir}/${row}` });
+                        todo.push({ 
+                            file: `${sub}/${dir}/${row}`, 
+                            suffix: suffix, 
+                            replace: `static/${dir}/${row}`,
+                            hash: self.char(12, 'RS'),
+                        });
                     }
                 }
             }
@@ -179,6 +184,7 @@ const self = {
             }
         }
         output(`Cache resource, total ${todo.length} files.`);
+        //console.log(todo);
         return self.getTodo(todo, ck);
     },
     getTodo: (list, ck, backup) => {
@@ -362,6 +368,8 @@ const self = {
         }
         return list;
     },
+
+    //@param todo Array [ resource file ]
     groupResouce: (todo, max) => {
         //!important, if single file length < max, should divide to small files, order by hash
         // RSiQtOfXmDaKvS will be [ RSiQtOfXmDaKvS_0, RSiQtOfXmDaKvS_1 ]
@@ -399,6 +407,7 @@ const self = {
                 group[group.length - 1].len += alen;
             }
         }
+        
 
         //2.group the really files.
         const rlist = [];
@@ -425,13 +434,13 @@ file.read(cfgFile, (xcfg) => {
     if (xcfg.error) return output(`Error: failed to load config file "${cfgFile}".`, 'error');
     output(`Read the config file successful.`, 'success');
 
-    //anchorJS = require(xcfg.lib.anchorJS);
-
     //2.read React asset file
     const target = `${xcfg.directory}/${xcfg.asset}`;
     output(`Read to get asset file '${target}'`);
     file.read(target, (react) => {
-        if (react.error) return output(`Can not load "${xcfg.asset}".`, 'error');;
+        if (react.error){
+            return output(`Can not load "${xcfg.asset}, reason: ${JSON.stringify(react)}".`, 'error');;
+        } 
         output(`Read asset file '${target}' successful.`, 'success');
 
         //3.get target css and js file
@@ -446,11 +455,11 @@ file.read(cfgFile, (xcfg) => {
                 const related = xcfg.related;
                 let list = [];
 
-                //console.log(todo);
-
+                //already attach the **JS** and **CSS** to cache
                 output(`Resource loaded, css ${cache.css[0].length.toLocaleString()} bytes, js ${cache.js[0].length.toLocaleString()} bytes.`, 'success');
                 const rlen = self.calcResource(todo);
-                
+
+                //the left resouce files to handle
                 if (todo.length !== 0) {
                     output(`Resource loaded, more ${todo.length} files, ${rlen.toLocaleString()} bytes.`, 'success');
                     const groups = self.groupResouce(todo, xcfg.blockmax);

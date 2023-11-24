@@ -1,14 +1,14 @@
 {  
-    "name":"home",
+    "name":"circle",
     "framework":"frame_react.js",
-    "version":"1.0.2",
+    "version":"1.0.1",
     "related":{
-        "js":"home_js",
-        "css":"home_css",
-        "resource":"res_data",
-        "resource_ref":"home_map"
+        "js":"cy_js",
+        "css":"cy_css",
+        "resource":"cy_data",
+        "resource_ref":"cy_map"
     },
-    "directory":"package/homepage",
+    "directory":"package/circle",
     "asset":"asset-manifest.json",
     "globalVars":[],
     "blockmax":1500000,
@@ -21,7 +21,9 @@
             "logo192.png":true,
             "logo512.png":true,
             "robots.txt":true,
-            ".DS_Store":true
+            ".DS_Store":true,
+            "anchor.min.js":true,
+            "polkadot.min.js":true
         },
         "folder":{
             "js":true,
