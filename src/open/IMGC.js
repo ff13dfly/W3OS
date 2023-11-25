@@ -49,8 +49,12 @@ const DB={
         last:data.last,
         update: tools.stamp(),
         status:1,
-        more:data,
       };
+      delete data.id;
+      delete data.type;
+      delete data.last;
+      row.more=data;
+
       if (!DB.checkTable(table, tbs)) {
         const tb = DB.getTable(table);
         INDEXED.initDB(DBname, [tb], res.version + 1).then((db) => {
@@ -63,17 +67,34 @@ const DB={
       }
     });
   },
-  update:(mine,id,data,ck)=>{
+  update:(mine,rows,ck)=>{
+    const table = `${prefix}${mine}`;
+    INDEXED.checkDB(DBname, (db) => {
+      INDEXED.updateRow(db, table, rows, ck);
+    });
+  },
+  view:(mine,id,ck)=>{
 
   },
   page: (mine, page, ck) => {
-    // INDEXED.checkDB(DBname, (db) => {
-    //   const tbs = db.objectStoreNames;
-    //   const table = `${prefix}${mine}`;
-    //   if (!BILL.checkTable(table, tbs)) return ck && ck(false);
-    //   const step = 20;
-    //   INDEXED.pageRows(db, table, ck, { page: page, step: step });
-    // });
+    INDEXED.checkDB(DBname, (db) => {
+      const tbs = db.objectStoreNames;
+      const table = `${prefix}${mine}`;
+      //console.log(table);
+      if (!DB.checkTable(table, tbs)) return ck && ck(false);
+      const step = 20;
+      INDEXED.pageRows(db, table, ck, { page: page, step: step });
+    });
+  },
+  groupList:(id,data,ck)=>{
+    const nlist=[data];
+    RUNTIME.getTalking((list)=>{
+      for(let i=0;i<list.length;i++){
+        const row=list[i];
+        if(row.id!==id) nlist.push(row);
+      }
+       RUNTIME.setTalking(nlist,ck);
+    });
   },
 }
 
@@ -104,6 +125,7 @@ const router={
   //!important, when your friend create a group which you are included, then you will get a notice.
   //!important, there is no callback, but still need to create the target group
   group_create:(res,callback)=>{
+    console.log(res);
     //1.update group index
     const data={
       id:res.id,
@@ -114,7 +136,21 @@ const router={
       }
     }
     DB.save(mine,res.id,data,()=>{
-      console.log('Group saved');
+      //console.log('Group saved');
+      const odata={
+        id:res.id,
+        type:"group",
+        group:[mine],
+        nick:"",
+        update:tools.stamp(),
+        last:{
+          from:"",
+          msg:"",
+        }
+      }
+      DB.groupList(res.id,odata,(res)=>{
+        console.log(`Group oreder index saved`);
+      });
     });
 
     //2.callback if there is
@@ -125,6 +161,36 @@ const router={
   },
   group_detail:(res,callback)=>{
     //1.check the group exsist
+    const row={
+      id:res.id,
+      type:"group",
+      last:{
+        from:"",
+        msg:"",
+      },
+      more:res,
+      status:1,
+      update:res.update,
+    }
+    delete res.id;
+    delete res.update;
+    DB.update(mine,[row],()=>{
+      console.log(`Group[${row.id}] updated.`);
+      const odata={
+        id:row.id,
+        type:"group",
+        group:res.group,
+        nick:"",
+        update:row.update,
+        last:{
+          from:"",
+          msg:"",
+        }
+      }
+      DB.groupList(row.id,odata,(res)=>{
+        console.log(`Group oreder index saved`);
+      });
+    });
 
     //2.callback if there is
     if(callback!==undefined){
@@ -134,6 +200,7 @@ const router={
   },
 
   group_join:(res,callback)=>{
+    //1.
 
     //2.callback if there is
     if(callback!==undefined){
@@ -234,7 +301,15 @@ const IMGC={
 
   },
   list:(ck)=>{    //get the group list
-    console.log("here");
+    RUNTIME.getAccount((fa)=>{
+      if(!fa) return false;
+      mine=fa.address;
+
+      let page=0;
+      DB.page(mine,page,(res)=>{
+        console.log(res);
+      });
+    });
   },
 }
 

@@ -62,6 +62,7 @@ module.exports = {
         data.create=tools.stamp();
         data.group=input.list;
         data.manager=from;
+        data.founder=from;
         DB.key_set(gid,data);
 
         //2.sent notification to creator

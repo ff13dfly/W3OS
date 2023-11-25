@@ -27,9 +27,9 @@ function GroupAdd(props) {
       setDisalbe(true);
       const accs=self.getSelected(list);
       IMGC.group.create(accs,(res)=>{
+        console.log(`Group created: ${JSON.stringify(res)}`);
         IMGC.group.detail(res.id,(gp)=>{
-          console.log(gp);
-          //TODO,Storage the group details here
+          console.log(`Group details: ${JSON.stringify(gp)}`);
 
           setInfo("Group created successful.");
           setTimeout(()=>{
