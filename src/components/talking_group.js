@@ -4,6 +4,7 @@ import Chat from "./chat";
 import Thumbnail from "./thumbnail";
 import Announce from "./announce";
 import tools from "../lib/tools";
+import GroupOpt from "./group_opt";
 
 function TalkingGroup(props) {
   const to = props.to;
@@ -21,6 +22,7 @@ function TalkingGroup(props) {
         const acc = "5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v";
         const dom = (<div>
           <Announce content="This is an announce" />
+          <GroupOpt />
           <Chat address={acc} height={700} />
         </div>);
         props.page(dom, to);

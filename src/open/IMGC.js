@@ -1,5 +1,5 @@
 import RUNTIME from "../lib/runtime";
-//import INDEXED from "../lib/indexed";
+import INDEXED from "../lib/indexed";
 import tools from "../lib/tools";
 
 let SVC=null;
@@ -30,27 +30,35 @@ const self={
 };
 
 const router={
+  //!important, when your friend create a group which you are included, then you will get a notice.
+  //!important, there is no callback, but still need to create the target group
   group_create:(res,callback)=>{
     //1.update group index
 
-    //2.set callback
+    //2.callback if there is
     if(callback!==undefined){
       map[callback](res);
       delete map[callback];
     } 
   },
   group_detail:(res,callback)=>{
-    //console.log(res);
     //1.check the group exsist
 
-    //2.update group information
-
+    //2.callback if there is
     if(callback!==undefined){
       map[callback](res);
       delete map[callback];
     } 
   },
-  
+
+  group_join:(res,callback)=>{
+
+    //2.callback if there is
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
 };
 
 const decoder={

@@ -64,7 +64,7 @@ module.exports = {
         data.manager=from;
         DB.key_set(gid,data);
 
-        //2.sent notification to customer
+        //2.sent notification to creator
         const todo=task("notice");
         todo.params.msg={id:gid};
         todo.params.to=from;
@@ -72,8 +72,9 @@ module.exports = {
             act:"create",
             cat:"group"
         };
-        
         if(input.callback) todo.callback=input.callback;
+
+        //TODO,sent notification to related customer
 
         return [todo];
     },

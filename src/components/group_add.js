@@ -13,7 +13,7 @@ function GroupAdd(props) {
   };
 
   let [list, setList]=useState([]);
-  let [info, setInfo]=useState("Message herer");
+  let [info, setInfo]=useState("");
   let [disable, setDisalbe] = useState(true);
   let [my, setMy] = useState("");
 
@@ -24,12 +24,19 @@ function GroupAdd(props) {
       self.fresh();
     },
     clickAdd:()=>{
-      //props.back();
+      setDisalbe(true);
       const accs=self.getSelected(list);
       IMGC.group.create(accs,(res)=>{
-        console.log(res);
         IMGC.group.detail(res.id,(gp)=>{
           console.log(gp);
+          //TODO,Storage the group details here
+
+          setInfo("Group created successful.");
+          setTimeout(()=>{
+            setDisalbe(false);
+            
+            props.back();
+          },1500);
         });
       });
     },
