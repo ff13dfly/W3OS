@@ -11,10 +11,12 @@ function GroupAdd(props) {
     opt: [7, 5],
     header: [10,2],
   };
+
   let [list, setList]=useState([]);
   let [info, setInfo]=useState("Message herer");
   let [disable, setDisalbe] = useState(true);
   let [my, setMy] = useState("");
+
 
   const self = {
     click: (index) => {
@@ -22,10 +24,13 @@ function GroupAdd(props) {
       self.fresh();
     },
     clickAdd:()=>{
+      //props.back();
       const accs=self.getSelected(list);
-      //console.log(accs);
       IMGC.group.create(accs,(res)=>{
         console.log(res);
+        IMGC.group.detail(res.id,(gp)=>{
+          console.log(gp);
+        });
       });
     },
     fresh:()=>{

@@ -9,18 +9,21 @@ const accountSpam = {}, spamToAccount = {};
 //!important, client here to check the status and decode the task to do real work of network
 
 const actions={
-    message:(params)=>{
+    message:(params,callback)=>{
         if(!accountSpam[params.to]){
             console.log("Not active, ready to push history");
         }else{
             self.send(params,accountSpam[params.to]);
         }
     },
-    notice:(params)=>{
+    notice:(params,callback)=>{
         const data={}
         data.type="notice";
         data.msg=params.msg;
         data.method=params.method;
+        if(callback!==undefined){
+            data.method.callback=callback;
+        }
 
         if(!accountSpam[params.to]){
             console.log("Not active");
@@ -28,7 +31,7 @@ const actions={
             self.success(data,accountSpam[params.to]);
         }
     },
-    announce:(params)=>{
+    announce:(params,callback)=>{
         const data={}
         data.type="announce";
     }
@@ -53,7 +56,7 @@ const self = {
             for(let i=0;i<list.length;i++){
                 const todo=list[i];
                 if(actions[todo.action]){
-                    actions[todo.action](todo.params); 
+                    actions[todo.action](todo.params,!todo.callback?undefined:todo.callback); 
                 }else{
                     console.log(`success send directly`);
                 }

@@ -72,7 +72,9 @@ module.exports = {
             act:"create",
             cat:"group"
         };
-        //if(input.callback)todo.callback=input.callback;
+        
+        if(input.callback) todo.callback=input.callback;
+
         return [todo];
     },
 
@@ -92,6 +94,8 @@ module.exports = {
             act:"detail",
             cat:"group"
         };
+        if(input.callback) todo.callback=input.callback;
+
         return [todo];
     },
 
@@ -121,6 +125,9 @@ module.exports = {
                 cat:"group"
             };
             todos.push(todo);
+
+            //callback of caller
+            //if( input.callback) todo.callback=input.callback;
         }
 
         toast(todos.length);    //inc the notice amount

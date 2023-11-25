@@ -13,7 +13,7 @@ function Talking(props) {
         row: [12],
       };
     
-    const funs = props.funs;
+    //const funs = props.funs;
     let [animation, setAnimation] = useState("ani_scale_in");
     let [framework, setFramework] = useState("");
     let [active, setActive] = useState("");
@@ -140,7 +140,12 @@ function Talking(props) {
       },
       newGroup:()=>{
         console.log(`Ready to create new group`);
-        self.page(<GroupAdd />,"group_add");
+        self.page(<GroupAdd back={self.back}/>,"group_add");
+      },
+      back:()=>{
+        self.entry();
+        setHidden(false);
+        setActive("");
       },
     }
     

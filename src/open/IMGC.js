@@ -1,10 +1,12 @@
 import RUNTIME from "../lib/runtime";
 //import INDEXED from "../lib/indexed";
-//import tools from "../lib/tools";
+import tools from "../lib/tools";
 
 let SVC=null;
 let spam="";
 let mine="";
+
+const map={}
 
 const self={
   send:(obj)=>{
@@ -17,19 +19,38 @@ const self={
     const req={act:"active",acc:mine,spam:spam}
     self.send(req);
   },
+  callbackKey:()=>{
+    return `${tools.char(3)}_${tools.stamp()}`;
+  },
+  setCallback:(fun)=>{
+    const key=self.callbackKey();
+    map[key]=fun;
+    return key;
+  },
 };
 
 const router={
-  group_create:(res)=>{
-    IMGC.group.detail(res.id);
+  group_create:(res,callback)=>{
+    //1.update group index
 
+    //2.set callback
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    } 
   },
-  group_detail:(res)=>{
-    console.log(res);
+  group_detail:(res,callback)=>{
+    //console.log(res);
     //1.check the group exsist
 
     //2.update group information
+
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    } 
   },
+  
 };
 
 const decoder={
@@ -38,7 +59,7 @@ const decoder={
     switch (input.type) {
       case "notice":
         const name=`${input.method.cat}_${input.method.act}`;
-        if(router[name])router[name](input.msg);
+        if(router[name])router[name](input.msg,!input.method.callback?undefined:input.method.callback);
         break;
     
       default:
@@ -85,20 +106,23 @@ const IMGC={
     });
   },
   group:{
-    create:(accounts)=>{
+    create:(accounts,ck)=>{
+      //1.basic function
       const req={
         cat:"group",
         act:"create",
         list:accounts,
       }
+      if(ck) req.callback=self.setCallback(ck); //2.callback support
       self.send(req);
     },
-    detail:(id)=>{
+    detail:(id,ck)=>{
       const req={
         cat:"group",
         act:"detail",
         id:id,
       }
+      if(ck) req.callback=self.setCallback(ck); //2.callback support
       self.send(req);
     },
     leave:(id)=>{
