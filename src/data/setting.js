@@ -30,8 +30,9 @@ module.exports = {
   indexed: {
     db: "w3os_indexed", //w3os_indexed
     prefix: {
-      chat: "chat_",
-      bill: "bill_",
+      chat: "chat_",        //chat record
+      bill: "bill_",        //bill record
+      talking:"talking_",   //group record
     },
   },
   storage: {

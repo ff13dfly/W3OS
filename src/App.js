@@ -12,9 +12,12 @@ import Device from "./lib/device";
 import RUNTIME from "./lib/runtime";
 import SCROLLER from "./lib/scroll";
 
+
+
 import INDEXED from "./lib/indexed";
-import CHAT from "./lib/chat";
-import BILL from "./lib/bill";
+//import CHAT from "./lib/chat";
+//import BILL from "./lib/bill";
+//import IMGC from "./open/IMGC";
 
 const size = Device.grids();
 
@@ -140,26 +143,19 @@ function App() {
           const cfg = RUNTIME.getConfig("system");
           const icfg = cfg.indexed;
 
-          INDEXED.checkDB(icfg.db, (idb) => {
-            const tbs = [];
-            if (
-              !INDEXED.checkTable(
-                idb.objectStoreNames,
-                `${icfg.prefix.chat}${acc}`,
-              )
-            ) {
-              tbs.push(CHAT.getTable(`${icfg.prefix.chat}${acc}`));
-            }
-            if (
-              !INDEXED.checkTable(
-                idb.objectStoreNames,
-                `${icfg.prefix.bill}${acc}`,
-              )
-            ) {
-              tbs.push(BILL.getTable(`${icfg.prefix.bill}${acc}`));
-            }
-            if (tbs.length !== 0) INDEXED.initDB(icfg.db, tbs);
-          });
+          // INDEXED.checkDB(icfg.db, (idb) => {
+          //   const tbs = [];
+          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.chat}${acc}`)){
+          //     tbs.push(CHAT.getTable(`${icfg.prefix.chat}${acc}`));
+          //   }
+          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.bill}${acc}`)){
+          //     tbs.push(BILL.getTable(`${icfg.prefix.bill}${acc}`));
+          //   }
+          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.talking}${acc}`)){
+          //     tbs.push(IMGC.getTable(`${icfg.prefix.talking}${acc}`));
+          //   }
+          //   if (tbs.length !== 0) INDEXED.initDB(icfg.db, tbs);
+          // });
         }
       });
     },

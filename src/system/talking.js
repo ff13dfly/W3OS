@@ -120,6 +120,9 @@ function Talking(props) {
         return [gp_1,gp_3,ct_1,gp_2];
       },
       entry:()=>{
+        IMGC.list((list)=>{
+
+        });
         RUNTIME.getTalking((list)=>{
           //FIXME, this is for testing, please remove it when publish
           if(list.length===0){
