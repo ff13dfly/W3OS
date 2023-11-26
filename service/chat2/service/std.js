@@ -11,6 +11,7 @@ const task={
             cat:"chat",
             msg:"CHAT_CONTENT",
             from:"SS58_ACCOUNT",
+            group:"GROUP ID",           //Group ID, if there is
             to:"SS58_ACCOUNT",
         },
     },

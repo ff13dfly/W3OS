@@ -213,16 +213,22 @@ const router={
 const decoder={
   try:(input)=>{
     console.log(input);
-    switch (input.type) {
+    switch (input.type){
       case "notice":
         const name=`${input.method.cat}_${input.method.act}`;
         if(router[name])router[name](input.msg,!input.method.callback?undefined:input.method.callback);
         break;
       case "message":
+        if(!input.group){
 
+        }else{
+          const postman = RUNTIME.getMailer(input.group);
+          postman(input);
+        }
         break;
 
       default:
+        
         break;
     }
   },
@@ -293,8 +299,15 @@ const IMGC={
       }
       self.send(req);
     },
-    chat:(ctx)=>{
-
+    chat:(ctx,to)=>{
+      //console.log(`From ${mine} to ${to}: ${ctx}`);
+      const req={
+        cat:"group",
+        act:"chat",
+        to:to,
+        msg:ctx,
+      }
+      self.send(req);
     },
   },
   chat:{

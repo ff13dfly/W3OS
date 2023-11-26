@@ -9,8 +9,8 @@ import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
 import DEVICE from "../lib/device";
 
-let chatWS = null;
-let spam = "";
+import IMGC from "../open/IMGC";
+
 let backup = [];
 
 function Chat(props) {
@@ -22,18 +22,30 @@ function Chat(props) {
   let [content, setContent] = useState("");
   let [list, setList] = useState([]);
 
-  let my_address = "";
+  let mine = "";
+  const to=props.address;
+  console.log(to);
 
   const self = {
+    isGroup:(address)=>{
+      if(address.length===48) return false;
+      return true;
+    },
     chat: (ev) => {
       if (!content) return false;
       self.append(content);
-      self.send(content, props.address);
+      CHAT.save(mine, props.address, content, "to"); //save the answer
+      if(self.isGroup(to)){
+        IMGC.group.chat(content,to);
+      }else{
+
+      }
+      self.toBottom();
     },
     append: (ctx) => {
       const row = {
         type: "to",
-        address: my_address,
+        address: mine,
         content: ctx,
       };
       const now = [];
@@ -48,23 +60,6 @@ function Chat(props) {
     onChange: (ev) => {
       setContent(ev.target.value);
     },
-    send: (ctx, to) => {
-      if (chatWS === null || chatWS.readyState !== 1 || !spam) {
-        self.linker();
-        return setTimeout(() => {
-          self.send(ctx, to);
-        }, 500);
-      }
-      const msg = {
-        act: "chat",
-        to: to,
-        msg: ctx,
-        spam: spam,
-      };
-      chatWS.send(JSON.stringify(msg));
-      CHAT.save(my_address, props.address, ctx, "to"); //save the answer
-      self.toBottom();
-    },
     showHistory: (list) => {
       const cs = [];
       for (let i = 0; i < list.length; i++) {
@@ -72,7 +67,7 @@ function Chat(props) {
         if (row.way === "from") {
           cs.push({ type: "from", address: props.address, content: row.msg });
         } else {
-          cs.push({ type: "to", address: my_address, content: row.msg });
+          cs.push({ type: "to", address: mine, content: row.msg });
         }
       }
       setList(cs);
@@ -80,7 +75,6 @@ function Chat(props) {
       SCROLLER.allowScroll();
       self.toBottom();
     },
-
     getUnread: (list) => {
       const nlist = [];
       for (let i = 0; i < list.length; i++) {
@@ -98,35 +92,26 @@ function Chat(props) {
         if (ele !== null) ele.scrollTop = ele.scrollHeight+50;
       }, 100);
     },
-    linker: () => {
-      RUNTIME.getSetting((cfg) => {
-        const config = cfg.apps.contact;
-        const uri = config.node[0];
-        RUNTIME.websocket(uri, (ws) => {
-          chatWS = ws;
-          spam = RUNTIME.getSpam(uri);
-
-          CHAT.page(my_address, props.address, 20, 1, (his) => {
-            self.showHistory(his);
-            const nlist = self.getUnread(his);
-            if (nlist.length !== 0) {
-              CHAT.toread(my_address, nlist, (res) => {
-                if (props.fresh) props.fresh();
-              });
-            }
+    entry: () => {
+      CHAT.page(mine, props.address, 20, 1, (his) => {
+        self.showHistory(his);
+        const nlist = self.getUnread(his);
+        if (nlist.length !== 0) {
+          CHAT.toread(mine, nlist, (res) => {
+            if (props.fresh) props.fresh();
           });
-        });
+        }
       });
     },
   };
 
   RUNTIME.getAccount((res) => {
-    my_address = res.address;
+    mine = res.address;
   });
 
   useEffect(() => {
-    self.linker();
-    RUNTIME.setMailer(props.address, (res) => {
+    self.entry();
+    RUNTIME.setMailer(to, (res) => {
       switch (res.act) {
         case "chat":
           const nlist = [];
@@ -135,14 +120,28 @@ function Chat(props) {
           }
           nlist.push({
             type: "from",
-            address: props.address,
+            address: res.from,
+            group: to,
             content: res.msg,
           });
           setList(nlist);
           backup = nlist;
+
+          CHAT.save(mine, res.from, res.msg, "from");
+          // CHAT.save(
+          //   acc.address,
+          //   input.from,
+          //   input.msg,
+          //   "from",
+          //   (res) => {
+          //     self.fresh();
+          //     if (res !== true) {
+          //       RUNTIME.addContact(res, () => {}, true);
+          //     }
+          //   },
+          // );
           break;
         case "error":
-          //TODO,showing notification and errors
           console.log(res);
 
           break;

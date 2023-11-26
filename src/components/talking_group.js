@@ -17,13 +17,11 @@ function TalkingGroup(props) {
 
   const self = {
     click: (ev) => {
-      //console.log(`Click to open the talking page`);
       setTimeout(() => {
-        const acc = "5EqaE823bX7ujSuj82B27BERuaQunGu6zzVbFv6LDDmZZB6v";
         const dom = (<div>
           <Announce content="This is an announce" />
           <GroupOpt />
-          <Chat address={acc} height={700} />
+          <Chat address={to} height={700} />
         </div>);
         props.page(dom, to);
       }, 300);
@@ -59,9 +57,11 @@ function TalkingGroup(props) {
       }
       return `[${group.length}]${nick}`;
     },
+    getLatest:(from,msg)=>{
+      if(!from || !msg) return "Nothing yet";
+      return `${tools.shorten(from,6)}:${msg}`;
+    },
   }
-
-  const dt=self.getDate(details.update);
 
   return (
     <Row className="pt-2 pb-2" onClick={(ev) => {
@@ -84,7 +84,7 @@ function TalkingGroup(props) {
           </Col>
           <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
             lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
-            <small>{tools.shorten(details.last.from,6)}:{details.last.msg}</small>
+            <small>{self.getLatest(details.last.from,details.last.msg)}</small>
           </Col>
         </Row>
       </Col>

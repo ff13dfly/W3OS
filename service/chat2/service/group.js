@@ -324,9 +324,11 @@ module.exports = {
 
             const todo=task("message");
             todo.params.cat="group";
+            todo.params.type="message";
             todo.params.msg=input.msg;
             todo.params.to=to;
             todo.params.from=from;
+            todo.params.group=gid;
             todo.params.method={
                 act:"message",
                 cat:"group"
