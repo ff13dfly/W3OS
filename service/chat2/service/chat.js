@@ -19,9 +19,11 @@ module.exports = {
 
         //1.format message 
         const todo=task("message");
+        todo.params.type="message";
         todo.params.msg=input.msg;
         todo.params.to=input.to;
         todo.params.from=from;
+        delete todo.params.group;
 
         count();        //inc message account;
 

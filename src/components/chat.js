@@ -38,16 +38,15 @@ function Chat(props) {
       if (!content) return false;
       self.append(content);
       //save the answer
-      CHAT.save(mine,to, content,"to",to,()=>{
-        //console.log("here to save the index");
+      CHAT.save(mine,to,content,"to",to,()=>{
         self.updateTalkingIndex(mine,to,content,()=>{
-          //console.log("index updated");
+
         });
       }); 
       if(self.isGroup(to)){
         IMGC.group.chat(content,to);
       }else{
-
+        IMGC.chat(content,to);
       }
       self.toBottom();
     },
@@ -58,32 +57,38 @@ function Chat(props) {
         //1. filter out the target group
         for(let i=0;i<list.length;i++){
           const row=list[i];
-          if(row.id===to){
-            target=row;
+          if(!self.isGroup(to)){
+            if(row.id===from){
+              target=row;
+            }else{
+              nlist.push(row);
+            }
           }else{
-            nlist.push(row);
-          } 
+            if(row.id===to){
+              target=row;
+            }else{
+              nlist.push(row);
+            }
+          }
         }
-
         //2.update data
         if(target!==null){
           //2.1.regroup the index order
-          target.last.from=from;
-          target.last.msg=msg;
+          if(target.type!=="group"){
+            target.last=msg;
+          }else{
+            target.last.from=from;
+            target.last.msg=msg;
+          }
           target.update=tools.stamp();
+
           if(unread){
             if(!target.un) target.un=0;
             target.un++;
           }
-        }else{
-          //2.2.create new group here, need to get the details of group
-          const atom={
-
-          }
+          nlist.unshift(target);
         }
-        nlist.unshift(target);
         RUNTIME.setTalking(nlist,ck);
-        //console.log(list);
       });
     },
     append: (ctx) => {
@@ -110,7 +115,7 @@ function Chat(props) {
       for (let i = 0; i < list.length; i++) {
         const row = list[i];
         if (row.way === "from") {
-          cs.push({ type: "from", address: props.address, content: row.msg });
+          cs.push({ type: "from", address: to.length!==48?row.from:to, content: row.msg });
         } else {
           cs.push({ type: "to", address: mine, content: row.msg });
         }
@@ -155,20 +160,32 @@ function Chat(props) {
   });
 
   useEffect(() => {
-    self.entry();
+    self.entry();   //show indexedDB history
+
     RUNTIME.setMailer(to, (res) => {
+      console.log(`IMGC send the message via postman.`);
+      
       switch (res.act) {
         case "chat":
           const nlist = [];
           for (let i = 0; i < backup.length; i++) {
             nlist.push(backup[i]);
           }
-          nlist.push({
-            type: "from",
-            address: res.from,
-            group: to,
-            content: res.msg,
-          });
+          if(self.isGroup(to)){
+            nlist.push({
+              type: "from",
+              address: res.from,
+              group: to,
+              content: res.msg,
+            });
+            
+          }else{
+            nlist.push({
+              type: "from",
+              address: res.from,
+              content: res.msg,
+            });
+          }
           setList(nlist);
           backup = nlist;
           break;

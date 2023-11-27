@@ -1,5 +1,6 @@
 import RUNTIME from "../lib/runtime";
 import INDEXED from "../lib/indexed";
+//import CHAT from "../lib/chat";
 import tools from "../lib/tools";
 
 let SVC=null;
@@ -219,22 +220,27 @@ const router={
 
 const decoder={
   try:(input)=>{
+    //console.log(`First step:`);
     //console.log(input);
-    //console.log(recoder);
+
     if(recoder!==null) recoder(input);
     switch (input.type){
       case "notice":
         const name=`${input.method.cat}_${input.method.act}`;
         if(router[name])router[name](input.msg,!input.method.callback?undefined:input.method.callback);
         break;
+
       case "message":
         //1.send the message to acitve postman.
-        if(!input.group){
+        const postman = RUNTIME.getMailer(!input.group?input.from:input.group);
+        postman(input);
 
-        }else{
-          const postman = RUNTIME.getMailer(input.group);
-          postman(input);
-        }
+        // if(input.group){
+        //   CHAT.save(mine,input.from,input.msg,"from",input.group,()=>{});
+        // }else{
+        //   CHAT.save(mine,input.from,input.msg,"from",input.from,()=>{});
+        // }
+        
         break;
 
       default:
@@ -340,9 +346,17 @@ const IMGC={
 
     },
   },
-  chat:{
-
+  chat:(ctx,to)=>{
+    //console.log(`From ${mine} to ${to}: ${ctx}`);
+    const req={
+      cat:"chat",
+      act:"chat",
+      to:to,
+      msg:ctx,
+    }
+    self.send(req);
   },
+
   list:(ck)=>{    //get the group list
     RUNTIME.getAccount((fa)=>{
       if(!fa) return false;

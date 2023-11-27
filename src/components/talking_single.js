@@ -17,10 +17,8 @@ function TalkingSingle(props) {
 
   const self={
     click:(ev)=>{
-      //console.log(`Click to open the talking page`);
       setTimeout(()=>{
-        const acc="5FQmGPk7qGBmU3K6kDfMSBiUHBYq5NqXpx93KFEvDvyz5sRJ"
-        props.page(<Chat funs={funs} address={acc} height={700}/>,acc);
+        props.page(<Chat funs={funs} address={to} height={700}/>,to);
       },300);
     },
     getDate:(stamp)=>{

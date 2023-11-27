@@ -10,6 +10,7 @@ import CHAT from "../lib/chat";
 
 import IMGC from "../open/IMGC";
 
+let active="";
 function Talking(props) {
     const size = {
         header: [3, 6, 3],
@@ -20,18 +21,17 @@ function Talking(props) {
     //const funs = props.funs;
     let [animation, setAnimation] = useState("ani_scale_in");
     let [framework, setFramework] = useState("");
-    let [active, setActive] = useState("");
     let [hidden, setHidden] = useState(false);
 
     const self = {
       page:(ctx,address)=>{
-        setActive(address);
+        active=address;
         setFramework(ctx);
         setHidden(true);
+        console.log(`Page:${address}`);
       },
       entry:()=>{
         RUNTIME.getTalking((list)=>{
-          console.log(list);
           setFramework(
             <div>
               {list.map((row, index) => (
@@ -56,59 +56,104 @@ function Talking(props) {
       },
       back:()=>{
         self.entry();
+        active="";
         setHidden(false);
-        setActive("");
+        //setActive("");
       },
       updateTalkingIndex:(from,to,msg,ck,unread)=>{
+        //console.log(`From:${from} to ${to}, ${msg}, ${unread}`);
         RUNTIME.getTalking((list)=>{
           let nlist=[];
           let target=null;
           //1. filter out the target group
           for(let i=0;i<list.length;i++){
             const row=list[i];
-            if(row.id===to){
-              target=row;
+            if(to.length===48){
+              if(row.id===from){
+                target=row;
+              }else{
+                nlist.push(row);
+              }
             }else{
-              nlist.push(row);
-            } 
+              if(row.id===to){
+                target=row;
+              }else{
+                nlist.push(row);
+              }
+            }
           }
   
           //2.update data
           if(target!==null){
             //2.1.regroup the index order
-            target.last.from=from;
-            target.last.msg=msg;
+            if(target.type!=="group"){
+              target.last=msg;
+            }else{
+              target.last.from=from;
+              target.last.msg=msg;
+            }
             target.update=tools.stamp();
+
             if(unread){
               if(!target.un) target.un=0;
               target.un++;
             }
+            nlist.unshift(target);
           }else{
             //2.2.create new group here, need to get the details of group
-            const atom={
-  
+            if(to.length===48){
+              const contact={
+                id:from,            //group unique id
+                nick:"",            //nickname of contact
+                update:tools.stamp(),           //group update time
+                last:msg,            //last message
+                type:"contact"      //talking type
+              }
+              nlist.unshift(contact);
+            }else{
+              const atom={
+                id:to,
+                last:{
+                  from:from,
+                  msg:msg,
+                },
+                update:tools.stamp(),
+                type:"group",
+              }
+              if(unread){
+                if(!target.un) target.un=0;
+                atom.un++;
+              }
+              nlist.unshift(atom);
             }
           }
-          nlist.unshift(target);
           RUNTIME.setTalking(nlist,ck);
-          //console.log(list);
         });
       },
       recorder:(input)=>{
+        console.log(`Recoder entry: ${active}`);
         if(input.act && input.act==="chat"){
-          //1.save the chat record;
-          // CHAT.save(mine, res.from, res.msg, "from",!res.group?"":res.group,()=>{
-          // });
-
-          //2.update the talking index
           if(input.group){
+            console.log(`Before updateTalkingIndex:${active}`);
             self.updateTalkingIndex(input.from,input.group,input.msg,()=>{
-              //console.log("Got the message, ready to fresh");
+              console.log(`After updateTalkingIndex:${active}`);
               if(!active) self.entry();
             },true);
           }else{
-
+            self.updateTalkingIndex(input.from,input.to,input.msg,()=>{
+              if(!active) self.entry();
+            },true);
           }
+
+          //2.save the message record
+          RUNTIME.getAccount((acc)=>{
+            const mine=acc.address;
+            if(input.group){
+              CHAT.save(mine,input.from,input.msg,"from",input.group,()=>{});
+            }else{
+              CHAT.save(mine,input.from,input.msg,"from",input.from,()=>{});
+            }
+          });
         }
       },
     }
@@ -148,7 +193,7 @@ function Talking(props) {
                       props.funs.page("");
                     }, 300);
                   }else{
-                    setActive("");
+                    active="";
                     setHidden(false);
                     self.entry();
                   }

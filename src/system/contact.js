@@ -176,9 +176,6 @@ function Contact(props) {
           RUNTIME.websocket(
             uri,
             (ws) => {
-              //console.log(ws.readyState);
-              //console.log(`Call linkChatting, checker status: ${checker}`);
-
               websocket = ws;
               setHidelink(true);
               checker = setInterval(() => {
