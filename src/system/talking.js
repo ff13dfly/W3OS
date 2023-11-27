@@ -47,6 +47,13 @@ function Talking(props) {
         console.log(`Ready to create new group`);
         self.page(<GroupAdd back={self.back}/>,"group_add");
       },
+      payToVertify:(ev)=>{
+        funs.dialog.show(
+          "Vertification action here. Will show the pay amount from the server.",
+          "More details",
+          true
+        );
+      },
       back:()=>{
         self.entry();
         setHidden(false);
@@ -163,6 +170,14 @@ function Talking(props) {
             alt=""
             onClick={(ev) => {
               self.newGroup(ev);
+            }}
+          />
+          <img
+            src="icons/link.svg"
+            className="opt_button"
+            alt=""
+            onClick={(ev) => {
+              self.payToVertify(ev);
             }}
           />
         </div>

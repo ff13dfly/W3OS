@@ -5,20 +5,22 @@ import Thumbnail from "./thumbnail";
 import tools from "../lib/tools";
 
 function TalkingSingle(props) {
-  const to = props.to;
-  const details = props.details;
   const size = {
     content: [2, 10],
     title: [7, 5],
     row: 12,
   };
 
+  const to = props.to;
+  const details = props.details;
+  const funs=props.funs;
+
   const self={
     click:(ev)=>{
       //console.log(`Click to open the talking page`);
       setTimeout(()=>{
         const acc="5FQmGPk7qGBmU3K6kDfMSBiUHBYq5NqXpx93KFEvDvyz5sRJ"
-        props.page(<Chat address={acc} height={700}/>,acc);
+        props.page(<Chat funs={funs} address={acc} height={700}/>,acc);
       },300);
     },
     getDate:(stamp)=>{

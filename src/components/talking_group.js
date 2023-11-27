@@ -25,7 +25,7 @@ function TalkingGroup(props) {
         const dom = (<div>
           <Announce funs={funs} id={to} content="This is an announce" />
           <GroupOpt funs={funs} page={props.page} id={to} clean={clean}  />
-          <Chat address={to} height={700} click={self.onBlank} />
+          <Chat funs={funs} address={to} height={700} click={self.onBlank} />
         </div>);
         props.page(dom, to);
       }, 300);

@@ -19,13 +19,15 @@ function Chat(props) {
     content: [9, 3],
     row: [12],
   };
+
+  const to=props.address;
+  const funs=props.funs;
+
   //const dv = { xs: 4, sm: 4, md: 4, lg: 4, xl: 6, xxl: 6 };
   let [content, setContent] = useState("");
   let [list, setList] = useState([]);
-
   let mine = "";
-  const to=props.address;
-  //console.log(to);
+
   const self = {
     isGroup:(address)=>{
       if(address.length===48) return false;
@@ -191,9 +193,9 @@ function Chat(props) {
         <div id={`scroll_${props.address}`}>
           {list.map((row, key) =>
             row.type === "from" ? (
-              <From address={row.address} key={key} content={row.content} />
+              <From  funs={funs} address={row.address} key={key} content={row.content} />
             ) : (
-              <To address={row.address} key={key} content={row.content} />
+              <To  funs={funs} address={row.address} key={key} content={row.content} />
             ),
           )}
         </div>
