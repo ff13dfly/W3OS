@@ -8,6 +8,7 @@ import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
 import DEVICE from "../lib/device";
+import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
 
@@ -31,16 +32,58 @@ function Chat(props) {
       if(address.length===48) return false;
       return true;
     },
+    
     chat: (ev) => {
       if (!content) return false;
       self.append(content);
-      CHAT.save(mine, props.address, content, "to"); //save the answer
+      //save the answer
+      CHAT.save(mine,to, content,"to",to,()=>{
+        //console.log("here to save the index");
+        self.updateTalkingIndex(mine,to,content,()=>{
+          //console.log("index updated");
+        });
+      }); 
       if(self.isGroup(to)){
         IMGC.group.chat(content,to);
       }else{
 
       }
       self.toBottom();
+    },
+    updateTalkingIndex:(from,to,msg,ck,unread)=>{
+      RUNTIME.getTalking((list)=>{
+        let nlist=[];
+        let target=null;
+        //1. filter out the target group
+        for(let i=0;i<list.length;i++){
+          const row=list[i];
+          if(row.id===to){
+            target=row;
+          }else{
+            nlist.push(row);
+          } 
+        }
+
+        //2.update data
+        if(target!==null){
+          //2.1.regroup the index order
+          target.last.from=from;
+          target.last.msg=msg;
+          target.update=tools.stamp();
+          if(unread){
+            if(!target.un) target.un=0;
+            target.un++;
+          }
+        }else{
+          //2.2.create new group here, need to get the details of group
+          const atom={
+
+          }
+        }
+        nlist.unshift(target);
+        RUNTIME.setTalking(nlist,ck);
+        //console.log(list);
+      });
     },
     append: (ctx) => {
       const row = {
@@ -126,20 +169,6 @@ function Chat(props) {
           });
           setList(nlist);
           backup = nlist;
-
-          CHAT.save(mine, res.from, res.msg, "from");
-          // CHAT.save(
-          //   acc.address,
-          //   input.from,
-          //   input.msg,
-          //   "from",
-          //   (res) => {
-          //     self.fresh();
-          //     if (res !== true) {
-          //       RUNTIME.addContact(res, () => {}, true);
-          //     }
-          //   },
-          // );
           break;
         case "error":
           console.log(res);

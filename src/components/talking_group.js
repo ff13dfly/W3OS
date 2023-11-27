@@ -70,10 +70,13 @@ function TalkingGroup(props) {
       <Col className="text-end" xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
         lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
         <Thumbnail list={details.group} group={to} />
+        <span className="count" style={{marginLeft:"45px"}} hidden={!props.unread}>{!props.unread?0:props.unread}</span>
       </Col>
       <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]}
         lg={size.content[1]} xl={size.content[1]} xxl={size.content[1]}>
+          
         <Row>
+        
           <Col xs={size.title[0]} sm={size.title[0]} md={size.title[0]}
             lg={size.title[0]} xl={size.title[0]} xxl={size.title[0]}>
             <strong>{self.getNick(details.nick,details.group)}</strong>

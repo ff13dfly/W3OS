@@ -3,9 +3,12 @@ import { useState, useEffect } from "react";
 import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
-import RUNTIME from "../lib/runtime";
-import IMGC from "../open/IMGC";
 
+import RUNTIME from "../lib/runtime";
+import tools from "../lib/tools";
+import CHAT from "../lib/chat";
+
+import IMGC from "../open/IMGC";
 
 function Talking(props) {
     const size = {
@@ -27,12 +30,13 @@ function Talking(props) {
       },
       entry:()=>{
         RUNTIME.getTalking((list)=>{
+          console.log(list);
           setFramework(
             <div>
               {list.map((row, index) => (
                 row.type==="group"?
-                <TalkingGroup to={row.id} page={self.page} key={index} details={row}/>:
-                <TalkingSingle to={row.id} page={self.page} key={index} details={row}/>
+                <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un}/>:
+                <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un}/>
               ))}
             </div>
           );
@@ -47,11 +51,63 @@ function Talking(props) {
         setHidden(false);
         setActive("");
       },
+      updateTalkingIndex:(from,to,msg,ck,unread)=>{
+        RUNTIME.getTalking((list)=>{
+          let nlist=[];
+          let target=null;
+          //1. filter out the target group
+          for(let i=0;i<list.length;i++){
+            const row=list[i];
+            if(row.id===to){
+              target=row;
+            }else{
+              nlist.push(row);
+            } 
+          }
+  
+          //2.update data
+          if(target!==null){
+            //2.1.regroup the index order
+            target.last.from=from;
+            target.last.msg=msg;
+            target.update=tools.stamp();
+            if(unread){
+              if(!target.un) target.un=0;
+              target.un++;
+            }
+          }else{
+            //2.2.create new group here, need to get the details of group
+            const atom={
+  
+            }
+          }
+          nlist.unshift(target);
+          RUNTIME.setTalking(nlist,ck);
+          //console.log(list);
+        });
+      },
+      recorder:(input)=>{
+        if(input.act && input.act==="chat"){
+          //1.save the chat record;
+          // CHAT.save(mine, res.from, res.msg, "from",!res.group?"":res.group,()=>{
+          // });
+
+          //2.update the talking index
+          if(input.group){
+            self.updateTalkingIndex(input.from,input.group,input.msg,()=>{
+              //console.log("Got the message, ready to fresh");
+              if(!active) self.entry();
+            },true);
+          }else{
+
+          }
+        }
+      },
     }
     
     useEffect(() => {
       self.entry();
-      IMGC.init();
+      IMGC.init(self.recorder);
     },[]);
     
     return (

@@ -3,6 +3,7 @@ import INDEXED from "../lib/indexed";
 import tools from "../lib/tools";
 
 let SVC=null;
+let recoder=null;
 let spam="";
 let mine="";
 
@@ -212,13 +213,16 @@ const router={
 
 const decoder={
   try:(input)=>{
-    console.log(input);
+    //console.log(input);
+    //console.log(recoder);
+    if(recoder!==null) recoder(input);
     switch (input.type){
       case "notice":
         const name=`${input.method.cat}_${input.method.act}`;
         if(router[name])router[name](input.msg,!input.method.callback?undefined:input.method.callback);
         break;
       case "message":
+        //1.send the message to acitve postman.
         if(!input.group){
 
         }else{
@@ -228,7 +232,7 @@ const decoder={
         break;
 
       default:
-        
+
         break;
     }
   },
@@ -258,8 +262,13 @@ const agent={
   },
 };
 
+
 const IMGC={
-  init:()=>{
+  setRecoder:(fun)=>{
+    recoder=fun;
+  },
+  init:(fun)=>{
+    if(fun) IMGC.setRecoder(fun);
     if(SVC!==null) return true;
     RUNTIME.getAccount((fa)=>{
       if(!fa) return false;

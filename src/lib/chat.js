@@ -38,16 +38,29 @@ const CHAT = {
     data.table = name;
     return data;
   },
-  save: (mine, from, ctx, way, ck) => {
+  save: (mine, from, ctx, way,group,ck) => {
     const table = `${prefix}${mine}`;
     INDEXED.checkDB(DBname, (res) => {
-      const row = {
-        address: from,
-        msg: ctx,
-        status: way === "to" ? status.NORMAL : status.UNREAD,
-        way: way,
-        stamp: tools.stamp(),
-      };
+      let row=null;
+      if(!group){
+        row = {
+          address: from,
+          msg: ctx,
+          status: way === "to" ? status.NORMAL : status.UNREAD,
+          way: way,
+          stamp: tools.stamp(),
+        };
+      }else{
+        row = {
+          address: group,
+          from: from,
+          msg: ctx,
+          status: way === "to" ? status.NORMAL : status.UNREAD,
+          way: way,
+          stamp: tools.stamp(),
+        };
+      }
+      
       const tbs = res.objectStoreNames;
       if (!CHAT.checkTable(table, tbs)) {
         const tb = CHAT.getTable(table);
