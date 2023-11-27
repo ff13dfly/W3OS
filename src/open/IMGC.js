@@ -75,7 +75,13 @@ const DB={
     });
   },
   view:(mine,id,ck)=>{
-
+    const table = `${prefix}${mine}`;
+    INDEXED.checkDB(DBname, (db) => {
+      INDEXED.searchRows(db, table, "id",id, (list)=>{
+        if(list.length===1) return ck && ck(list[0]);
+        return ck && ck(list);
+      });
+    });
   },
   page: (mine, page, ck) => {
     INDEXED.checkDB(DBname, (db) => {
@@ -318,6 +324,21 @@ const IMGC={
       }
       self.send(req);
     },
+
+    //!important, key/val string only
+    //update target group parameter
+    update:(key,val)=>{   
+      const req={
+        cat:"group",
+        act:"params",
+        key:key,
+        val:val,
+      }
+      self.send(req);
+    },
+    switcher:(key,value)=>{
+
+    },
   },
   chat:{
 
@@ -332,6 +353,9 @@ const IMGC={
         console.log(res);
       });
     });
+  },
+  local:{
+    view:DB.view,
   },
 }
 

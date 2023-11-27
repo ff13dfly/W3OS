@@ -1,4 +1,5 @@
 import { Row, Col } from "react-bootstrap";
+import { useState } from "react";
 
 import Chat from "./chat";
 import Thumbnail from "./thumbnail";
@@ -14,17 +15,25 @@ function TalkingGroup(props) {
     title: [7, 5],
     row: 12,
   };
+  const funs=props.funs;
+
+  let [clean, setClean] = useState(false);
 
   const self = {
     click: (ev) => {
       setTimeout(() => {
         const dom = (<div>
-          <Announce content="This is an announce" />
-          <GroupOpt />
-          <Chat address={to} height={700} />
+          <Announce funs={funs} id={to} content="This is an announce" />
+          <GroupOpt funs={funs} page={props.page} id={to} clean={clean}  />
+          <Chat address={to} height={700} click={self.onBlank} />
         </div>);
         props.page(dom, to);
       }, 300);
+    },
+    //TODO, this can not make the opts menu hide
+    onBlank:()=>{
+      //console.log(`Chat clicked blank`);
+      setClean(true);
     },
     getDate:(stamp)=>{
       const now=tools.stamp();
@@ -53,9 +62,9 @@ function TalkingGroup(props) {
         for(let i=0;i<max;i++){
           list.push(tools.shorten(group[i],3));
         }
-        return `[${group.length}]${list.join(",")}...`;
+        return `(${group.length})${list.join(",")}...`;
       }
-      return `[${group.length}]${nick}`;
+      return `(${group.length})${nick}`;
     },
     getLatest:(from,msg)=>{
       if(!from || !msg) return "Nothing yet";
@@ -74,9 +83,7 @@ function TalkingGroup(props) {
       </Col>
       <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]}
         lg={size.content[1]} xl={size.content[1]} xxl={size.content[1]}>
-          
         <Row>
-        
           <Col xs={size.title[0]} sm={size.title[0]} md={size.title[0]}
             lg={size.title[0]} xl={size.title[0]} xxl={size.title[0]}>
             <strong>{self.getNick(details.nick,details.group)}</strong>

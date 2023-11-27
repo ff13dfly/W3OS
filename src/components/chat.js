@@ -25,8 +25,7 @@ function Chat(props) {
 
   let mine = "";
   const to=props.address;
-  console.log(to);
-
+  //console.log(to);
   const self = {
     isGroup:(address)=>{
       if(address.length===48) return false;
@@ -101,6 +100,7 @@ function Chat(props) {
       backup = now;
     },
     onChange: (ev) => {
+      if(props.click) props.click();    //trigger the blank clean function
       setContent(ev.target.value);
     },
     showHistory: (list) => {

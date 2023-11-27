@@ -15,7 +15,8 @@ function Talking(props) {
         header: [3, 6, 3],
         row: [12],
       };
-    
+    const funs=props.funs;
+
     //const funs = props.funs;
     let [animation, setAnimation] = useState("ani_scale_in");
     let [framework, setFramework] = useState("");
@@ -35,8 +36,8 @@ function Talking(props) {
             <div>
               {list.map((row, index) => (
                 row.type==="group"?
-                <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un}/>:
-                <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un}/>
+                <TalkingGroup funs={funs} to={row.id} page={self.page} key={index} details={row} unread={row.un}/>:
+                <TalkingSingle funs={funs} to={row.id} page={self.page} key={index} details={row} unread={row.un}/>
               ))}
             </div>
           );
