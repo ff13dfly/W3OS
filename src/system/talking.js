@@ -18,19 +18,20 @@ function Talking(props) {
       };
     const funs=props.funs;
 
-    //const funs = props.funs;
     let [animation, setAnimation] = useState("ani_scale_in");
     let [framework, setFramework] = useState("");
+    let [title, setTitle]= useState("Talking");
     let [hidden, setHidden] = useState(false);
 
     const self = {
-      page:(ctx,address)=>{
+      page:(ctx,address,header)=>{
         active=address;
         setFramework(ctx);
         setHidden(true);
-        console.log(`Page:${address}`);
+        if(header) setTitle(header);
       },
       entry:()=>{
+        setTitle("Talking");
         RUNTIME.getTalking((list)=>{
           setFramework(
             <div>
@@ -45,7 +46,7 @@ function Talking(props) {
       },
       newGroup:()=>{
         console.log(`Ready to create new group`);
-        self.page(<GroupAdd back={self.back}/>,"group_add");
+        self.page(<GroupAdd back={self.back}/>,"group_add","Select contact");
       },
       payToVertify:(ev)=>{
         funs.dialog.show(
@@ -58,7 +59,7 @@ function Talking(props) {
         self.entry();
         active="";
         setHidden(false);
-        //setActive("");
+        setTitle("Talking");
       },
       updateTalkingIndex:(from,to,msg,ck,unread)=>{
         //console.log(`From:${from} to ${to}, ${msg}, ${unread}`);
@@ -177,7 +178,7 @@ function Talking(props) {
               style={{ paddingTop: "10px" }}
               className="text-center"
             >
-              Talking
+              {title}
             </Col>
             <Col xs={size.header[2]} sm={size.header[2]} md={size.header[2]}
               lg={size.header[2]}  xl={size.header[2]} xxl={size.header[2]}

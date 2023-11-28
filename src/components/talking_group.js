@@ -28,7 +28,7 @@ function TalkingGroup(props) {
           <GroupOpt funs={funs} id={to} clean={clean}  />
           <Chat funs={funs} address={to} height={700} click={self.onBlank} />
         </div>);
-        props.page(dom, to);
+        props.page(dom, to, `ID: ${to}`);
       }, 300);
     },
     //TODO, this can not make the opts menu hide
