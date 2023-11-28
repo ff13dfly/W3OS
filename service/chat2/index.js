@@ -3,7 +3,7 @@
 
 //########## BUILD ##########
 // yarn add esbuild
-// ../../node_modules/esbuild/bin/esbuild server.js --bundle --minify --outfile=./chat_server.min.js --platform=node
+// ../../node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./chat_server.min.js --platform=node
 
 // ## server iptables, without set the permit, firewall will block the request
 // iptables -I INPUT -p tcp --dport 7788 -j ACCEPT
@@ -54,6 +54,8 @@ const delegate={
 }
 
 Valid(process.argv.slice(2),(res)=>{
+    if(res.error) return output(`Error:${JSON.stringify(res)}`,"error",true);
+    if(!res.data || !res.data.server || !res.data.server.port)  return output(`Invalid config file.`,"error",true);
     const cfg=res.data;
     const port=cfg.server.port;
     try {
