@@ -142,16 +142,30 @@ function Chat(props) {
         if (ele !== null) ele.scrollTop = ele.scrollHeight+50;
       }, 100);
     },
-    entry: () => {
+    entry: (ck) => {
       CHAT.page(mine, props.address, 20, 1, (his) => {
         self.showHistory(his);
         const nlist = self.getUnread(his);
         if (nlist.length !== 0) {
           CHAT.toread(mine, nlist, (res) => {
             if (props.fresh) props.fresh();
+            return ck && ck();
           });
+        }else{
+          return ck && ck();
         }
       });
+    },
+    indexUpdate:(id)=>{
+      console.log(`Update the localStorage index here. ${to}`);
+      RUNTIME.getTalking((list)=>{
+        for(let i=0;i<list.length;i++){
+          if(list[i].id===id){
+            list[i].un=0;
+          }
+        }
+        RUNTIME.setTalking(list);
+      }); 
     },
   };
 
@@ -160,11 +174,15 @@ function Chat(props) {
   });
 
   useEffect(() => {
-    self.entry();   //show indexedDB history
+    //show indexedDB history
+    self.entry(()=>{
+     
+      self.indexUpdate(to);
+    });   
 
     RUNTIME.setMailer(to, (res) => {
       console.log(`IMGC send the message via postman.`);
-      
+
       switch (res.act) {
         case "chat":
           const nlist = [];
