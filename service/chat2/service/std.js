@@ -7,12 +7,14 @@ const task={
     "message":{
         action:"message",
         params:{
-            act:"chat",                 //frontend need this to render
-            cat:"chat",
             msg:"CHAT_CONTENT",
             from:"SS58_ACCOUNT",
             group:"GROUP ID",           //Group ID, if there is
             to:"SS58_ACCOUNT",
+            method:{
+                cat:"chat",
+                act:"chat",
+            },
         },
     },
     "notice":{
@@ -23,7 +25,10 @@ const task={
             msg:{},
             from:"System",
             to:"SS58_ACCOUNT",
-            method:{},
+            method:{
+                cat:"",
+                act:"",
+            },
         },
     },
 }

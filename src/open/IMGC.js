@@ -113,6 +113,7 @@ const self={
     if(!spam) return false;
     obj.spam=spam;
     if(SVC!==null) SVC.send(JSON.stringify(obj));
+    console.log(`Req: ${JSON.stringify(obj)}`);
     return true;
   },
   reg:()=>{
@@ -133,7 +134,6 @@ const router={
   //!important, when your friend create a group which you are included, then you will get a notice.
   //!important, there is no callback, but still need to create the target group
   group_create:(res,callback)=>{
-    console.log(res);
     //1.update group index
     const data={
       id:res.id,
@@ -220,9 +220,6 @@ const router={
 
 const decoder={
   try:(input)=>{
-    //console.log(`First step:`);
-    //console.log(input);
-
     if(recoder!==null) recoder(input);
     switch (input.type){
       case "notice":
@@ -256,6 +253,7 @@ const agent={
   message:(res)=>{
     try {
       const input=JSON.parse(res.data);
+      console.log(input);
       if(input.act==="init"){
         spam=input.spam;
         self.reg();

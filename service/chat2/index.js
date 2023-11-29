@@ -58,6 +58,9 @@ Valid(process.argv.slice(2),(res)=>{
     if(!res.data || !res.data.server || !res.data.server.port)  return output(`Invalid config file.`,"error",true);
     const cfg=res.data;
     const port=cfg.server.port;
+
+    //TODO,recover the group data here.
+
     try {
         const wss = new WebSocketServer({ port: port});
         output(`W3OS IMS and GCS server start on ${port}.`, "dark", true);
@@ -76,7 +79,6 @@ Valid(process.argv.slice(2),(res)=>{
                     if (!str) return output(`Empty request.`, "error");
                     try {
                         const input = JSON.parse(str);
-                        //console.log(str);
                         if(!input.spam) return output(error("SYSTEM_INVALID_REQUEST"), "error");     //check spam
                         if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
                         delete input.spam;

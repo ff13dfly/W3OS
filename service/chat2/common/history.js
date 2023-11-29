@@ -14,16 +14,18 @@ const self={
 }
 
 module.exports = {
-    message:(from, to, ctx) => {
+    message:(from, to, ctx, group) => {
         if(timer===null) self.auto();
 
         if(!map[to]) map[to]=[];
-        map[to].push({
+        const row={
             from:from,
             to:to,
             content:ctx,
             stamp:new Date().getTime(),
-        })
+        }
+        if(group) row.group=group;
+        map[to].push(row)
     },
     mine:(address)=>{
         if(timer===null) self.auto();

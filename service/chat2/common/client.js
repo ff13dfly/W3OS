@@ -12,7 +12,9 @@ const actions={
     message:(params,callback)=>{
         if(!accountSpam[params.to]){
             console.log("Not active, ready to push history");
+            History.message(params.from, params.to, params.msg, !params.group?undefined:params.group);
         }else{
+            params.type="message";
             self.send(params,accountSpam[params.to]);
         }
     },
@@ -78,7 +80,6 @@ module.exports = {
         }
         output(`Client linked, uid: ${uid} at ${new Date(clients[uid].stamp)}`, "success");
         ws.send(JSON.stringify({ "spam": uid, "act": "init" }));
-
         return ck && ck(uid);
     },
     close: (spam, res) => {
@@ -92,6 +93,7 @@ module.exports = {
         output(`Error: ${err}`, "error");
     },
     message: (input, spam, delegate) => {
+        //1.if active, link the spam to account;
         if (input.act === "active") {
             if (!input.acc) return output(`Invalid active. request: ${JSON.stringify(input)}`, "error");
             spamToAccount[spam] = input.acc;
@@ -100,6 +102,7 @@ module.exports = {
             if (!spamToAccount[spam]) return output(`Unknown spam. request: ${JSON.stringify(input)}`, "error");
         }
 
+        //2. find the right function to deal with the request
         const cat = !input.cat ? "chat" : input.cat;  //router to different service
         const act = input.act;                    //action 
         if (!delegate[cat] || !delegate[cat][act]) {

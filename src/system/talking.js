@@ -133,7 +133,8 @@ function Talking(props) {
       },
       recorder:(input)=>{
         console.log(`Recoder entry: ${active}`);
-        if(input.act && input.act==="chat"){
+        if(input.type && input.type==="message"){
+        //if(input.act && input.act==="chat"){
           if(input.group){
             console.log(`Before updateTalkingIndex:${active}`);
             self.updateTalkingIndex(input.from,input.group,input.msg,()=>{
