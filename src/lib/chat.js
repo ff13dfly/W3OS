@@ -38,15 +38,17 @@ const CHAT = {
     data.table = name;
     return data;
   },
-  save: (mine, from, ctx, way,group,ck) => {
+  save: (mine,from, ctx, way,group,un,ck) => {
     const table = `${prefix}${mine}`;
     INDEXED.checkDB(DBname, (res) => {
       let row=null;
+      const state= way === "to" ? status.NORMAL: (!un? status.UNREAD :status.NORMAL);
+      //console.log(state,from,un);
       if(!group){
         row = {
           address: from,
           msg: ctx,
-          status: way === "to" ? status.NORMAL : status.UNREAD,
+          status:state,
           way: way,
           stamp: tools.stamp(),
         };
@@ -55,7 +57,7 @@ const CHAT = {
           address: group,
           from: from,
           msg: ctx,
-          status: way === "to" ? status.NORMAL : status.UNREAD,
+          status: state,
           way: way,
           stamp: tools.stamp(),
         };

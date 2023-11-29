@@ -183,8 +183,8 @@ function Chat(props) {
     RUNTIME.setMailer(to, (res) => {
       console.log(`IMGC send the message via postman.`);
 
-      switch (res.act) {
-        case "chat":
+      switch (res.type) {
+        case "message":
           const nlist = [];
           for (let i = 0; i < backup.length; i++) {
             nlist.push(backup[i]);

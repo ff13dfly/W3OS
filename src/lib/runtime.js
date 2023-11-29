@@ -200,6 +200,15 @@ const RUNTIME = {
 
   setMailer: (acc, fun) => {
     mailer[acc] = fun;
+    return true;
+  },
+  exsistMailer:(acc)=>{
+    if(mailer[acc]) return true;
+    return false;
+  },
+  clearMailer:(acc)=>{
+    if(mailer[acc]) delete mailer[acc];
+    return true;
   },
   getMailer: (acc) => {
     if (!mailer[acc]) return false;

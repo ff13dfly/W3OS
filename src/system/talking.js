@@ -57,6 +57,7 @@ function Talking(props) {
       },
       back:()=>{
         self.entry();
+        RUNTIME.clearMailer(active);    //remove the mailer
         active="";
         setHidden(false);
         setTitle("Talking");
@@ -121,6 +122,7 @@ function Talking(props) {
                 update:tools.stamp(),
                 type:"group",
               }
+
               if(unread){
                 if(!target.un) target.un=0;
                 atom.un++;
@@ -132,28 +134,30 @@ function Talking(props) {
         });
       },
       recorder:(input)=>{
-        console.log(`Recoder entry: ${active}`);
+        //console.log(`Recoder entry: ${active}`);
+        const un=RUNTIME.exsistMailer(!input.group?input.from:input.group);
+
         if(input.type && input.type==="message"){
-        //if(input.act && input.act==="chat"){
           if(input.group){
-            console.log(`Before updateTalkingIndex:${active}`);
+            //console.log(`Before updateTalkingIndex:${active}`);
             self.updateTalkingIndex(input.from,input.group,input.msg,()=>{
-              console.log(`After updateTalkingIndex:${active}`);
+              //console.log(`After updateTalkingIndex:${active}`);
               if(!active) self.entry();
-            },true);
+            },!un);
           }else{
             self.updateTalkingIndex(input.from,input.to,input.msg,()=>{
               if(!active) self.entry();
-            },true);
+            },!un);
           }
 
           //2.save the message record
           RUNTIME.getAccount((acc)=>{
             const mine=acc.address;
+            //console.log(un,mine);
             if(input.group){
-              CHAT.save(mine,input.from,input.msg,"from",input.group,()=>{});
+              CHAT.save(mine,input.from,input.msg,"from",input.group,un,()=>{});
             }else{
-              CHAT.save(mine,input.from,input.msg,"from",input.from,()=>{});
+              CHAT.save(mine,input.from,input.msg,"from",input.from,un,()=>{});
             }
           });
         }
@@ -163,6 +167,7 @@ function Talking(props) {
     useEffect(() => {
       self.entry();
       IMGC.init(self.recorder);
+      //console.log(RUNTIME.exsistMailer("aaa"));
     },[]);
     
     return (
@@ -195,6 +200,7 @@ function Talking(props) {
                       props.funs.page("");
                     }, 300);
                   }else{
+                    RUNTIME.clearMailer(active);    //remove the mailer
                     active="";
                     setHidden(false);
                     self.entry();
@@ -211,18 +217,12 @@ function Talking(props) {
           {framework}
         </Container>
         <div className="opts" hidden={hidden}>
-          <img
-            src="icons/edit.svg"
-            className="opt_button"
-            alt=""
+          <img src="icons/edit.svg" className="opt_button" alt=""
             onClick={(ev) => {
               self.newGroup(ev);
             }}
           />
-          <img
-            src="icons/link.svg"
-            className="opt_button"
-            alt=""
+          <img src="icons/link.svg" className="opt_button" alt=""
             onClick={(ev) => {
               self.payToVertify(ev);
             }}

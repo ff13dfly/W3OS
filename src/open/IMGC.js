@@ -231,12 +231,6 @@ const decoder={
         //1.send the message to acitve postman.
         const postman = RUNTIME.getMailer(!input.group?input.from:input.group);
         postman(input);
-
-        // if(input.group){
-        //   CHAT.save(mine,input.from,input.msg,"from",input.group,()=>{});
-        // }else{
-        //   CHAT.save(mine,input.from,input.msg,"from",input.from,()=>{});
-        // }
         
         break;
 
