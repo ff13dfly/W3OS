@@ -17,10 +17,13 @@ const Valid = require("./common/valid");        //check config file
 const Client = require("./common/client");      //comman websocket client management
 const { output } = require("./common/output");  //console output function
 
-const Chat = require("./service/chat");        //check config file
-const Group = require("./service/group");        //check config file
-const {error} = require("./service/std");        //Standard error message
+const Chat = require("./service/chat");         //check config file
+const Group = require("./service/group");       //check config file
+const {error} = require("./service/std");       //Standard error message
 
+const DB = require("./common/mndb");           //Memory DB
+const History = require("./common/history");
+const Recover = require("./service/recover");   //System backup and autosave function
 //Functions group here.
 const delegate={
     chat:{              //normal chat functions
@@ -52,6 +55,30 @@ const delegate={
         status:null,
     }
 }
+const empty=(obj)=>{
+    for(var k in obj) return false;
+    return true;
+}
+
+const getData=()=>{
+    const gs=DB.key_dump();
+    const his=History.dump();
+    return {group:gs,history:his}
+};
+
+const setData=(json)=>{
+    if(json.group && !empty(json.group)){
+        for(var k in json.group){
+            DB.key_set(k,JSON.parse(JSON.stringify(json.group[k])));
+        }
+        output(`Group information recoverd`, "primary", true);
+    }
+
+    if(json.history && !empty(json.history)){
+        History.recover(json.history);
+        output(`Chat history recoverd`, "primary", true);
+    }
+};
 
 Valid(process.argv.slice(2),(res)=>{
     if(res.error) return output(`Error:${JSON.stringify(res)}`,"error",true);
@@ -59,37 +86,40 @@ Valid(process.argv.slice(2),(res)=>{
     const cfg=res.data;
     const port=cfg.server.port;
 
-    //TODO,recover the group data here.
-
-    try {
-        const wss = new WebSocketServer({ port: port});
-        output(`W3OS IMS and GCS server start on ${port}.`, "dark", true);
-        output(`ws://127.0.0.1:${port}`, "primary", true);
-        
-        wss.on('connection',(ws,request,client)=>{
-            Client.connection(ws,(uid)=>{
-                ws.on('close', (res) => {
-                    Client.close(uid,res);
-                });
-                ws.on('error', (err) => {
-                    Client.error(err);
-                });
-                ws.on('message', (res)=>{
-                    const str = res.toString();
-                    if (!str) return output(`Empty request.`, "error");
-                    try {
-                        const input = JSON.parse(str);
-                        if(!input.spam) return output(error("SYSTEM_INVALID_REQUEST"), "error");     //check spam
-                        if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
-                        delete input.spam;
-                        Client.message(input,uid,delegate);
-                    }catch (error) {
-                        output(`Error: ${error}`, "error");
-                    }
+    Recover(getData,setData,()=>{
+        try {
+            //1.create websocket linker.
+            const wss = new WebSocketServer({ port: port});
+            output(`W3OS IMS and GCS server start on ${port}.`, "dark", true);
+            output(`ws://127.0.0.1:${port}`, "primary", true);
+            
+            wss.on('connection',(ws,request,client)=>{
+                Client.connection(ws,(uid)=>{
+                    ws.on('close', (res) => {
+                        Client.close(uid,res);
+                    });
+                    ws.on('error', (err) => {
+                        Client.error(err);
+                    });
+                    ws.on('message', (res)=>{
+                        const str = res.toString();
+                        if (!str) return output(`Empty request.`, "error");
+                        try {
+                            const input = JSON.parse(str);
+                            if(!input.spam) return output(error("SYSTEM_INVALID_REQUEST"), "error");     //check spam
+                            if(input.spam!==uid) return output(`Invalid spam.`, "error");     //check spam
+                            delete input.spam;
+                            Client.message(input,uid,delegate);
+                        }catch (error) {
+                            output(`Error: ${error}`, "error");
+                        }
+                    });
                 });
             });
-        });
-    } catch (error) {
-        output(`Failed to create Websocket server on ${port}.`, "error", true);
-    }
+    
+    
+        } catch (error) {
+            output(`Failed to create Websocket server on ${port}.`, "error", true);
+        }
+    });
 });

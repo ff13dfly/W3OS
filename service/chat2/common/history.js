@@ -1,5 +1,4 @@
-const map={};
-
+let map={};
 let timer=null;
 
 const self={
@@ -36,6 +35,13 @@ module.exports = {
     clean:(address,count)=>{
         if(!map[address]) return false;
         for(let i=0;i<count;i++) map[address].pop();
+        return true;
+    },
+    dump:()=>{
+        return map;
+    },
+    recover:(obj)=>{
+        map=JSON.parse(JSON.stringify(obj));
         return true;
     },
 }
