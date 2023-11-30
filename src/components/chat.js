@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import From from "./chat_from";
 import To from "./chat_to";
+import Notice from "./chat_notice";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
@@ -92,9 +93,13 @@ function Chat(props) {
       });
     },
     append: (ctx) => {
+      // const row = {
+      //   type: "to",
+      //   address: mine,
+      //   content: ctx,
+      // };
       const row = {
-        type: "to",
-        address: mine,
+        type: "notice",
         content: ctx,
       };
       const now = [];
@@ -143,7 +148,7 @@ function Chat(props) {
       }, 100);
     },
     entry: (ck) => {
-      CHAT.page(mine, props.address, 20, 1, (his) => {
+      CHAT.page(mine, to, 20, 1, (his) => {
         self.showHistory(his);
         const nlist = self.getUnread(his);
         if (nlist.length !== 0) {
@@ -167,22 +172,7 @@ function Chat(props) {
         RUNTIME.setTalking(list);
       }); 
     },
-  };
-
-  RUNTIME.getAccount((res) => {
-    mine = res.address;
-  });
-
-  useEffect(() => {
-    //show indexedDB history
-    self.entry(()=>{
-     
-      self.indexUpdate(to);
-    });   
-
-    RUNTIME.setMailer(to, (res) => {
-      console.log(`IMGC send the message via postman.`);
-
+    live:(res)=>{
       switch (res.type) {
         case "message":
           const nlist = [];
@@ -196,7 +186,6 @@ function Chat(props) {
               group: to,
               content: res.msg,
             });
-            
           }else{
             nlist.push({
               type: "from",
@@ -215,6 +204,37 @@ function Chat(props) {
           break;
       }
       self.toBottom();
+    },
+    format:(row,key)=>{
+      let dom="";
+      switch (row.type) {
+        case "notice":
+          dom=(<Notice  funs={funs} address={row.address} key={key} content={row.content} />)
+          break;
+        case "from":
+          dom=(<From  funs={funs} address={row.address} key={key} content={row.content} />)
+          break;
+        case "to":
+          dom=(<To  funs={funs} address={row.address} key={key} content={row.content} />)
+          break;
+        default:
+          break;
+      }
+      return dom;
+    },
+  };
+
+  RUNTIME.getAccount((res) => {
+    mine = res.address;
+  });
+
+  useEffect(() => {
+    self.entry(()=>{
+      self.indexUpdate(to);
+    });   
+
+    RUNTIME.setMailer(to, (res) => {
+      self.live(res);
     });
   }, []);
 
@@ -227,11 +247,7 @@ function Chat(props) {
         lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
         <div id={`scroll_${props.address}`}>
           {list.map((row, key) =>
-            row.type === "from" ? (
-              <From  funs={funs} address={row.address} key={key} content={row.content} />
-            ) : (
-              <To  funs={funs} address={row.address} key={key} content={row.content} />
-            ),
+            self.format(row,key)
           )}
         </div>
       </Col>
