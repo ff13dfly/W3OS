@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import Chat from "./chat";
 import ContactTitle from "./contact_title";
+import ContactDetail from "./contact_detail";
 
 //import Friend from './friend';
 //import Contact from '../system/contact';
@@ -21,14 +22,20 @@ function ContactList(props) {
   let [select, setSelect] = useState({});
 
   const self = {
-    click: (address, ev) => {
-      // funs.page(<Friend funs={funs} address={address} fresh={props.fresh} callback={(page)=>{
-      //   props.funs.page(<Contact funs={funs} />);
-      // }}/>);
-      funs.dialog.show(
-        <Chat address={address} fresh={props.fresh} />,
-        <ContactTitle address={address} funs={funs} />,
-      );
+    click: (address, unread) => {
+      // check unread to open right dialog
+      console.log(unread);
+      if(unread===0){
+        funs.dialog.show(
+          <ContactDetail address={address}/>,
+          `Contact details`//tools.shorten(address,6),
+        );
+      }else{
+        funs.dialog.show(
+          <Chat address={address} fresh={props.fresh} />,
+          <ContactTitle address={address} funs={funs} />,
+        );
+      }
     },
     select: (address) => {
       select[address] = !select[address];
@@ -104,28 +111,14 @@ function ContactList(props) {
   return (
     <Row index={count}>
       {contact.map((row, index) => (
-        <Col
-          xs={dv.xs}
-          sm={dv.sm}
-          md={dv.md}
-          lg={dv.lg}
-          xl={dv.xl}
-          xxl={dv.xxl}
-          key={index}
+        <Col xs={dv.xs} sm={dv.sm} md={dv.md} lg={dv.lg} xl={dv.xl} xxl={dv.xxl} key={index}
           onClick={(ev) => {
-            props.edit ? self.select(row.address) : self.click(row.address, ev);
+            props.edit ? self.select(row.address) : self.click(row.address, row.unread);
           }}
         >
           <Row>
-            <Col
-              xs={size[0]}
-              sm={size[0]}
-              md={size[0]}
-              lg={size[0]}
-              xl={size[0]}
-              xxl={size[0]}
-              className="pt-2 text-center"
-            >
+            <Col className="pt-2 text-center" xs={size[0]} sm={size[0]} md={size[0]}
+              lg={size[0]} xl={size[0]} xxl={size[0]}>
               <Image
                 src={RUNTIME.getAvatar(row.address)}
                 rounded

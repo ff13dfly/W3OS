@@ -167,7 +167,6 @@ function Talking(props) {
     useEffect(() => {
       self.entry();
       IMGC.init(self.recorder);
-      //console.log(RUNTIME.exsistMailer("aaa"));
     },[]);
     
     return (

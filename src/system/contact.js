@@ -231,9 +231,9 @@ function Contact(props) {
   }
 
   useEffect(() => {
-    if (!active) {
-      self.linkChatting();
-    }
+    // if (!active) {
+    //   self.linkChatting();
+    // }
 
     RUNTIME.getAccount((acc) => {
       if (acc === null || !acc.address) {
@@ -335,7 +335,7 @@ function Contact(props) {
             self.clickEdit(ev);
           }}
         />
-        <img
+        {/* <img
           src="icons/setting.svg"
           hidden={editing}
           className="opt_button"
@@ -343,8 +343,8 @@ function Contact(props) {
           onClick={(ev) => {
             self.clickSetting(ev);
           }}
-        />
-        <img
+        /> */}
+        {/* <img
           src="icons/link.svg"
           hidden={hidelink || active || editing}
           className="opt_button"
@@ -352,7 +352,7 @@ function Contact(props) {
           onClick={(ev) => {
             self.linkChatting(ev);
           }}
-        />
+        /> */}
       </div>
     </div>
   );

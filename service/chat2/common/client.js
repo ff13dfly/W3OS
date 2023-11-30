@@ -11,7 +11,7 @@ const accountSpam = {}, spamToAccount = {};
 const actions={
     message:(params,callback)=>{
         if(!accountSpam[params.to]){
-            console.log("Not active, ready to push history");
+            console.log(`${params.to} is not active, ready to push history`);
             History.message(params.from, params.to, params.msg, !params.group?undefined:params.group);
         }else{
             params.type="message";

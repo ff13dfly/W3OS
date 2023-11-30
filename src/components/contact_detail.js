@@ -1,10 +1,13 @@
 import { Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import RUNTIME from "../lib/runtime";
 
 function ContactDetail(props) {
   const size={
     row:[12],
   }
+
+  const address=props.address;
 
   const self = {
     change: (ev) => {
@@ -13,7 +16,9 @@ function ContactDetail(props) {
   };
 
   useEffect(() => {
-
+    RUNTIME.singleContact(address,(detail)=>{
+      console.log(detail);
+    });
   }, []);
 
   return (

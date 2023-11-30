@@ -188,6 +188,12 @@ const RUNTIME = {
       return ck && ck(STORAGE.getKey(nkey));
     });
   },
+  singleContact:(address,ck,stranger)=>{
+    RUNTIME.getContact((clist)=>{
+      if(!clist[address]) return ck && ck(false);
+      return ck && ck(clist[address]);
+    },stranger);
+  },
   clearContact: (ck, stranger) => {
     RUNTIME.getAccount((acc) => {
       if (!acc || !acc.address) return ck && ck(false);
