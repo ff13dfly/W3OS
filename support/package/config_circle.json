@@ -3,7 +3,6 @@
     "framework":"frame_react.js",
     "version":"1.0.1",
     "related":{
-<<<<<<< HEAD
         "js":"cy_js",
         "css":"cy_css",
         "resource":"cy_data",
@@ -12,16 +11,6 @@
     "directory":"package/circle",
     "asset":"asset-manifest.json",
     "globalVars":[],
-=======
-        "js":"sy_js",
-        "css":"sy_css",
-        "resource":"sy_data",
-        "resource_ref":"sy_map"
-    },
-    "directory":"package/circle",
-    "asset":"asset-manifest.json",
-    "globalVars":["Polkadot","AnchorJS"],
->>>>>>> 1e7c4f156484aeb548f463cff5e54b2f7a6381c6
     "blockmax":1500000,
     "ignor":{
         "files":{
@@ -45,11 +34,7 @@
             ".DS_Store":true
         }
     },
-<<<<<<< HEAD
     "server":"ws://127.0.0.1:9944",
-=======
-    "server":"wss://dev.metanchor.net",
->>>>>>> 1e7c4f156484aeb548f463cff5e54b2f7a6381c6
     "account":{
         "password":"",
         "seed":"Alice"

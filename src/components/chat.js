@@ -38,7 +38,8 @@ function Chat(props) {
     chat: (ev) => {
       if (!content) return false;
       self.append(content);
-      //save the answer
+
+      //save the chat content to IndexedDB
       CHAT.save(mine,to,content,"to",to,()=>{
         self.updateTalkingIndex(mine,to,content,()=>{
 
@@ -93,13 +94,9 @@ function Chat(props) {
       });
     },
     append: (ctx) => {
-      // const row = {
-      //   type: "to",
-      //   address: mine,
-      //   content: ctx,
-      // };
       const row = {
-        type: "notice",
+        type: "to",
+        address: mine,
         content: ctx,
       };
       const now = [];

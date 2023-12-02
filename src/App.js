@@ -12,12 +12,12 @@ import Device from "./lib/device";
 import RUNTIME from "./lib/runtime";
 import SCROLLER from "./lib/scroll";
 
-
-
 import INDEXED from "./lib/indexed";
 //import CHAT from "./lib/chat";
 //import BILL from "./lib/bill";
 //import IMGC from "./open/IMGC";
+
+import IO from "./open/IO";
 
 const size = Device.grids();
 
@@ -109,7 +109,8 @@ function App() {
         ? "W3OS Login"
         : "W3OS system password setting";
       const todo = RUNTIME.isSalted() ? "Login" : "Set W3OS password";
-      RUNTIME.init((ck) => {
+
+      const setPass=(ck) => {
         funs.dialog.show(
           <SystemPassword
             button={todo}
@@ -122,7 +123,11 @@ function App() {
           title,
           true,
         );
-      }, self.fresh);
+      };
+      RUNTIME.init(setPass, ()=>{
+        IO.decoder();     //decode the IO to run proper
+        self.fresh();
+      });
     },
     fresh: () => {
       RUNTIME.getApps((list) => {
@@ -133,30 +138,6 @@ function App() {
           return false;
         }
         setApps(list);
-        self.initIndexedDB();
-      });
-    },
-    initIndexedDB: () => {
-      RUNTIME.getAccount((sign) => {
-        if (sign !== null) {
-          const acc = sign.address;
-          const cfg = RUNTIME.getConfig("system");
-          const icfg = cfg.indexed;
-
-          // INDEXED.checkDB(icfg.db, (idb) => {
-          //   const tbs = [];
-          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.chat}${acc}`)){
-          //     tbs.push(CHAT.getTable(`${icfg.prefix.chat}${acc}`));
-          //   }
-          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.bill}${acc}`)){
-          //     tbs.push(BILL.getTable(`${icfg.prefix.bill}${acc}`));
-          //   }
-          //   if(!INDEXED.checkTable(idb.objectStoreNames,`${icfg.prefix.talking}${acc}`)){
-          //     tbs.push(IMGC.getTable(`${icfg.prefix.talking}${acc}`));
-          //   }
-          //   if (tbs.length !== 0) INDEXED.initDB(icfg.db, tbs);
-          // });
-        }
       });
     },
     linkNetwork: () => {

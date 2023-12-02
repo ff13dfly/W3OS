@@ -24,7 +24,7 @@ function ContactList(props) {
   const self = {
     click: (address, unread) => {
       // check unread to open right dialog
-      console.log(unread);
+      //console.log(unread);
       if(unread===0){
         funs.dialog.show(
           <ContactDetail address={address}/>,
