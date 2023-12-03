@@ -5,7 +5,6 @@ import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
 
 import RUNTIME from "../lib/runtime";
-import tools from "../lib/tools";
 import CHAT from "../lib/chat";
 
 import IMGC from "../open/IMGC";
@@ -22,6 +21,17 @@ function Talking(props) {
     let [framework, setFramework] = useState("");
     let [title, setTitle]= useState("Talking");
     let [hidden, setHidden] = useState(false);
+
+    //base on action to create notice recorder
+    const decoder={
+      group_create:(mine,obj)=>{
+        CHAT.save(mine,obj.msg.id,"New group","notice",obj.msg.id,false,()=>{});
+      },
+      group_detail:(mine,obj)=>{
+        console.log(obj);
+        //CHAT.save(mine,obj.msg.id,"New group","notice",obj.msg.id,false,()=>{});
+      },
+    }
 
     const self = {
       page:(ctx,address,header)=>{
@@ -45,7 +55,6 @@ function Talking(props) {
         });
       },
       newGroup:()=>{
-        console.log(`Ready to create new group`);
         self.page(<GroupAdd back={self.back}/>,"group_add","Select contact");
       },
       payToVertify:(ev)=>{
@@ -90,7 +99,17 @@ function Talking(props) {
             break;
 
           case "notice":     //notice recorder process
-            console.log(input);
+            //console.log(`Write the notice recoder here.`);
+            if(input.method){
+              const key=`${input.method.cat}_${input.method.act}`;
+              console.log(key);
+              if(decoder[key]){
+                RUNTIME.getAccount((acc)=>{
+                  const mine=acc.address;
+                  decoder[key](mine,input);
+                }); 
+              }
+            }
 
             break;
           default:

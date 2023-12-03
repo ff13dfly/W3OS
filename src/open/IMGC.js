@@ -143,6 +143,7 @@ const router={
         msg:"",
       }
     }
+    console.log(data);
     DB.save(mine,res.id,data,()=>{
       const odata={
         id:res.id,
@@ -156,7 +157,7 @@ const router={
         }
       }
       DB.groupList(res.id,odata,(res)=>{
-        console.log(`Group oreder index saved`);
+        //console.log(`Group oreder index saved`);
       });
     });
 
@@ -195,7 +196,7 @@ const router={
         }
       }
       DB.groupList(row.id,odata,(res)=>{
-        console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
+        //console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
       });
     });
 
@@ -219,12 +220,16 @@ const router={
 
 const decoder={
   try:(input)=>{
+    //console.log(input);
     if(recoder!==null) recoder(input);
+    //console.log(input.type);
     switch (input.type){
       case "notice":
+        //console.log("here to go");
         const name=`${input.method.cat}_${input.method.act}`;
         const callback=!input.method.callback?undefined:input.method.callback;
-        if(router[name])router[name](input.msg,callback);
+        
+        if(router[name]) router[name](input.msg,callback);
         break;
 
       case "message":
@@ -247,7 +252,6 @@ const agent={
   message:(res)=>{
     try {
       const input=JSON.parse(res.data);
-      console.log(input);
       if(input.act==="init"){
         spam=input.spam;
         self.reg();
