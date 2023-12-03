@@ -87,8 +87,9 @@ const STORAGE = {
   setKey: (name, obj) => {
     if (!map[name]) return false;
     const key = map[name];
-    if (!hash || ignore[name] === true)
-    return localStorage.setItem(key, JSON.stringify(obj));
+    if (!hash || ignore[name] === true){
+      return localStorage.setItem(key, JSON.stringify(obj));
+    }
     Encry.auto(hash);
     const res = Encry.encrypt(JSON.stringify(obj));
     localStorage.setItem(key, res);

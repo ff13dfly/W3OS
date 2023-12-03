@@ -92,6 +92,10 @@ function App() {
       todo[page][id] = !todo[page][id];
     },
     login: () => {
+      if(RUNTIME.checkPass("")){
+        return self.fresh();
+      }
+
       const ctx = RUNTIME.isSalted() ? (
         <p>Please input your password</p>
       ) : (
@@ -153,20 +157,20 @@ function App() {
       });
     },
 
-    test: () => {
-      INDEXED.initDB("test", [
-        {
-          table: "abc",
-          keyPath: "stamp",
-          map: {
-            address: { unique: false },
-            way: { unique: false },
-            stamp: { unique: false },
-            status: { unique: false },
-          },
-        },
-      ]);
-    },
+    // test: () => {
+    //   INDEXED.initDB("test", [
+    //     {
+    //       table: "abc",
+    //       keyPath: "stamp",
+    //       map: {
+    //         address: { unique: false },
+    //         way: { unique: false },
+    //         stamp: { unique: false },
+    //         status: { unique: false },
+    //       },
+    //     },
+    //   ]);
+    // },
 
     system:(ck)=>{
       const cfg=RUNTIME.getConfig("system");
@@ -187,21 +191,8 @@ function App() {
       <Navigator fresh={self.fresh} />
       <Container>
         <Board funs={funs} />
-        <Grid
-          size={size}
-          list={apps}
-          funs={funs}
-          edit={editing}
-          select={self.select}
-        />
-        <Dialog
-          show={show}
-          content={content}
-          callback={callback}
-          title={title}
-          funs={funs}
-          center={center}
-        />
+        <Grid size={size} list={apps} funs={funs} edit={editing}  select={self.select} />
+        <Dialog show={show} content={content} callback={callback} title={title} funs={funs} center={center}/>
       </Container>
       {ctx_stage}
       {ctx_mask}

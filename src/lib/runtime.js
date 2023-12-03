@@ -80,6 +80,16 @@ const RUNTIME = {
       });
     }
   },
+  checkPass:(pass)=>{
+    const salt=STORAGE.getKey("salt");
+    const md5 = Encry.md5(`${salt}${pass}`);
+    const check = STORAGE.getKey("vertify");
+    if(md5===check){
+      STORAGE.setEncry(md5);
+      return true;
+    }
+    return false;
+  },
   isLogin: () => {
     return STORAGE.getEncry();
   },

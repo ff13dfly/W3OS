@@ -2,6 +2,7 @@ import RUNTIME from "../lib/runtime";
 import INDEXED from "../lib/indexed";
 //import CHAT from "../lib/chat";
 import tools from "../lib/tools";
+import IO from "./IO";
 
 let SVC=null;
 let recoder=null;
@@ -272,7 +273,13 @@ const IMGC={
     recoder=fun;
   },
   init:(fun)=>{
-    if(fun) IMGC.setRecoder(fun);
+    if(fun) IMGC.setRecoder(fun); //set out recoder
+
+    //Set IO decoder
+    IO.regOpen("IMGC",(params,UI)=>{
+      console.log(params);
+    });
+
     if(SVC!==null) return true;
     RUNTIME.getAccount((fa)=>{
       if(!fa) return false;
