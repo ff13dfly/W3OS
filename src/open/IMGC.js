@@ -1,6 +1,5 @@
 import RUNTIME from "../lib/runtime";
 import INDEXED from "../lib/indexed";
-//import CHAT from "../lib/chat";
 import tools from "../lib/tools";
 import IO from "./IO";
 
@@ -145,7 +144,6 @@ const router={
       }
     }
     DB.save(mine,res.id,data,()=>{
-      //console.log('Group saved');
       const odata={
         id:res.id,
         type:"group",
@@ -197,7 +195,7 @@ const router={
         }
       }
       DB.groupList(row.id,odata,(res)=>{
-        console.log(`Group oreder index saved`);
+        console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
       });
     });
 
@@ -225,7 +223,8 @@ const decoder={
     switch (input.type){
       case "notice":
         const name=`${input.method.cat}_${input.method.act}`;
-        if(router[name])router[name](input.msg,!input.method.callback?undefined:input.method.callback);
+        const callback=!input.method.callback?undefined:input.method.callback;
+        if(router[name])router[name](input.msg,callback);
         break;
 
       case "message":

@@ -440,6 +440,77 @@ const RUNTIME = {
   getAvatar:(str)=>{
     return `${base}/${str}.png${type}`;
   },
+  updateTalkingIndex:(from,to,msg,ck,unread)=>{
+    console.log(`From "RUNTIME.updateTalkingIndex": unread: ${unread}`);
+    RUNTIME.getTalking((list)=>{
+      let nlist=[];
+      let target=null;
+      //1. filter out the target group
+      for(let i=0;i<list.length;i++){
+        const row=list[i];
+        if(to.length===48){
+          if(row.id===from){
+            target=row;
+          }else{
+            nlist.push(row);
+          }
+        }else{
+          if(row.id===to){
+            target=row;
+          }else{
+            nlist.push(row);
+          }
+        }
+      }
+
+      //2.update data
+      if(target!==null){
+        //2.1.regroup the index order
+        if(target.type!=="group"){
+          target.last=msg;
+        }else{
+          target.last.from=from;
+          target.last.msg=msg;
+        }
+        target.update=tools.stamp();
+
+        if(unread){
+          if(!target.un) target.un=0;
+          target.un++;
+        }
+        nlist.unshift(target);
+      }else{
+        //2.2.create new group here, need to get the details of group
+        if(to.length===48){
+          const contact={
+            id:from,            //group unique id
+            nick:"",            //nickname of contact
+            update:tools.stamp(),         //group update time
+            last:msg,            //last message
+            type:"contact"      //talking type
+          }
+          nlist.unshift(contact);
+        }else{
+          const atom={
+            id:to,
+            last:{
+              from:from,
+              msg:msg,
+            },
+            update:tools.stamp(),
+            type:"group",
+          }
+
+          if(unread){
+            if(!target.un) target.un=0;
+            atom.un++;
+          }
+          nlist.unshift(atom);
+        }
+      }
+      RUNTIME.setTalking(nlist,ck);
+    });
+  },
 };
 
 export default RUNTIME;

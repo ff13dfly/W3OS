@@ -9,7 +9,7 @@ import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
 import DEVICE from "../lib/device";
-import tools from "../lib/tools";
+//import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
 
@@ -38,10 +38,8 @@ function Chat(props) {
     chat: (ev) => {
       if (!content) return false;
       self.append(content);
-
-      //save the chat content to IndexedDB
-      CHAT.save(mine,to,content,"to",to,()=>{
-        self.updateTalkingIndex(mine,to,content,()=>{
+      CHAT.save(mine,to,content,"to",to,false,()=>{
+        RUNTIME.updateTalkingIndex(mine,to,content,()=>{
 
         });
       }); 
@@ -51,47 +49,6 @@ function Chat(props) {
         IMGC.chat(content,to);
       }
       self.toBottom();
-    },
-    updateTalkingIndex:(from,to,msg,ck,unread)=>{
-      RUNTIME.getTalking((list)=>{
-        let nlist=[];
-        let target=null;
-        //1. filter out the target group
-        for(let i=0;i<list.length;i++){
-          const row=list[i];
-          if(!self.isGroup(to)){
-            if(row.id===from){
-              target=row;
-            }else{
-              nlist.push(row);
-            }
-          }else{
-            if(row.id===to){
-              target=row;
-            }else{
-              nlist.push(row);
-            }
-          }
-        }
-        //2.update data
-        if(target!==null){
-          //2.1.regroup the index order
-          if(target.type!=="group"){
-            target.last=msg;
-          }else{
-            target.last.from=from;
-            target.last.msg=msg;
-          }
-          target.update=tools.stamp();
-
-          if(unread){
-            if(!target.un) target.un=0;
-            target.un++;
-          }
-          nlist.unshift(target);
-        }
-        RUNTIME.setTalking(nlist,ck);
-      });
     },
     append: (ctx) => {
       const row = {
@@ -159,7 +116,7 @@ function Chat(props) {
       });
     },
     indexUpdate:(id)=>{
-      console.log(`Update the localStorage index here. ${to}`);
+      //console.log(`Update the localStorage index here. ${to}`);
       RUNTIME.getTalking((list)=>{
         for(let i=0;i<list.length;i++){
           if(list[i].id===id){

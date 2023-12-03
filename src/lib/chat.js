@@ -106,6 +106,7 @@ const CHAT = {
     }
     return false;
   },
+  
 };
 
 export default CHAT;
