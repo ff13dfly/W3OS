@@ -96,4 +96,26 @@ module.exports={
         const amount=self.amount(address,force);
         return ck && ck(amount);
     },
+
+    // reg:(acc,ck)=>{
+    //     output(`Ready to reg "${acc}"`);
+    //     Paytovertify.account(cfg.server.vertification);
+    //     Paytovertify.agent(
+    //         (res)=>{    //when vertification successful
+    //             output(`Verification successful, ready to sent notification.`,"success");
+    //             //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
+    //         },
+    //         (res)=>{    //when vertification failed
+    //             output(`Verification failed, ready to sent notification.`,"error");
+    //             //Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
+    //         }
+    //     );
+    
+    //     Paytovertify.subcribe(Chain.subcribe,Chain.convert);
+    
+    //     Paytovertify.add(acc,false,(amount)=>{
+    //         output(`The pay amount is ${amount}`);
+    //         return ck && ck(amount,cfg.server.vertification);
+    //     });
+    // },
 }

@@ -1,12 +1,15 @@
 import { Navbar, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import PRICE from "../open/PRICE";
 
 function Trend(props) {
   const size = [3, 6, 3];
   const funs = props.funs;
   let [animation, setAnimation] = useState("ani_scale_in");
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    PRICE.init();
+  }, []);
 
   return (
     <div id="page" className={animation}>
