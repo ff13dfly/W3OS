@@ -9,7 +9,6 @@ import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
 import DEVICE from "../lib/device";
-//import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
 

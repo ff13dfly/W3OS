@@ -46,7 +46,7 @@ const self = {
         clients[spam].websocket.send(JSON.stringify(obj));
     },
     success: (obj, spam, order) => {
-        obj.success = true;
+        //obj.success = true;
         self.send(obj, spam, order);
     },
     failed: (obj, spam, order) => {

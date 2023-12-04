@@ -23,7 +23,7 @@ function Announce(props) {
   //console.log(dv);
 
   return (
-    <Row className="pt-2 pb-2 fixAnnounce" style={{background:"#fae9e9",width:`${dv[0]}px`}} onClick={(ev)=>{
+    <Row hidden={false} className="pt-2 pb-2 fixAnnounce" style={{background:"#fae9e9",width:`${dv[0]}px`}} onClick={(ev)=>{
       self.click();
     }}>
       <Col className="text-secondary" xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
