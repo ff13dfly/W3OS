@@ -11,6 +11,9 @@ import SCROLLER from "../lib/scroll";
 
 import IMGC from "../open/IMGC";
 
+import { RiSecurePaymentFill } from "react-icons/ri";
+import { FaUsers } from "react-icons/fa";
+
 let active = "";
 function Talking(props) {
   const size = {
@@ -184,13 +187,11 @@ function Talking(props) {
         {framework}
       </Container>
       <div className="opts" hidden={hidden}>
-        <img src="icons/edit.svg" className="opt_button" alt=""
-          onClick={(ev) => {
+        <FaUsers color="grey" style={{marginRight:"10px"}} onClick={(ev) => {
             self.newGroup(ev);
           }}
         />
-        <img src="icons/link.svg" className="opt_button" alt=""
-          onClick={(ev) => {
+        <RiSecurePaymentFill color="grey" onClick={(ev) => {
             self.payToVertify(ev);
           }}
         />

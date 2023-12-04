@@ -12,6 +12,9 @@ import Device from "./lib/device";
 import RUNTIME from "./lib/runtime";
 import SCROLLER from "./lib/scroll";
 
+import { CiRoute,CiLogin } from "react-icons/ci";
+import { IoMdCloseCircleOutline } from "react-icons/io";
+
 //import INDEXED from "./lib/indexed";
 
 import IO from "./open/IO";
@@ -153,22 +156,6 @@ function App() {
         });
       });
     },
-
-    // test: () => {
-    //   INDEXED.initDB("test", [
-    //     {
-    //       table: "abc",
-    //       keyPath: "stamp",
-    //       map: {
-    //         address: { unique: false },
-    //         way: { unique: false },
-    //         stamp: { unique: false },
-    //         status: { unique: false },
-    //       },
-    //     },
-    //   ]);
-    // },
-
     system:(ck)=>{
       const cfg=RUNTIME.getConfig("system");
       RUNTIME.setAvatar(cfg.basic.avatar[0],cfg.basic.theme);
@@ -196,33 +183,15 @@ function App() {
       {ctx_page}
       <div className="opts">
         {/* <img src="icons/edit.svg" className='opt_button' alt="" /> */}
-        <img
-          src="icons/remove.svg"
-          hidden={!RUNTIME.isLogin()}
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
+        <IoMdCloseCircleOutline color="grey" onClick={(ev) => {
             self.clickEdit(ev);
-          }}
-        />
-        <img
-          src="icons/fin.svg"
-          hidden={RUNTIME.isLogin()}
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
-            self.login();
-          }}
-        />
-        <img
-          src="icons/link.svg"
-          hidden={!RUNTIME.isLogin() || hidelink || editing}
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
+        }}/>
+        <CiRoute color="grey" hidden={!RUNTIME.isLogin() || hidelink || editing} onClick={(ev) => {
             self.linkNetwork();
-          }}
-        />
+          }}/>
+        <CiLogin color="grey" hidden={RUNTIME.isLogin()} onClick={(ev) => {
+            self.login();
+          }}/>
       </div>
     </div>
   );

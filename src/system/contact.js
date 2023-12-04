@@ -11,6 +11,8 @@ import Login from "../components/login";
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 
+import { IoMdCloseCircleOutline } from "react-icons/io";
+
 let selected = { contact: null, stranger: null };
 
 let websocket = null;
@@ -327,14 +329,9 @@ function Contact(props) {
         />
       </Container>
       <div className="opts">
-        <img
-          src="icons/remove.svg"
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
+        <IoMdCloseCircleOutline color="grey" onClick={(ev) => {
             self.clickEdit(ev);
-          }}
-        />
+        }}/>
         {/* <img
           src="icons/setting.svg"
           hidden={editing}
