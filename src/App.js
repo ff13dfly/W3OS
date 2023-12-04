@@ -12,10 +12,7 @@ import Device from "./lib/device";
 import RUNTIME from "./lib/runtime";
 import SCROLLER from "./lib/scroll";
 
-import INDEXED from "./lib/indexed";
-//import CHAT from "./lib/chat";
-//import BILL from "./lib/bill";
-//import IMGC from "./open/IMGC";
+//import INDEXED from "./lib/indexed";
 
 import IO from "./open/IO";
 
