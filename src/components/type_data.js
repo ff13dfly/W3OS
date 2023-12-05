@@ -6,7 +6,6 @@ import RUNTIME from "../lib/runtime";
 import Copy from "../lib/clipboard";
 
 function TypeData(props) {
-  const funs = props.funs;
   const size = {
     row: [12],
     owner: [9, 3],

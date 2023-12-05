@@ -1,5 +1,6 @@
 import { Row, Col, Navbar, Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import RUNTIME from "../lib/runtime";
 
 //dialog page container, hidden default
 
@@ -14,6 +15,7 @@ function Page(props) {
   let [link, setLink] = useState("");
   let [animation, setAnimation] = useState("ani_scale_in");
 
+  const UI=RUNTIME.getUI();
   const basic = "loader.html";
 
   useEffect(() => {
@@ -65,7 +67,7 @@ function Page(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    UI.page("");
                   }, 300);
                 }}
               >

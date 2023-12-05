@@ -17,11 +17,11 @@ function Bill(props) {
     bill: [3, 9],
   };
   const count = props.count;
-  const funs = props.funs;
 
   let [hide, setHide] = useState(false);
   let [history, setHistory] = useState([]);
 
+  const UI=RUNTIME.getUI();
   const self = {
     sort: (list) => {
       const ss = [];
@@ -53,7 +53,7 @@ function Bill(props) {
       return time.toLocaleDateString() + " " + time.toLocaleTimeString();
     },
     click: (block_hash, transfer_hash, row) => {
-      funs.dialog.show(
+      UI.dialog.show(
         <Transaction
           block={block_hash}
           hash={transfer_hash}
@@ -168,12 +168,10 @@ function Bill(props) {
                     <button
                       className="btn btn-sm btn-warning"
                       onClick={() => {
-                        //console.log(row.to);
-                        funs.dialog.show(
+                        UI.dialog.show(
                           <Chat address={row.to} fresh={() => {}} />,
-                          <ContactTitle address={row.to} funs={funs} />,
+                          <ContactTitle address={row.to}/>,
                         );
-                        //funs.dialog.show(<Chat address={row.to} fresh={()=>{}}/>);
                       }}
                     >
                       Chat

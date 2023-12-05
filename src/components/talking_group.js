@@ -15,7 +15,6 @@ function TalkingGroup(props) {
     title: [7, 5],
     row: 12,
   };
-  const funs=props.funs;
 
   let [clean, setClean] = useState(false);
 
@@ -24,9 +23,9 @@ function TalkingGroup(props) {
       //console.log(to);
       setTimeout(() => {
         const dom = (<div>
-          <Announce funs={funs} id={to} content="This is an announce" />
-          <GroupOpt funs={funs} id={to} clean={clean}  />
-          <Chat funs={funs} address={to} height={700} click={self.onBlank} />
+          <Announce id={to} content="This is an announce" />
+          <GroupOpt  id={to} clean={clean}  />
+          <Chat address={to} height={700} click={self.onBlank} />
         </div>);
         props.page(dom, to, `ID: ${to}`);
       }, 300);

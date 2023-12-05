@@ -6,7 +6,6 @@ import tools from "../lib/tools";
 import Account from "../system/account";
 
 function Balance(props) {
-  const funs = props.funs;
   const size = {
     login: [6, 6],
     row: [12],
@@ -15,6 +14,7 @@ function Balance(props) {
   let [address, setAddress] = useState("");
   let [hide, setHide] = useState(true);
 
+  const UI=RUNTIME.getUI();
   const self = {
     balance: (address, ck) => {
       RUNTIME.getAPIs((API) => {
@@ -47,26 +47,10 @@ function Balance(props) {
 
   return (
     <Row className="pt-1">
-      <Col
-        hidden={hide}
-        xs={size.row[0]}
-        sm={size.row[0]}
-        md={size.row[0]}
-        lg={size.row[0]}
-        xl={size.row[0]}
-        xxl={size.row[0]}
-      >
+      <Col  hidden={hide} xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
         {tools.shorten(address, 10)} : <strong>{amount}</strong> units.
       </Col>
-      <Col
-        hidden={!hide}
-        xs={size.login[0]}
-        sm={size.login[0]}
-        md={size.login[0]}
-        lg={size.login[0]}
-        xl={size.login[0]}
-        xxl={size.login[0]}
-      >
+      <Col hidden={!hide} xs={size.login[0]} sm={size.login[0]} md={size.login[0]} lg={size.login[0]} xl={size.login[0]} xxl={size.login[0]}>
         Please login.
       </Col>
       <Col
@@ -82,7 +66,7 @@ function Balance(props) {
         <button
           className="btn btn-md btn-primary"
           onClick={(ev) => {
-            funs.page(<Account funs={funs} />);
+            UI.page(<Account />);
           }}
         >
           Network Account

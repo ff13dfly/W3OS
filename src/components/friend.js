@@ -17,6 +17,7 @@ function Friend(props) {
 
   let [animation, setAnimation] = useState("ani_scale_in");
 
+  const UI=RUNTIME.getUI();
   const self = {};
 
   useEffect(() => {
@@ -79,7 +80,7 @@ function Friend(props) {
                   } else {
                     setAnimation("ani_scale_out");
                     setTimeout(() => {
-                      props.funs.page("");
+                      UI.page("");
                     }, 300);
                   }
                 }}

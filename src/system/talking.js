@@ -20,8 +20,6 @@ function Talking(props) {
     header: [3, 6, 3],
     row: [12],
   };
-  const funs = props.funs;
-
   let [animation, setAnimation] = useState("ani_scale_in");
   let [framework, setFramework] = useState("");
   let [title, setTitle] = useState("Talking");
@@ -49,6 +47,7 @@ function Talking(props) {
     height:"750px",
   }
 
+  const UI=RUNTIME.getUI();
   const self = {
     page: (ctx, address, header) => {
       active = address;
@@ -63,8 +62,8 @@ function Talking(props) {
           <div className="talking_container" style={cmap}>
             {list.map((row, index) => (
               row.type === "group" ?
-                <TalkingGroup funs={funs} to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
-                <TalkingSingle funs={funs} to={row.id} page={self.page} key={index} details={row} unread={row.un} />
+                <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
+                <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
             ))}
           </div>
         );
@@ -75,7 +74,7 @@ function Talking(props) {
       self.page(<GroupAdd back={self.back} />, "group_add", "Select contact");
     },
     payToVertify: (ev) => {
-      funs.dialog.show(
+      UI.dialog.show(
         "Vertification action here. Will show the pay amount from the server.",
         "More details",
         true
@@ -167,7 +166,7 @@ function Talking(props) {
                   if (!active) {
                     setAnimation("ani_scale_out");
                     setTimeout(() => {
-                      props.funs.page("");
+                      UI.page("");
                     }, 300);
                   } else {
                     RUNTIME.clearMailer(active);    //remove the mailer
@@ -187,11 +186,13 @@ function Talking(props) {
         {framework}
       </Container>
       <div className="opts" hidden={hidden}>
-        <FaUsers color="grey" style={{marginRight:"10px"}} onClick={(ev) => {
+        <FaUsers color="grey"  
+          onClick={(ev) => {
             self.newGroup(ev);
           }}
         />
-        <RiSecurePaymentFill color="grey" onClick={(ev) => {
+        <RiSecurePaymentFill color="grey" style={{marginLeft:"10px"}}
+          onClick={(ev) => {
             self.payToVertify(ev);
           }}
         />

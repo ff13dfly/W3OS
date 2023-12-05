@@ -16,9 +16,6 @@ import { IoMdCloseCircleOutline } from "react-icons/io";
 import { RiFingerprintLine } from "react-icons/ri";
 import { RiLinkUnlink } from "react-icons/ri";
 
-
-//import INDEXED from "./lib/indexed";
-
 import IO from "./open/IO";
 
 const size = Device.grids();
@@ -176,7 +173,7 @@ function App() {
     <div>
       <Navigator fresh={self.fresh} />
       <Container>
-        <Board funs={funs} />
+        <Board />
         <Grid size={size} list={apps} funs={funs} edit={editing}  select={self.select} />
         <Dialog show={show} content={content} callback={callback} title={title} funs={funs} center={center}/>
       </Container>
@@ -184,17 +181,16 @@ function App() {
       {ctx_mask}
       {ctx_page}
       <div className="opts">
-        {/* <img src="icons/edit.svg" className='opt_button' alt="" /> */}
-        <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} style={{marginRight:"10px"}} onClick={(ev) => {
+        <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"}  onClick={(ev) => {
             self.clickEdit(ev);
         }}/>
-        <RiLinkUnlink color="grey" style={{marginRight:"10px"}}
-          //hidden={!RUNTIME.isLogin() || hidelink || editing} 
+        <RiLinkUnlink color="grey" style={{marginLeft:"10px"}}
+          hidden={!RUNTIME.isLogin() || hidelink || editing} 
           onClick={(ev) => {
             self.linkNetwork();
           }}/>
-        <RiFingerprintLine color="grey" 
-          //hidden={RUNTIME.isLogin()} 
+        <RiFingerprintLine color="grey" style={{marginLeft:"10px"}}
+          hidden={RUNTIME.isLogin()} 
           onClick={(ev) => {
             self.login();
           }}/>

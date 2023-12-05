@@ -7,12 +7,11 @@ import RUNTIME from "../lib/runtime";
 import Password from "./password";
 
 function Login(props) {
-  const funs = props.funs;
-
   let [password, setPassword] = useState("");
   let [info, setInfo] = useState("Upload the encry file then import.");
   let [encoded, setEncoded] = useState("");
 
+  const UI=RUNTIME.getUI();
   const self = {
     randomName: () => {
       return "W3OS_" + Math.ceil(Math.random() * 100);
@@ -25,10 +24,10 @@ function Login(props) {
         const keyring = new API.Polkadot.Keyring({ type: "sr25519" });
         try {
           const pair = keyring.addFromUri(mnemonic);
-          funs.dialog.show(
+          UI.dialog.show(
             <Password
               callback={(pass) => {
-                funs.dialog.hide();
+                UI.dialog.hide();
                 const sign = pair.toJson(pass);
                 sign.meta.name = self.randomName();
                 RUNTIME.setAccount(sign);
@@ -36,7 +35,6 @@ function Login(props) {
               }}
               account={pair.address}
               mnemonic={mnemonic}
-              funs={funs}
             />,
             "New account",
           );

@@ -24,6 +24,8 @@ function Link(props) {
   let [account, setAccount] = useState("");
   let [show, setShow] = useState(false);
 
+  const UI=RUNTIME.getUI();
+
   useEffect(() => {
     const alink = `anchor://${anchor}`;
     console.log(alink);
@@ -95,7 +97,7 @@ function Link(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    UI.page("");
                   }, 300);
                 }}
               >

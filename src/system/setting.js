@@ -4,10 +4,13 @@ import { useState, useEffect } from "react";
 import Nodes from "../components/nodes";
 import APIs from "../components/apis";
 import ConfigApp from "../components/apps_config";
+import RUNTIME from "../lib/runtime";
 
 function Setting(props) {
   const size = [3, 6, 3];
   let [animation, setAnimation] = useState("ani_scale_in");
+
+  const UI=RUNTIME.getUI();
 
   useEffect(() => {}, []);
 
@@ -56,7 +59,7 @@ function Setting(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    UI.page("");
                   }, 300);
                 }}
               >
@@ -67,9 +70,9 @@ function Setting(props) {
         </Container>
       </Navbar>
       <Container>
-        <Nodes funs={props.funs} />
-        <APIs funs={props.funs} />
-        <ConfigApp funs={props.funs} />
+        <Nodes />
+        <APIs  />
+        <ConfigApp  />
       </Container>
     </div>
   );

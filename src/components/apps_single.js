@@ -4,9 +4,7 @@ import { useEffect } from "react";
 import RUNTIME from "../lib/runtime";
 
 function AppSetting(props) {
-  //const funs = props.funs;
   const size = [12, 5];
-
   useEffect(() => {
     RUNTIME.getSetting((res) => {
       const data = res.apps[props.name];

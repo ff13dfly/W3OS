@@ -10,11 +10,11 @@ function From(props) {
   };
 
   const address = props.address;
-  const funs=props.funs;
 
+  const UI=RUNTIME.getUI();
   const self={
     click:()=>{
-      funs.dialog.show(
+      UI.dialog.show(
         <ContactDetail address={address}/>,
         "Contact Detail"
       );

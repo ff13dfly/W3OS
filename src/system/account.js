@@ -1,4 +1,4 @@
-import { Navbar, Container, Row, Col } from "react-bootstrap";
+import { Container} from "react-bootstrap";
 import { useEffect, useState } from "react";
 
 import Login from "../components/login";
@@ -7,8 +7,6 @@ import RUNTIME from "../lib/runtime";
 import SystemHeader from "../components/header";
 
 function Account(props) {
-  const funs = props.funs;
-
   let [details, setDetails] = useState("");
   let [animation, setAnimation] = useState("ani_scale_in");
 
@@ -16,7 +14,7 @@ function Account(props) {
     fresh: () => {
       RUNTIME.getAccount((sign) => {
         if (sign === null) {
-          setDetails(<Login fresh={self.fresh} funs={funs} />);
+          setDetails(<Login fresh={self.fresh}/>);
         } else {
           setDetails(<User fresh={self.fresh} balance={self.balance} />);
         }
@@ -44,7 +42,7 @@ function Account(props) {
 
   return (
     <div id="page" className={animation}>
-      <SystemHeader funs={funs} setAnimation={setAnimation} title="Account Settings" />
+      <SystemHeader setAnimation={setAnimation} title="Account Settings" />
       <Container>{details}</Container>
     </div>
   );

@@ -15,25 +15,25 @@ import tools from "../lib/tools";
 function ContactList(props) {
   const size = [12];
   const dv = { xs: 3, sm: 3, md: 3, lg: 3, xl: 6, xxl: 6 };
-  const funs = props.funs;
   const count = props.count;
 
   let [contact, setContact] = useState([]);
   let [select, setSelect] = useState({});
 
+  const UI=RUNTIME.getUI();
   const self = {
     click: (address, unread) => {
       // check unread to open right dialog
       //console.log(unread);
       if(unread===0){
-        funs.dialog.show(
+        UI.dialog.show(
           <ContactDetail address={address}/>,
           `Contact details`//tools.shorten(address,6),
         );
       }else{
-        funs.dialog.show(
+        UI.dialog.show(
           <Chat address={address} fresh={props.fresh} />,
-          <ContactTitle address={address} funs={funs} />,
+          <ContactTitle address={address} />,
         );
       }
     },

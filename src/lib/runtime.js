@@ -395,6 +395,9 @@ const RUNTIME = {
   setUI: (funs) => {
     UI = funs;
   },
+  getUI: ()=>{
+    return UI;
+  },
   getAPIs: (ck) => {
     if (API === null) {
       const easyAPI = {

@@ -1,5 +1,6 @@
 import { Modal } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import RUNTIME from "../lib/runtime";
 
 function Dialog(props) {
   let [show, setShow] = useState(false);
@@ -9,14 +10,13 @@ function Dialog(props) {
     //document.body.style.overflow = props.show ? "hidden" : "unset";
   }, [props.show, props.callback]);
 
-  //<Modal show={props.show} size="lg" onHide={funs.dialog.hide()}>
-
+  const UI=RUNTIME.getUI();
   return (
     <Modal
       show={show}
       size="lg"
       onHide={(ev) => {
-        props.funs.dialog.hide();
+        UI.dialog.hide();
       }}
       centered={!props.center ? false : true}
     >

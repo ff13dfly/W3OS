@@ -13,8 +13,6 @@ function Paybill(props) {
     password: [8, 4],
   };
 
-  const funs = props.funs;
-
   let [info, setInfo] = useState("");
   let [password, setPassword] = useState("");
   let [disable, setDisable] = useState(true);
@@ -22,6 +20,7 @@ function Paybill(props) {
   const avatar_from = RUNTIME.getAvatar(props.from);
   const avatar_to = RUNTIME.getAvatar(props.target);
 
+  const UI=RUNTIME.getUI();
   const self = {
     change: (ev) => {
       setPassword(ev.target.value);
@@ -56,7 +55,7 @@ function Paybill(props) {
                   case "InBlock":
                     setInfo("Payment is on progress.");
                     BILL.save(pair.address, to, row, (res) => {
-                      funs.dialog.hide();
+                      UI.dialog.hide();
                       if (props.callback) props.callback();
                       if (props.fresh) props.fresh();
                     });
@@ -69,7 +68,7 @@ function Paybill(props) {
                       if (props.fresh) props.fresh();
                     });
                     setTimeout(() => {
-                      funs.dialog.hide();
+                      UI.dialog.hide();
                     }, 1500);
                     break;
                   default:

@@ -7,34 +7,37 @@ import GroupNick from "../components/group_nick";
 import GroupDetail from "../components/group_detail";
 import GroupAnnouncement from "../components/group_announce";
 
+import { IoIosMore } from "react-icons/io";
+import RUNTIME from "../lib/runtime";
+
 function GroupOpt(props) {
   const size = {
     row: [12],
     list: [1, 3, 8],
   };
-  const funs = props.funs;
   const group = props.id;
 
   let [hidden, setHidden] = useState(true);
 
+  const UI=RUNTIME.getUI();
   const self = {
     click: () => {
       setHidden(!hidden);
     },
     clickNick: (ev) => {
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupNick id={group} />,
         "Group Name"
       );
     },
     clickAnnounce:(ev)=>{
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupAnnouncement id={group}/>,
         "Announcement"
       );
     },
     clickInformation: (ev) => {
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupDetail id={group} />,
         "Group Information"
       );
@@ -43,19 +46,19 @@ function GroupOpt(props) {
       console.log(group);
       //console.log(`Ready to create new group`);
       //props.page(<GroupAdd back={self.back}/>,"group_add");
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupJoin back={self.back} />,
         "New Group Member"
       );
     },
     clickDivert: (ev) => {
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupDivert back={self.back} />,
         "Set Manager"
       );
     },
     clickBlock:(ev)=>{
-      funs.dialog.show(
+      UI.dialog.show(
         <GroupBlock back={self.back} />,
         "Set Block Accounts"
       );
@@ -67,7 +70,7 @@ function GroupOpt(props) {
       console.log(group);
     },
     clickMore: (ev) => {
-      funs.dialog.show(
+      UI.dialog.show(
         "More details of group",
         "More details"
       );
@@ -85,7 +88,7 @@ function GroupOpt(props) {
           lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
           <button className="btn btn-sm btn-warning" onClick={() => {
             self.click()
-          }}>...</button>
+          }}><IoIosMore /></button>
         </Col>
         <Col hidden={hidden} className="pt-2" xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
           lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>

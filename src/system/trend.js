@@ -1,10 +1,10 @@
 import { Navbar, Container, Row, Col } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import PRICE from "../open/PRICE";
+import RUNTIME from "../lib/runtime";
 
 function Trend(props) {
   const size = [3, 6, 3];
-  const funs = props.funs;
   let [animation, setAnimation] = useState("ani_scale_in");
 
   useEffect(() => {
@@ -56,7 +56,8 @@ function Trend(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    const UI=RUNTIME.getUI();
+                    UI.page("");
                   }, 300);
                 }}
               >

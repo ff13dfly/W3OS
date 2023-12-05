@@ -13,7 +13,6 @@ function ContactSetting(props) {
     row: [12],
     vertify: [9, 3],
   };
-  const funs = props.funs;
 
   let [server, setServer] = useState("");
   let [info, setInfo] = useState("");

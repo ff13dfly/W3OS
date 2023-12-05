@@ -12,7 +12,6 @@ function Payto(props) {
     detail: [5, 7],
   };
 
-  const funs = props.funs;
   const amount = props.amount;
   const target = props.target;
 
@@ -20,13 +19,14 @@ function Payto(props) {
 
   const desc = `Pay ${amount} coins to verify the account is valid.`;
 
+  const UI=RUNTIME.getUI();
   const self = {
     click: (ev) => {
-      funs.dialog.hide();
+      UI.dialog.hide();
       setTimeout(() => {
         RUNTIME.getAccount((acc) => {
           const from = acc.address;
-          funs.dialog.show(
+          UI.dialog.show(
             <Paybill
               callback={(res) => {
                 console.log(res);
@@ -35,7 +35,6 @@ function Payto(props) {
               from={from}
               target={target}
               amount={amount}
-              funs={funs}
             />,
             "Payment Vertification",
           );

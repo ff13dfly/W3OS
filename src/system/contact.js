@@ -30,8 +30,6 @@ function Contact(props) {
     row: [12],
   };
 
-  const funs = props.funs;
-
   let [editing, setEditing] = useState(false);
   let [count, setCount] = useState(0);
   let [stranger, setStranger] = useState(0);
@@ -39,9 +37,10 @@ function Contact(props) {
   let [animation, setAnimation] = useState("ani_scale_in");
   let [reg, setReg] = useState("");
 
+  const UI=RUNTIME.getUI();
   const self = {
     clickSetting: (ev) => {
-      funs.dialog.show(<ContactSetting funs={funs} />, "Contact setting");
+      UI.dialog.show(<ContactSetting/>, "Contact setting");
     },
     clickEdit: (ev) => {
       setEditing(!editing);
@@ -241,7 +240,7 @@ function Contact(props) {
       if (acc === null || !acc.address) {
         setReg(
           <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
-            <Login fresh={self.fresh} funs={funs} />
+            <Login fresh={self.fresh} />
           </Col>,
         );
       }
@@ -293,7 +292,7 @@ function Contact(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    UI.page("");
                   }, 300);
                 }}
               >
@@ -304,17 +303,15 @@ function Contact(props) {
         </Container>
       </Navbar>
       <Container>
-        <ContactAdd funs={funs} fresh={self.fresh} count={count} />
+        <ContactAdd fresh={self.fresh} count={count} />
         {reg}
         <ContactList
-          funs={funs}
           fresh={self.fresh}
           select={self.select}
           edit={editing}
           count={count}
         />
         <StrangerList
-          funs={funs}
           fresh={self.fresh}
           select={self.select}
           edit={editing}

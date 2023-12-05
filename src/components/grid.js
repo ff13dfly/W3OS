@@ -27,7 +27,6 @@ function Grid(props) {
             index={index}
             data={row}
             edit={props.edit}
-            funs={props.funs}
             select={props.select}
           />
         ))}

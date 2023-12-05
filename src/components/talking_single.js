@@ -13,12 +13,10 @@ function TalkingSingle(props) {
 
   const to = props.to;
   const details = props.details;
-  const funs=props.funs;
-
   const self={
     click:(ev)=>{
       setTimeout(()=>{
-        props.page(<Chat funs={funs} address={to} height={700}/>,to,tools.shorten(to));
+        props.page(<Chat address={to} height={700}/>,to,tools.shorten(to));
       },300);
     },
     getDate:(stamp)=>{

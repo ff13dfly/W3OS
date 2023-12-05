@@ -14,25 +14,25 @@ import Contact from "../system/contact";
 import Talking from "../system/talking";
 
 import TypeData from "./type_data";
+import RUNTIME from "../lib/runtime";
 
 
 function Cell(props) {
   const size = props.size;
   const row = props.data;
-  const funs = props.funs;
   const data = props.data;
   const onSelect = props.select;
 
   let [check, setCheck] = useState(false);
 
   const map = {
-    setting: <Setting funs={funs} />,
-    account: <Account funs={funs} />,
-    payment: <Payment funs={funs} amount={0} target={""} />,
-    contact: <Contact funs={funs} />,
-    talking: <Talking funs={funs} />,
+    setting: <Setting />,
+    account: <Account />,
+    payment: <Payment amount={0} target={""} />,
+    contact: <Contact />,
+    talking: <Talking />,
   };
-
+  const UI=RUNTIME.getUI();
   const self = {
     calcBlock: (index) => {
       const details = Device.details();
@@ -53,23 +53,22 @@ function Cell(props) {
       return false;
     },
     clickData: () => {
-      funs.dialog.show(
-        <TypeData funs={funs} link={data.src} />,
+      UI.dialog.show(
+        <TypeData link={data.src} />,
         "Anchor Data Viewer",
         true,
       );
     },
     clickApp: () => {
       const anchor = self.getAnchor(row.src);
-      funs.page(<Page anchor={anchor} funs={funs} />);
+      UI.page(<Page anchor={anchor} />);
     },
     clickLink: () => {
       const anchor = self.getAnchor(row.src);
-      funs.page(<Link anchor={anchor} funs={funs} />);
+      UI.page(<Link anchor={anchor} />);
     },
     clickBase: () => {
-      //const name="setting";
-      funs.page(map[data.name]);
+      UI.page(map[data.name]);
     },
     click: () => {
       if (data.base) {

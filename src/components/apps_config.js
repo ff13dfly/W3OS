@@ -9,14 +9,14 @@ const fmt = {
 };
 
 function ConfigApp(props) {
-  const funs = props.funs;
   const size = [10, 2];
   let [obj, setObj] = useState({});
 
+  const UI=RUNTIME.getUI();
   const self = {
     click: (name, ev) => {
-      funs.dialog.show(
-        <AppSetting funs={funs} name={name} />,
+      UI.dialog.show(
+        <AppSetting name={name} />,
         `${name} setting`,
       );
     },

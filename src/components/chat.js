@@ -21,8 +21,6 @@ function Chat(props) {
   };
 
   const to = props.address;
-  const funs = props.funs;
-
   //const dv = { xs: 4, sm: 4, md: 4, lg: 4, xl: 6, xxl: 6 };
   let [content, setContent] = useState("");
   let [list, setList] = useState([]);
@@ -170,13 +168,13 @@ function Chat(props) {
       let dom = "";
       switch (row.type) {
         case "notice":
-          dom = (<Notice funs={funs} address={row.address} key={key} content={row.content} />)
+          dom = (<Notice address={row.address} key={key} content={row.content} />)
           break;
         case "from":
-          dom = (<From funs={funs} address={row.address} key={key} content={row.content} />)
+          dom = (<From address={row.address} key={key} content={row.content} />)
           break;
         case "to":
-          dom = (<To funs={funs} address={row.address} key={key} content={row.content} />)
+          dom = (<To address={row.address} key={key} content={row.content} />)
           break;
         default:
           break;

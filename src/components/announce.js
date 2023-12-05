@@ -1,17 +1,18 @@
 import { Row, Col } from "react-bootstrap";
 
 import DEVICE from "../lib/device";
+import RUNTIME from "../lib/runtime";
 
 function Announce(props) {
   const size ={
     row:[12],
   }
-  const funs=props.funs;
 
   const self = {
     click: (ev) => {
       console.log("Announce clicked.");
-      funs.dialog.show(
+      const UI=RUNTIME.getUI();
+      UI.dialog.show(
         "Annoucement details here",
         "Group Announcement",
         true,     //shown on the center

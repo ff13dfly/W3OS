@@ -1,7 +1,9 @@
 import { Navbar, Container, Row, Col } from "react-bootstrap";
+import RUNTIME from "../lib/runtime";
 
-function SystemHeader({funs, setAnimation, title}) {
-    const size = [3, 6, 3];
+const UI=RUNTIME.getUI();
+function SystemHeader({ setAnimation, title}) {
+  const size = [3, 6, 3];
 
   return (
     <Navbar className="bg-body-tertiary">
@@ -47,7 +49,7 @@ function SystemHeader({funs, setAnimation, title}) {
               onClick={(ev) => {
                 setAnimation("ani_scale_out");
                 setTimeout(() => {
-                  funs.page("");
+                  UI.page("");
                 }, 300);
               }}
             >

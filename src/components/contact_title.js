@@ -5,6 +5,7 @@ import tools from "../lib/tools";
 //import RUNTIME from '../lib/runtime';
 import Copy from "../lib/clipboard";
 import Payment from "../system/payment";
+import RUNTIME from "../lib/runtime";
 
 function ContactTitle(props) {
   const size = [2, 7, 3];
@@ -12,8 +13,8 @@ function ContactTitle(props) {
   let [disable, setDisable] = useState(false);
 
   const address = props.address;
-  const funs = props.funs;
 
+  const UI=RUNTIME.getUI();
   const self = {
     change: (ev) => {
       //setAddress(ev.target.value);
@@ -31,9 +32,9 @@ function ContactTitle(props) {
       console.log(address);
     },
     toPay: (address) => {
-      funs.dialog.hide();
-      funs.page(
-        <Payment funs={funs} amount={0} target={address} history={false} />,
+      UI.dialog.hide();
+      UI.page(
+        <Payment amount={0} target={address} history={false} />,
       );
     },
   };

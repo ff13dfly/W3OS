@@ -14,9 +14,6 @@ function Payment(props) {
     row: [12],
     account: [9, 3],
   };
-  const funs = props.funs;
-  //const history=props.history===undefined?true:props.history;
-
   let [count, setCount] = useState(0);
 
   let [from, setFrom] = useState("");
@@ -43,6 +40,7 @@ function Payment(props) {
 
   const desc =
     "The payment can not be called back, please confirm the account you want to pay.";
+  const UI=RUNTIME.getUI();
   const self = {
     changeAmount: (ev) => {
       self.clear();
@@ -86,7 +84,7 @@ function Payment(props) {
       setActive(map);
       if (!self.checkAccount(account) || !amount) return false;
 
-      funs.dialog.show(
+      UI.dialog.show(
         <Paybill
           callback={() => {
             setAccount("");
@@ -97,7 +95,6 @@ function Payment(props) {
           from={from}
           target={account}
           amount={amount}
-          funs={funs}
         />,
         "Payment confirm",
       );
@@ -189,7 +186,7 @@ function Payment(props) {
                 onClick={(ev) => {
                   setAnimation("ani_scale_out");
                   setTimeout(() => {
-                    props.funs.page("");
+                    UI.page("");
                   }, 300);
                 }}
               >
@@ -219,7 +216,7 @@ function Payment(props) {
             xl={size.row[0]}
             xxl={size.row[0]}
           >
-            <Balance funs={funs} />
+            <Balance />
           </Col>
           <Col
             className="pb-2"
@@ -304,7 +301,7 @@ function Payment(props) {
             </button>
           </Col>
         </Row>
-        <Bill count={count} funs={funs} show={history} agent={agent} />
+        <Bill count={count} show={history} agent={agent} />
       </Container>
     </div>
   );
