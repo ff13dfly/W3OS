@@ -12,8 +12,10 @@ import Device from "./lib/device";
 import RUNTIME from "./lib/runtime";
 import SCROLLER from "./lib/scroll";
 
-import { CiRoute,CiLogin } from "react-icons/ci";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { RiFingerprintLine } from "react-icons/ri";
+import { RiLinkUnlink } from "react-icons/ri";
+
 
 //import INDEXED from "./lib/indexed";
 
@@ -183,13 +185,17 @@ function App() {
       {ctx_page}
       <div className="opts">
         {/* <img src="icons/edit.svg" className='opt_button' alt="" /> */}
-        <IoMdCloseCircleOutline color="grey" onClick={(ev) => {
+        <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} style={{marginRight:"10px"}} onClick={(ev) => {
             self.clickEdit(ev);
         }}/>
-        <CiRoute color="grey" hidden={!RUNTIME.isLogin() || hidelink || editing} onClick={(ev) => {
+        <RiLinkUnlink color="grey" style={{marginRight:"10px"}}
+          //hidden={!RUNTIME.isLogin() || hidelink || editing} 
+          onClick={(ev) => {
             self.linkNetwork();
           }}/>
-        <CiLogin color="grey" hidden={RUNTIME.isLogin()} onClick={(ev) => {
+        <RiFingerprintLine color="grey" 
+          //hidden={RUNTIME.isLogin()} 
+          onClick={(ev) => {
             self.login();
           }}/>
       </div>

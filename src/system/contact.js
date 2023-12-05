@@ -240,14 +240,7 @@ function Contact(props) {
     RUNTIME.getAccount((acc) => {
       if (acc === null || !acc.address) {
         setReg(
-          <Col
-            xs={size.row[0]}
-            sm={size.row[0]}
-            md={size.row[0]}
-            lg={size.row[0]}
-            xl={size.row[0]}
-            xxl={size.row[0]}
-          >
+          <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
             <Login fresh={self.fresh} funs={funs} />
           </Col>,
         );
@@ -329,7 +322,7 @@ function Contact(props) {
         />
       </Container>
       <div className="opts">
-        <IoMdCloseCircleOutline color="grey" onClick={(ev) => {
+        <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} onClick={(ev) => {
             self.clickEdit(ev);
         }}/>
         {/* <img

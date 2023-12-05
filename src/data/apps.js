@@ -12,6 +12,7 @@ module.exports = [
         position: [0, 0],
       },
       icon: "icons/sys_setting.svg",
+      //icon: (<FcSettings />),
       short: "Setting",
       desc: "",
     },
