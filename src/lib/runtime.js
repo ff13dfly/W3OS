@@ -2,7 +2,7 @@ import STORAGE from "./storage";
 import tools from "./tools";
 import Encry from "./encry";
 import Config from "../data/setting";
-import Vertify from "../open/vertify";
+//import Vertify from "../components/vertify";
 
 let API = null;
 let wsAPI = null;
@@ -420,8 +420,7 @@ const RUNTIME = {
           pay: (param, ck) => {
             //transaction API for cApps
             if (!param.amount) return ck && ck(false);
-
-            UI.dialog.show(<Vertify />);
+            //UI.dialog.show(<Vertify />);
           },
           write: () => {
             //anchor writing API for cApps

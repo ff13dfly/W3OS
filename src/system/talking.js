@@ -10,6 +10,7 @@ import SCROLLER from "../lib/scroll";
 //import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
+import Vertify from "../components/vertify";
 
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
@@ -31,15 +32,16 @@ function Talking(props) {
       CHAT.save(mine, obj.msg.id, "New group created.", "notice", obj.msg.id, false, () => { });
     },
     group_detail: (mine, obj) => {
-      //console.log(obj);
       const msg=obj.msg;
-      // let ctx="";
-      // for(let i=0;i<msg.group.length;i++){
-      //   ctx+=`${tools.shorten(msg.group[i],4)},`;
-      // }
-      // ctx+=`${msg.group.length} member, enjoy talking.`;
       const ctx=`${msg.group.length} members, enjoy talking.`;
       CHAT.save(mine, msg.id, ctx, "notice", msg.id, false, () => { });
+    },
+    vertify_reg:(mine,obj)=>{
+      console.log(`Got the reg details`);
+      console.log(obj);
+    },
+    vertify_done:(mine,obj)=>{
+
     },
   }
 
@@ -74,11 +76,15 @@ function Talking(props) {
       self.page(<GroupAdd back={self.back} />, "group_add", "Select contact");
     },
     payToVertify: (ev) => {
-      UI.dialog.show(
-        "Vertification action here. Will show the pay amount from the server.",
-        "More details",
-        true
-      );
+      RUNTIME.getAccount((acc) => {
+        IMGC.vertify.reg(acc.address);
+        //IMGC.vertify.reg()
+        // UI.dialog.show(
+        //   <Vertify />,
+        //   "More details"
+        // );
+      });
+      
     },
     back: () => {
       self.entry();
@@ -126,7 +132,6 @@ function Talking(props) {
               });
             }
           }
-
           break;
         default:
           break;

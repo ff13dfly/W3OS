@@ -25,8 +25,10 @@ const DB = require("./common/mndb");           //Memory DB
 const History = require("./common/history");
 const Recover = require("./service/recover");   //System backup and autosave function
 
-// const Paytovertify = require("./service/paytovertify");   //System backup and autosave function
-// const Chain=require("./service/network");
+const Paytovertify = require("./service/paytovertify");   //System backup and autosave function
+const Chain=require("./service/network");
+const {task}=require("./service/std");
+
 // const reg=(acc,ck)=>{
 //     output(`Ready to reg "${acc}"`);
 //     Paytovertify.account(cfg.server.vertification);
@@ -71,10 +73,39 @@ const delegate={
         chat:Group.message,         //chat in a group
         notice:Group.notice,        //sent notice to a target
     },
-    veritfy:{           //server vertification functions
+    vertify:{           //server vertification functions
         init:null,
-        reg:reg,
         token:null,
+        reg:(input,from)=>{
+            output(`Ready to reg "${input.account}" from ${from}`);
+            if(input.account!==from) return false;
+
+            Paytovertify.agent(
+                (res)=>{    //when vertification successful
+                    output(`Verification successful, ready to sent notification.`,"success");
+                    Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
+                },
+                (res)=>{    //when vertification failed
+                    output(`Verification failed, ready to sent notification.`,"error");
+                    Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
+                }
+            );
+
+            Paytovertify.subcribe(Chain.subcribe,Chain.convert);
+
+            const amount=Paytovertify.add(from,false);
+
+            output(`The pay amount is ${amount}`);
+            const todo=task("notice");
+            todo.params.msg={amount:amount};
+            todo.params.to=from;
+            todo.params.method={
+                act:"reg",
+                cat:"vertify"
+            };
+            if(input.callback) todo.callback=input.callback;
+            return [todo];
+        }
     },
     debug:{             //debug functions
         status:null,
@@ -110,6 +141,11 @@ Valid(process.argv.slice(2),(res)=>{
     if(!res.data || !res.data.server || !res.data.server.port)  return output(`Invalid config file.`,"error",true);
     const cfg=res.data;
     const port=cfg.server.port;
+
+    const ver_addres=cfg.server.vertification;
+    output(`Set vertification account ${ver_addres}`, "primary", true);
+    Paytovertify.account(ver_addres);         //set vertify account here
+    Chain.endpoint(cfg.server.polkadot);    //set chain endpoint
 
     Recover(getData,setData,()=>{
         try {

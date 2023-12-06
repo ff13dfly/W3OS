@@ -70,8 +70,6 @@ module.exports={
 
         fun((block,trans)=>{
             const list=convert(trans);
-            //console.log(list);
-            //console.log(block);
             for(let i=0;i<list.length;i++){
                 const row=list[i];
                 output(`Transaction got, ${JSON.stringify(row)}`,"primary");
@@ -94,7 +92,7 @@ module.exports={
     },
     add:(address,force,ck)=>{
         const amount=self.amount(address,force);
-        return ck && ck(amount);
+        return amount;
     },
 
     // reg:(acc,ck)=>{

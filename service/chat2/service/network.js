@@ -7,6 +7,7 @@ module.exports = {
     },
     subcribe: (ck) => {
         const provider = new WsProvider(endpoint);
+        //console.log(`Listening to ${endpoint}`);
         ApiPromise.create({ provider: provider }).then((wsAPI) => {
             wsAPI.rpc.chain.subscribeFinalizedHeads((lastHeader) => {
                 const hash = lastHeader.hash.toHex();

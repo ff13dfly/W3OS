@@ -358,7 +358,16 @@ const IMGC={
     }
     self.send(req);
   },
-
+  vertify:{
+    reg:(acc)=>{
+      const req={
+        cat:"vertify",
+        act:"reg",
+        account:acc,
+      }
+      self.send(req);
+    },
+  },
   list:(ck)=>{    //get the group list
     RUNTIME.getAccount((fa)=>{
       if(!fa) return false;
