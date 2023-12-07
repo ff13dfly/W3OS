@@ -54,7 +54,8 @@ function Talking(props) {
       );
     },
     vertify_done:(mine,obj)=>{
-      
+      console.log("Vertification done.");
+      console.log(obj);
     },
   }
 

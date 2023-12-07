@@ -1,6 +1,7 @@
 const tools = require("./tools");      //comman websocket client management
 const { output } = require("./output");
 const History =require("./history");
+const {task}=require("../service/std");
 
 const clients = {};
 const accountSpam = {}, spamToAccount = {};
@@ -119,7 +120,18 @@ module.exports = {
             self.decode(result);
         }
     },
-    notice:(arr,msg)=>{
 
+    //sent notification to [account,...]
+    notice:(arr,msg,method)=>{
+        const list=[];
+        for(let i=0;i<arr.length;i++){
+            const account=arr[i];
+            const todo=task("notice");
+            todo.params.msg=msg;
+            todo.params.to=account;
+            todo.params.method=method;
+            list.push(todo);
+        }
+        self.decode(list);
     },
 };

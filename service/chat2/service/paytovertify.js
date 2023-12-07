@@ -2,7 +2,6 @@ const {output}=require("../common/output");
 
 // Storage part 
 const map={};
-let count=0;
 let target="";
 
 let checker=null;   //checking interval
@@ -16,12 +15,6 @@ const config={
     expired:10*60000,       // 10 minutes to expire the vertification
     at:4000,                // checking interval
 };
-
-// Callback message format
-const format={
-    success:{from:"",block:0,index:0},
-    failed:{from:"",message:""},
-}
 
 //Functions
 const self={
@@ -59,7 +52,6 @@ module.exports={
 
         if(checker===null){
             checker=setInterval(()=>{
-                count++;
                 for(let acc in map){
                     if(map[acc].expired < self.stamp()){
                         output(`Deleting expired: ${acc}`,"error");
@@ -73,7 +65,7 @@ module.exports={
         fun((block,trans)=>{
             console.log(`Block[${block}], trasactions ( ${trans.length} ).`);
             const list=convert(trans);
-            console.log(JSON.stringify(list));
+            console.log(`Successful payments: JSON.stringify(list)`);
             for(let i=0;i<list.length;i++){
                 const row=list[i];
                 output(`Transaction got, ${JSON.stringify(row)}`,"primary");
@@ -86,7 +78,7 @@ module.exports={
                 if(row.to===target && self.stamp()<detail.expired){
                     if((detail.amount*1000000000000).toLocaleString()===row.amount){
                         agent.success({from:row.from,amount:row.amount,block:block});
-                        delete(map[row.from])
+                        delete(map[row.from]);
                     }else{
                         agent.failed({from:row.from,amount:row.amount,msg:"Wrong amount",block:block});
                     }
@@ -98,26 +90,4 @@ module.exports={
         const amount=self.amount(address,force);
         return amount;
     },
-
-    // reg:(acc,ck)=>{
-    //     output(`Ready to reg "${acc}"`);
-    //     Paytovertify.account(cfg.server.vertification);
-    //     Paytovertify.agent(
-    //         (res)=>{    //when vertification successful
-    //             output(`Verification successful, ready to sent notification.`,"success");
-    //             //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
-    //         },
-    //         (res)=>{    //when vertification failed
-    //             output(`Verification failed, ready to sent notification.`,"error");
-    //             //Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
-    //         }
-    //     );
-    
-    //     Paytovertify.subcribe(Chain.subcribe,Chain.convert);
-    
-    //     Paytovertify.add(acc,false,(amount)=>{
-    //         output(`The pay amount is ${amount}`);
-    //         return ck && ck(amount,cfg.server.vertification);
-    //     });
-    // },
 }

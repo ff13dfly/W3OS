@@ -1,14 +1,16 @@
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 let endpoint = "";
+let subed=false;
 module.exports = {
     endpoint: (uri) => {
         endpoint = uri;
     },
     subcribe: (ck) => {
+        if(subed) return false;
         const provider = new WsProvider(endpoint);
-        //console.log(`Listening to ${endpoint}`);
         ApiPromise.create({ provider: provider }).then((wsAPI) => {
+            subed=true;
             wsAPI.rpc.chain.subscribeFinalizedHeads((lastHeader) => {
                 const hash = lastHeader.hash.toHex();
                 const block = lastHeader.number.toNumber();

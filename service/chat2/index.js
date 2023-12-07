@@ -62,14 +62,16 @@ const delegate={
                 (res)=>{    //when vertification successful
                     output(`Verification successful, ready to sent notification.`,"success");
                     //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
-                    Client.notice([from],{});
+                    Client.notice([from],{data:"Vertification done"},{act:"done",cat:"vertify"});
                 },
                 (res)=>{    //when vertification failed
                     output(`Verification failed, ready to sent notification.`,"error");
                     //Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
+                    Client.notice([from],{error:"Failed to vertify your account, please try again."},{act:"done",cat:"vertify"});
                 }
             );
-
+            
+            //FIXME,here will rerun subcribe, need to sovle this.
             Paytovertify.subcribe(Chain.subcribe,Chain.convert);
 
             const amount=Paytovertify.add(from,false);
