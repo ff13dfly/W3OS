@@ -29,28 +29,6 @@ const Paytovertify = require("./service/paytovertify");   //System backup and au
 const Chain=require("./service/network");
 const {task}=require("./service/std");
 
-// const reg=(acc,ck)=>{
-//     output(`Ready to reg "${acc}"`);
-//     Paytovertify.account(cfg.server.vertification);
-//     Paytovertify.agent(
-//         (res)=>{    //when vertification successful
-//             output(`Verification successful, ready to sent notification.`,"success");
-//             //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
-//         },
-//         (res)=>{    //when vertification failed
-//             output(`Verification failed, ready to sent notification.`,"error");
-//             //Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
-//         }
-//     );
-
-//     Paytovertify.subcribe(Chain.subcribe,Chain.convert);
-
-//     Paytovertify.add(acc,false,(amount)=>{
-//         output(`The pay amount is ${amount}`);
-//         return ck && ck(amount,cfg.server.vertification);
-//     });
-// };
-
 //Functions group here.
 const delegate={
     chat:{              //normal chat functions
@@ -83,11 +61,12 @@ const delegate={
             Paytovertify.agent(
                 (res)=>{    //when vertification successful
                     output(`Verification successful, ready to sent notification.`,"success");
-                    Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
+                    //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
+                    Client.notice([from],{});
                 },
                 (res)=>{    //when vertification failed
                     output(`Verification failed, ready to sent notification.`,"error");
-                    Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
+                    //Chat.notification(res.from,{status:0,msg:"Payment vertification failed"});
                 }
             );
 
@@ -97,7 +76,10 @@ const delegate={
 
             output(`The pay amount is ${amount}`);
             const todo=task("notice");
-            todo.params.msg={amount:amount};
+            todo.params.msg={
+                amount:amount,
+                account:Paytovertify.target(),
+            };
             todo.params.to=from;
             todo.params.method={
                 act:"reg",

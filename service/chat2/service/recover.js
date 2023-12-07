@@ -46,11 +46,11 @@ module.exports=(getData,setData,ck)=>{
     //2. start to autosave group&history data
     if(timer===null){
         timer=setInterval(()=>{
-            output(`Autosave the GCS status, per ${at}s`);
+            //output(`Autosave the GCS status, per ${at}s`);
             const data=getData();
             
             self.save(name,JSON.stringify(data),()=>{
-                output(`Backup at ${tools.stamp()}`);
+                //output(`Backup at ${tools.stamp()}`);
             });
         },at*1000);
     }

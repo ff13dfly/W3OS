@@ -9,6 +9,7 @@ import GroupAnnouncement from "../components/group_announce";
 
 import { IoIosMore } from "react-icons/io";
 import RUNTIME from "../lib/runtime";
+import Mask from "../layout/mask";
 
 function GroupOpt(props) {
   const size = {
@@ -23,6 +24,14 @@ function GroupOpt(props) {
   const self = {
     click: () => {
       setHidden(!hidden);
+      //TODO, hide pop menu.
+      console.log(`Here to solve the popmenu hidden issue`);
+      // if(hidden){
+      //   console.log(`Show mask`);
+      //   UI.mask(<Mask/>);
+      // }else{
+
+      // }
     },
     clickNick: (ev) => {
       UI.dialog.show(

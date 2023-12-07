@@ -47,6 +47,9 @@ module.exports={
     account:(acc)=>{
         target=acc;
     },
+    target:()=>{
+        return target;
+    },
     agent:(success,failed)=>{
         agent.success=success;
         agent.failed=failed;
@@ -57,7 +60,6 @@ module.exports={
         if(checker===null){
             checker=setInterval(()=>{
                 count++;
-                output(`[${count}] Checking expired requests.`);
                 for(let acc in map){
                     if(map[acc].expired < self.stamp()){
                         output(`Deleting expired: ${acc}`,"error");
@@ -69,7 +71,9 @@ module.exports={
         }
 
         fun((block,trans)=>{
+            console.log(`Block[${block}], trasactions ( ${trans.length} ).`);
             const list=convert(trans);
+            console.log(JSON.stringify(list));
             for(let i=0;i<list.length;i++){
                 const row=list[i];
                 output(`Transaction got, ${JSON.stringify(row)}`,"primary");

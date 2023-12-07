@@ -119,4 +119,7 @@ module.exports = {
             self.decode(result);
         }
     },
+    notice:(arr,msg)=>{
+
+    },
 };

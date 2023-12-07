@@ -28,6 +28,7 @@ module.exports = {
         const result=[];
         for(let i=0;i<list.length;i++){
             const row=list[i];
+            //console.log(row);
             if(row.event && 
                 row.event.method==="Transfer" &&
                 row.event.section==="balances" &&

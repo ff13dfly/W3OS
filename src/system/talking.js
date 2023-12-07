@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
+import Paybill from "../components/paybill";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
@@ -10,7 +11,7 @@ import SCROLLER from "../lib/scroll";
 //import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
-import Vertify from "../components/vertify";
+//import Vertify from "../components/vertify";
 
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
@@ -37,11 +38,23 @@ function Talking(props) {
       CHAT.save(mine, msg.id, ctx, "notice", msg.id, false, () => { });
     },
     vertify_reg:(mine,obj)=>{
-      console.log(`Got the reg details`);
       console.log(obj);
+      const msg=obj.msg;
+      UI.dialog.show(
+        <Paybill
+          callback={(res) => {
+            console.log(res);
+          }}
+          desc={`Pay the amount ${msg.amount} to vertify your account.`}
+          from={mine}
+          target={msg.account}
+          amount={msg.amount}
+        />,
+        "Payment Vertification",
+      );
     },
     vertify_done:(mine,obj)=>{
-
+      
     },
   }
 
