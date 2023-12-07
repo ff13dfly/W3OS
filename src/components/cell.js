@@ -106,19 +106,8 @@ function Cell(props) {
   };
 
   return (
-    <Col
-      xs={size}
-      sm={size}
-      md={size}
-      lg={size}
-      xl={size}
-      xxl={size}
-      className="pt-4 cell"
-    >
-      <span
-        hidden={true}
-        className={props.index % 2 ? "status green" : "status red"}
-      ></span>
+    <Col className="pt-4 cell" xs={size} sm={size} md={size} lg={size} xl={size} xxl={size}>
+      <span hidden={true} className={props.index % 2 ? "status green" : "status red"} ></span>
       <span hidden={true} className="type">
         {!row.type ? "unknow" : row.type}
       </span>
@@ -129,11 +118,9 @@ function Cell(props) {
           props.edit ? self.select() : self.click();
         }}
       />
-      <h6
-        onClick={(ev) => {
+      <h6 onClick={(ev) => {
           props.edit ? self.select() : self.click();
-        }}
-      >
+        }}>
         <span>
           <input
             hidden={props.edit ? (row.type === "system" ? true : false) : true}
