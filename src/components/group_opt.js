@@ -88,7 +88,7 @@ function GroupOpt(props) {
       })
     },
     clickDestory:(ev) => {
-      console.log(group);
+      IMGC.group.destory(group);
     },
     clickMore: (ev) => {
       UI.dialog.show(

@@ -39,6 +39,15 @@ function Talking(props) {
     },
     group_leave: (mine, obj)=>{
       CHAT.save(mine, obj.msg.group, "Leave this group.", "notice", obj.msg.group, false, () => { });
+      //TODO, here to trigger fresh the page to list
+    },
+    group_destory: (mine,obj)=>{
+      console.log(mine);
+      console.log(obj);
+      //CHAT.save(mine, obj.msg.group, "Leave this group.", "notice", obj.msg.group, false, () => { });
+
+      //TODO, here to trigger fresh the page to list
+      //TODO, remove the group from localstorage
     },
     vertify_reg:(mine,obj)=>{
       console.log(obj);

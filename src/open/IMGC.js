@@ -323,6 +323,14 @@ const IMGC={
       }
       self.send(req);
     },
+    destory:(id)=>{
+      const req={
+        cat:"group",
+        act:"destory",
+        id:id,
+      }
+      self.send(req);
+    },
     chat:(ctx,to)=>{
       //console.log(`From ${mine} to ${to}: ${ctx}`);
       const req={
