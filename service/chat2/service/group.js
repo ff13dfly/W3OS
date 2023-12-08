@@ -139,7 +139,7 @@ module.exports = {
 
     //member leave the group
     leave:(input,from)=>{
-        console.log(`From group.js/leave, input: ${JSON.stringify(input)}`);
+        console.log(`From group.js/leave, input: ${JSON.stringify(input)}, request from ${from}`);
 
         const gid=input.id;
         const data=DB.key_get(gid);
@@ -171,7 +171,6 @@ module.exports = {
         toast(todos.length);    //inc the notice amount
 
         return todos;
-        
     },
 
     //transfer the manager 

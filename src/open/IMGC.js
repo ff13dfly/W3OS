@@ -314,11 +314,12 @@ const IMGC={
       if(ck) req.callback=self.setCallback(ck); //2.callback support
       self.send(req);
     },
-    leave:(id)=>{
+    leave:(id,account)=>{
       const req={
         cat:"group",
         act:"leave",
         id:id,
+        account:account,
       }
       self.send(req);
     },

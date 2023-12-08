@@ -12,11 +12,19 @@ function GroupNick(props) {
 
   let [info, setInfo] = useState("");
   let [disable, setDisalbe] = useState(true);
-
+  let [nick, setNick]=useState("");
 
   const self = {
     change: (ev) => {
-      
+      setNick(ev.target.value);
+      if(!ev.target.value){
+        setDisalbe(true);
+      }else{
+        setDisalbe(false);
+      }
+    },
+    clickAdd:()=>{
+      console.log(`Ready to set group nickname.`);
     },
   };
 
@@ -27,9 +35,12 @@ function GroupNick(props) {
   return (
     <Row>
       <Col className="pt-2 pb-2 text-secondary" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
-        <input type="text" className="form-control" onChange={(ev)=>{
-          self.change(ev);
-        }}/>
+        <input type="text" className="form-control" 
+          value={nick} 
+          onChange={(ev)=>{
+            self.change(ev);
+          }}
+        />
       </Col>
       <Col xs={size.opt[0]} sm={size.opt[0]} md={size.opt[0]} lg={size.opt[0]} xl={size.opt[0]} xxl={size.opt[0]}>
         {info}

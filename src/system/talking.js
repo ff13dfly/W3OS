@@ -37,6 +37,9 @@ function Talking(props) {
       const ctx=`${msg.group.length} members, enjoy talking.`;
       CHAT.save(mine, msg.id, ctx, "notice", msg.id, false, () => { });
     },
+    group_leave: (mine, obj)=>{
+      CHAT.save(mine, obj.msg.group, "Leave this group.", "notice", obj.msg.group, false, () => { });
+    },
     vertify_reg:(mine,obj)=>{
       console.log(obj);
       const msg=obj.msg;
@@ -57,6 +60,7 @@ function Talking(props) {
       console.log("Vertification done.");
       console.log(obj);
     },
+  
   }
 
   const cmap={
@@ -138,7 +142,6 @@ function Talking(props) {
           //console.log(`Write the notice recoder here.`);
           if (input.method) {
             const key = `${input.method.cat}_${input.method.act}`;
-            console.log(key);
             if (decoder[key]) {
               RUNTIME.getAccount((acc) => {
                 const mine = acc.address;
