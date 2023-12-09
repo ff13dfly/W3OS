@@ -9,10 +9,10 @@ function Nav(props) {
               <h5>ChainPhoto</h5>
             </Navbar.Brand>
         <Row>
-          <Col className="text-end">
+          <Col className="text-end" hidden={true}>
             User
           </Col>
-          <Col className="text-end" hidden={true}>
+          <Col className="text-end">
             X
           </Col>
         </Row>

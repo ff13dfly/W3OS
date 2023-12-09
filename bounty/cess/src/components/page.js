@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Thumb from "./thumb";
 import tools from "../lib/tools";
 
+import CESS from "../lib/CESS";
+
 function Page(props) {
   const size = [3, 6, 3];
 
@@ -14,6 +16,8 @@ function Page(props) {
   let [list, setList] = useState([]);
   
   useEffect(() => {
+    CESS.overview();
+    
     const nlist=[
       {hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
       {hash:tools.char(10),icon:"logo512.png",update:tools.stamp()},
@@ -29,7 +33,7 @@ function Page(props) {
   return (
     <Row>
     {list.map((row, index) => (
-      <Thumb key={index}  data={row}/>
+      <Thumb key={index}  data={row} render={props.render}/>
     ))}
     </Row>
   );

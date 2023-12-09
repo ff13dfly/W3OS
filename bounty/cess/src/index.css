@@ -15,3 +15,9 @@ code {
 .icon{
   width: 150px;
 }
+
+.fixedUpload{
+  position: fixed;
+  left:0px;
+  bottom:0px;
+}
