@@ -136,6 +136,7 @@ code {
   left: 6px;
   top: 65px;
   padding: 5px 0px 0px 0px;
+  z-index: 880;
 }
 .fixfooter{
   position:fixed;
