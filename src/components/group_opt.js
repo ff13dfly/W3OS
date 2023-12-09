@@ -62,23 +62,20 @@ function GroupOpt(props) {
       );
     },
     clickAdd: (ev) => {
-      console.log(group);
-      //console.log(`Ready to create new group`);
-      //props.page(<GroupAdd back={self.back}/>,"group_add");
       UI.dialog.show(
-        <GroupJoin back={self.back} />,
-        "New Group Member"
+        <GroupJoin back={self.back} id={group}/>,
+        "Members"
       );
     },
     clickDivert: (ev) => {
       UI.dialog.show(
-        <GroupDivert back={self.back} />,
+        <GroupDivert back={self.back} id={group}/>,
         "Set Manager"
       );
     },
     clickBlock:(ev)=>{
       UI.dialog.show(
-        <GroupBlock back={self.back} />,
+        <GroupBlock back={self.back} id={group}/>,
         "Set Block Accounts"
       );
     },
@@ -173,14 +170,14 @@ function GroupOpt(props) {
               <GrTrash size={30}/>
               <p className="pt-2">Destory</p>
             </Col>
-            <Col className="pb-2 pt-2 text-center" xs={size.cell[0]} sm={size.cell[0]} md={size.cell[0]}
+            {/* <Col className="pb-2 pt-2 text-center" xs={size.cell[0]} sm={size.cell[0]} md={size.cell[0]}
               lg={size.cell[0]} xl={size.cell[0]} xxl={size.cell[0]} onClick={(ev) => {
                 self.clickBlock(ev);
                 setHidden(true);
               }}>
               <FaRegCircleStop size={30}/>
               <p className="pt-2">Block</p>
-            </Col>
+            </Col> */}
             
           </Row>
         </Col>

@@ -17,36 +17,42 @@ function GroupDivert(props) {
   let [disable, setDisalbe] = useState(true);
   let [my, setMy] = useState("");
 
+  const group=props.id;
 
   const self = {
     click: (index) => {
+      for(let i=0;i<list.length;i++){
+        list[i].selected =false;
+      }
       list[index].selected = !list[index].selected;
       self.fresh();
     },
     clickAdd: () => {
-      setDisalbe(true);
-      const accs = self.getSelected(list);
-      IMGC.group.create(accs, (res) => {
-        console.log(`Group created: ${JSON.stringify(res)}`);
-        IMGC.group.detail(res.id, (gp) => {
-          console.log(`Group details: ${JSON.stringify(gp)}`);
+      console.log(`Ready to change the manager`);
+      // setDisalbe(true);
+      const target = self.getSelected(list);
+      console.log(target);
+      
+      // IMGC.group.create(accs, (res) => {
+      //   console.log(`Group created: ${JSON.stringify(res)}`);
+      //   IMGC.group.detail(res.id, (gp) => {
+      //     console.log(`Group details: ${JSON.stringify(gp)}`);
 
-          setInfo("Group created successful.");
-          setTimeout(() => {
-            setDisalbe(false);
+      //     setInfo("Group created successful.");
+      //     setTimeout(() => {
+      //       setDisalbe(false);
 
-            props.back();
-          }, 1500);
-        });
-      });
+      //       props.back();
+      //     }, 1500);
+      //   });
+      // });
     },
     fresh: () => {
       const nlist = JSON.parse(JSON.stringify(list));
       setList(nlist);
     },
     getSelected: (accs) => {
-      if (!my) return false;
-      const list = [my];
+      const list = [];
       for (let i = 0; i < accs.length; i++) {
         if (accs[i].selected) list.push(accs[i].address);
       }
@@ -55,25 +61,50 @@ function GroupDivert(props) {
   };
 
   useEffect(() => {
-    RUNTIME.getAccount((acc) => {
-      if (acc && acc.address) {
+    //1.if not account set yet.
+    RUNTIME.getAccount((fa) => {
+      if (fa && fa.address) {
         setDisalbe(false);
-        setMy(acc.address);
+        setMy(fa.address);
       } else {
         setInfo(`Please set your account first.`);
       }
     });
-    RUNTIME.getContact((res) => {
-      //console.log(res);
-      const nlist = [];
-      for (let acc in res) {
-        const row = res[acc];
-        row.address = acc;
-        row.selected = false;
-        nlist.push(row)
-      }
-      setList(nlist);
-    });
+
+    //2.filter the account;
+    //const cs={}
+    RUNTIME.getContact((cs) => {
+      RUNTIME.getAccount((fa) => {
+        console.log(group);
+        
+
+        IMGC.local.view(fa.address,group,(res)=>{
+          //check the permit
+          if(res.more.manager!==fa.address){
+            return setInfo("No permit");
+          }
+
+          const nlist = [];
+          const gs=res.more.group;
+          for(let i=0;i<gs.length;i++){
+            const acc=gs[i];
+            let row=null;
+            if(cs[acc]){
+              row=cs[acc];
+              row.address = acc;
+              row.selected = res.more.manager===acc?true:false;
+            }else{
+              row={
+                address:acc,
+                selected:res.more.manager===acc?true:false,
+              }
+            }
+            if(row!==null) nlist.push(row);
+          }
+          setList(nlist);
+        });
+      });
+    });  
   }, []);
 
   return (
@@ -91,7 +122,7 @@ function GroupDivert(props) {
           }}>
           <Row>
             <Col className="text-center" xs={size.list[0]} sm={size.list[0]} md={size.list[0]} lg={size.list[0]} xl={size.list[0]} xxl={size.list[0]}>
-              <input type="checkbox"
+              <input type="radio"
                 onChange={(ev) => { }}
                 checked={row.selected}
                 style={{ marginTop: "15px" }} />
@@ -119,7 +150,7 @@ function GroupDivert(props) {
       <Col className="text-end" xs={size.opt[1]} sm={size.opt[1]} md={size.opt[1]} lg={size.opt[1]} xl={size.opt[1]} xxl={size.opt[1]}>
         <button disabled={disable} className="btn btn-md btn-primary" onClick={(ev) => {
           self.clickAdd();
-        }}>Change Manager</button>
+        }}>Set Manager</button>
       </Col>
     </Row>
   );

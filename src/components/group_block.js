@@ -119,7 +119,7 @@ function GroupBlock(props) {
       <Col className="text-end" xs={size.opt[1]} sm={size.opt[1]} md={size.opt[1]} lg={size.opt[1]} xl={size.opt[1]} xxl={size.opt[1]}>
         <button disabled={disable} className="btn btn-md btn-primary" onClick={(ev) => {
           self.clickAdd();
-        }}>Change Manager</button>
+        }}>Block</button>
       </Col>
     </Row>
   );
