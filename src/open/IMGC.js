@@ -107,7 +107,6 @@ const DB={
 }
 
 const map={}
-
 const self={
   send:(obj)=>{
     if(!spam) return false;
@@ -127,6 +126,10 @@ const self={
     const key=self.callbackKey();
     map[key]=fun;
     return key;
+  },
+  getCallback:(key)=>{
+    if(!map[key]) return false;
+    return map[key];
   },
 };
 
@@ -220,7 +223,6 @@ const router={
 
 const decoder={
   try:(input)=>{
-    //console.log(input);
     if(recoder!==null) recoder(input);
     //console.log(input.type);
     switch (input.type){
@@ -237,6 +239,19 @@ const decoder={
         const postman = RUNTIME.getMailer(!input.group?input.from:input.group);
         postman(input);
         
+        break;
+
+      case "error":
+        const ck_error=!input.request.callback?undefined:input.request.callback;
+        if(map[ck_error]){
+          if(input.method) delete input.method;
+          if(input.request) delete input.request;
+          map[ck_error](input);
+          delete map[ck_error];
+        }else{
+          //TODO, unreconginzed error process.
+        }
+
         break;
 
       default:
@@ -314,21 +329,29 @@ const IMGC={
       if(ck) req.callback=self.setCallback(ck); //2.callback support
       self.send(req);
     },
-    leave:(id,account)=>{
+    join:(id)=>{
+
+    },
+    leave:(id,account,ck)=>{
       const req={
         cat:"group",
         act:"leave",
         id:id,
         account:account,
       }
+      //2.callback support, added to the callback map
+      if(ck) req.callback=self.setCallback(ck); 
       self.send(req);
     },
-    destory:(id)=>{
+
+    destory:(id,ck)=>{
       const req={
         cat:"group",
         act:"destory",
         id:id,
       }
+      //2.callback support, added to the callback map
+      if(ck) req.callback=self.setCallback(ck);
       self.send(req);
     },
     chat:(ctx,to)=>{

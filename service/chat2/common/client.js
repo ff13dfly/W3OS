@@ -114,8 +114,9 @@ module.exports = {
         delete input.cat;
 
         const result = fun(input,spamToAccount[spam]);
+        console.log(`Service response:${JSON.stringify(result)}`);
         if (!result || result.error) {
-            self.failed(result, spam, input.order);
+            self.failed(result, spam);
         } else {
             self.decode(result);
         }

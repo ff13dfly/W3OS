@@ -163,7 +163,10 @@ const errors={
         error:"Invalid request.",
         code:41400,
     },
-
+    "SYSTEM_INVALID_DATA":{
+        error:"Invalid internal data.",
+        code:41401,
+    },
     "INPUT_MISSING_PARAMETERS":{
         error:"Missing parameters.",
         code:44001,

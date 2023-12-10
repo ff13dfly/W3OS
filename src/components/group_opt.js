@@ -93,11 +93,16 @@ function GroupOpt(props) {
     },
     clickLeave: (ev) => {
       RUNTIME.getAccount((fa) => {
-        IMGC.group.leave(group, fa.address);
+        IMGC.group.leave(group, fa.address,(res)=>{
+          console.log(`Leave requested.`);
+          console.log(res);
+        });
       })
     },
     clickDestory: (ev) => {
-      IMGC.group.destory(group);
+      IMGC.group.destory(group,(res)=>{
+        console.log(res);
+      });
     },
     clickMore: (ev) => {
       UI.dialog.show(

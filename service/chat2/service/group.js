@@ -40,6 +40,18 @@ const self={
         }
         return false;
     },
+
+    error:(way,cat,act,input)=>{
+        const err=error(way);
+        if(cat && act){
+            err.method={
+                cat:cat,
+                act:act,
+            }
+        }
+        if(input) err.request=input;  //return the request parameters
+        return err;
+    },
 }
 
 module.exports = {
@@ -52,7 +64,7 @@ module.exports = {
     create:(input,from)=>{
         console.log(`From group.js/chat, input: ${JSON.stringify(input)}`);
 
-        if(!self.validAccounts(input.list)) return error("INPUT_INVALID_ACCOUNT");
+        if(!self.validAccounts(input.list)) return self.error("INPUT_INVALID_ACCOUNT","group","create",input);
 
         //1.prepare the group default data
         const gid=self.getGID();
@@ -84,10 +96,10 @@ module.exports = {
     detail:(input,from)=>{
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(data===null) return error("INPUT_INVALID_GROUP_ID");
+        if(data===null) return self.error("INPUT_INVALID_GROUP_ID","group","detail",input);
 
         //1.check valid, only member of group can get it
-        if(!self.validInAccount(from,data.group)) return error("INPUT_UNEXCEPT");
+        if(!self.validInAccount(from,data.group)) return self.error("INPUT_UNEXCEPT","group","detail",input);
 
         const todo=task("notice");
         todo.params.msg=data;
@@ -143,7 +155,8 @@ module.exports = {
 
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!self.validInAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
+        if(data===null || !data) return self.error("SYSTEM_INVALID_DATA","group","leave",input);
+        if(!self.validInAccount(input.account,data.group)) return self.error("INPUT_UNEXCEPT","group","leave");
 
         //1.notice to all and move target account
         const todos=[];
@@ -282,8 +295,8 @@ module.exports = {
         //1.check the permit to remove group
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!data) return error("INPUT_UNEXCEPT");
-        if(data.manager!==from) return error("INPUT_UNEXCEPT");
+        if(!data) return self.error("INPUT_UNEXCEPT","group","destory",input);
+        if(data.manager!==from) return self.error("INPUT_UNEXCEPT","group","destory",input);
         DB.key_del(gid);
 
         //2.notice to all members.

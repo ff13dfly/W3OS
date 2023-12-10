@@ -123,6 +123,7 @@ function Talking(props) {
 
     recorder: (input) => {
       if (!input || !input.type) return false;
+      //console.log(input);
       const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
       switch (input.type) {
         case "message":     //message recorder process
@@ -158,6 +159,10 @@ function Talking(props) {
               });
             }
           }
+          break;
+        case "error":
+          //console.log(`Got error here.`);
+          //TODO, here to check the system error.
           break;
         default:
           break;
