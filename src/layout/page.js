@@ -27,29 +27,15 @@ function Page(props) {
       <Navbar className="bg-body-tertiary">
         <Container>
           <Row style={{ width: "100%", margin: "0 auto" }}>
-            <Col
-              xs={size.head[0]}
-              sm={size.head[0]}
-              md={size.head[0]}
-              lg={size.head[0]}
-              xl={size.head[0]}
-              xxl={size.head[0]}
-              style={{ paddingTop: "6px" }}
+            <Col xs={size.head[0]} sm={size.head[0]} md={size.head[0]}
+              lg={size.head[0]} xl={size.head[0]}  xxl={size.head[0]} style={{ paddingTop: "6px" }}
             >
               <Navbar.Brand href="#">
                 W<span className="logo">3</span>OS
               </Navbar.Brand>
             </Col>
-            <Col
-              className="text-center"
-              xs={size.head[1]}
-              sm={size.head[1]}
-              md={size.head[1]}
-              lg={size.head[1]}
-              xl={size.head[1]}
-              xxl={size.head[1]}
-              style={{ paddingTop: "10px" }}
-            >
+            <Col className="text-center" xs={size.head[1]} sm={size.head[1]} md={size.head[1]}
+              lg={size.head[1]} xl={size.head[1]} xxl={size.head[1]} style={{ paddingTop: "10px" }}>
               Application Loader
             </Col>
             <Col

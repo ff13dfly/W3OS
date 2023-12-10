@@ -58,6 +58,20 @@ const delegate={
             output(`Ready to reg "${input.account}" from ${from}`);
             if(input.account!==from) return false;
 
+            const vert=DB.hash_get("vertification",from);
+            if(vert!==null){
+                const todo=task("notice");
+                todo.params.msg=vert
+                todo.params.msg.done=true;
+                todo.params.to=from;
+                todo.params.method={
+                    act:"reg",
+                    cat:"vertify"
+                };
+                if(input.callback) todo.callback=input.callback;
+                return [todo];
+            }
+
             Paytovertify.agent(
                 (res)=>{    //when vertification successful
                     output(`Verification successful, ready to sent notification.`,"success");
@@ -107,8 +121,6 @@ const empty=(obj)=>{
 
 const getData=()=>{
     const gs=DB.key_dump();
-    if(gs.vertification) delete gs.vertification;
-
     const his=History.dump();
     const ver_data=DB.hash_all("vertification");
     return {group:gs,history:his,vertification:ver_data}
@@ -128,7 +140,7 @@ const setData=(json)=>{
     }
 
     if(json.vertification && !empty(json.vertification)){
-        DB.key_set("vertification",json.vertification);
+        DB.hash_recover("vertification",json.vertification);
         output(`vertification recoverd`, "primary", true);
     }
 };

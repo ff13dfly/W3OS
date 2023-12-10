@@ -15,7 +15,7 @@ const remove={
 
 const max={
     "key":256,      //max 256 Bytes
-    "val":4096,     //max 4096 Bytes
+    "val":1004096,     //max 1004096 Bytes
 };
 
 const self={
@@ -85,7 +85,7 @@ const self={
         return true;
     },
     key_dump:()=>{
-        return cache;
+        return JSON.parse(JSON.stringify(cache));
     },
     /*********************************************/
     /******************hash part******************/
@@ -105,6 +105,13 @@ const self={
         hash[main][key]=val;
         return true;
     },
+    hash_recover:(main,data)=>{
+        if(typeof(main)!=='string') return false;
+        if(!hash[main]) hash[main]={};
+        hash[main]=data;
+        
+        return true
+    },
     hash_ttl:(main,ttl)=>{
 
     },
@@ -115,7 +122,7 @@ const self={
         if(typeof(main)!=='string') return false;
         if(main.length>max.key) return false;
         if(!hash[main]) return null;
-        return hash[main];
+        return JSON.parse(JSON.stringify(hash[main]));
     },
 
     /*********************************************/

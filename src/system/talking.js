@@ -1,4 +1,5 @@
-import { Container, Row, Col, Navbar } from "react-bootstrap";
+import { Container, Row, Col, Navbar,Toast,ToastContainer } from "react-bootstrap";
+
 import { useState, useEffect } from "react";
 import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
@@ -26,6 +27,7 @@ function Talking(props) {
   let [framework, setFramework] = useState("");
   let [title, setTitle] = useState("Talking");
   let [hidden, setHidden] = useState(false);
+  let [toast, setToast]=useState("");
 
   //base on action to create notice recorder
   const decoder = {
@@ -50,20 +52,30 @@ function Talking(props) {
       //TODO, remove the group from localstorage
     },
     vertify_reg:(mine,obj)=>{
-      console.log(obj);
+      //console.log(obj);
       const msg=obj.msg;
-      UI.dialog.show(
-        <Paybill
-          callback={(res) => {
-            console.log(res);
-          }}
-          desc={`Pay the amount ${msg.amount} to vertify your account.`}
-          from={mine}
-          target={msg.account}
-          amount={msg.amount}
-        />,
-        "Payment Vertification",
-      );
+      if(!msg.done){
+        UI.dialog.show(
+          <Paybill
+            callback={(res) => {
+              console.log(res);
+            }}
+            desc={`Pay the amount ${msg.amount} to vertify your account.`}
+            from={mine}
+            target={msg.account}
+            amount={msg.amount}
+          />,
+          "Payment Vertification",
+        );
+      }else{
+        setToast(<ToastContainer position="middle-center" style={{paddingTop:"500px"}}>
+        <Toast bg={"info"}>
+          <Toast.Body>Already vertified.</Toast.Body>
+        </Toast></ToastContainer>);
+        setTimeout(()=>{
+          setToast("");
+        },1500);
+      }
     },
     vertify_done:(mine,obj)=>{
       console.log("Vertification done.");
@@ -105,13 +117,7 @@ function Talking(props) {
     payToVertify: (ev) => {
       RUNTIME.getAccount((acc) => {
         IMGC.vertify.reg(acc.address);
-        //IMGC.vertify.reg()
-        // UI.dialog.show(
-        //   <Vertify />,
-        //   "More details"
-        // );
       });
-      
     },
     back: () => {
       self.entry();
@@ -233,6 +239,7 @@ function Talking(props) {
           }}
         />
       </div>
+      {toast}
     </div>
   );
 }

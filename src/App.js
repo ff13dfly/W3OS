@@ -46,6 +46,9 @@ function App() {
     page: (ctx) => {
       setPageContent(ctx);
     },
+    toast:(ctx)=>{
+
+    },
     dialog:{
       show: (ctx, title, center) => {
         setContent(ctx);
@@ -174,8 +177,8 @@ function App() {
       <Navigator fresh={self.fresh} />
       <Container>
         <Board />
-        <Grid size={size} list={apps} funs={funs} edit={editing}  select={self.select} />
-        <Dialog show={show} content={content} callback={callback} title={title} funs={funs} center={center}/>
+        <Grid size={size} list={apps}  edit={editing} select={self.select} />
+        <Dialog show={show} content={content} callback={callback} title={title} center={center}/>
       </Container>
       {ctx_stage}
       {ctx_mask}
