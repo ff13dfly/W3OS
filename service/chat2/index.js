@@ -63,6 +63,12 @@ const delegate={
                     output(`Verification successful, ready to sent notification.`,"success");
                     //Chat.notification(res.from,{status:1,msg:"Payment vertification successful"});
                     Client.notice([from],{data:"Vertification done"},{act:"done",cat:"vertify"});
+
+                    //TODO, here to storage the vertification details.
+                    //console.log(`Here to save the vertification details`);
+                    //console.log(JSON.stringify(res));
+                    delete res.from;
+                    DB.hash_set("vertification",from,res);
                 },
                 (res)=>{    //when vertification failed
                     output(`Verification failed, ready to sent notification.`,"error");
@@ -71,7 +77,6 @@ const delegate={
                 }
             );
             
-            //FIXME,here will rerun subcribe, need to sovle this.
             Paytovertify.subcribe(Chain.subcribe,Chain.convert);
 
             const amount=Paytovertify.add(from,false);
@@ -102,8 +107,11 @@ const empty=(obj)=>{
 
 const getData=()=>{
     const gs=DB.key_dump();
+    if(gs.vertification) delete gs.vertification;
+
     const his=History.dump();
-    return {group:gs,history:his}
+    const ver_data=DB.hash_all("vertification");
+    return {group:gs,history:his,vertification:ver_data}
 };
 
 const setData=(json)=>{
@@ -118,6 +126,11 @@ const setData=(json)=>{
         History.recover(json.history);
         output(`Chat history recoverd`, "primary", true);
     }
+
+    if(json.vertification && !empty(json.vertification)){
+        DB.key_set("vertification",json.vertification);
+        output(`vertification recoverd`, "primary", true);
+    }
 };
 
 Valid(process.argv.slice(2),(res)=>{
@@ -128,7 +141,9 @@ Valid(process.argv.slice(2),(res)=>{
 
     const ver_addres=cfg.server.vertification;
     output(`Set vertification account ${ver_addres}`, "primary", true);
-    Paytovertify.account(ver_addres);         //set vertify account here
+
+    //Pay to vertify service basic setting.
+    Paytovertify.account(ver_addres);       //set vertify account here
     Chain.endpoint(cfg.server.polkadot);    //set chain endpoint
 
     Recover(getData,setData,()=>{

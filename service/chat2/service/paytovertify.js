@@ -18,9 +18,9 @@ const config={
 
 //Functions
 const self={
-    amount:(address,force,ck)=>{
+    amount:(address,force)=>{
         if(!map[address]){
-            const n=self.rand(1,99);
+            const n=5+self.rand(1,9999)*0.0001;
             map[address]={  //set the amount and expired time
                 amount:n, 
                 expired:self.stamp()+config.expired,

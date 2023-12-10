@@ -24,7 +24,7 @@ function TalkingGroup(props) {
       setTimeout(() => {
         const dom = (<div>
           <Announce id={to} content="This is an announce" />
-          <GroupOpt  id={to} clean={clean}  />
+          <GroupOpt id={to} clean={clean}  />
           <Chat address={to} height={700} click={self.onBlank} />
         </div>);
         props.page(dom, to, `ID: ${to}`);

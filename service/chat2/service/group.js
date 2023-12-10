@@ -50,8 +50,17 @@ const self={
             }
         }
         if(input) err.request=input;  //return the request parameters
+        //if(from) err.from=from;
         return err;
     },
+}
+
+const keys={    //update keys path
+    "nick":[], 
+    "announce":[],
+    "expired":[],
+    "pmt_announce":[],
+    "pmt_free":[],
 }
 
 module.exports = {
@@ -64,7 +73,9 @@ module.exports = {
     create:(input,from)=>{
         console.log(`From group.js/chat, input: ${JSON.stringify(input)}`);
 
-        if(!self.validAccounts(input.list)) return self.error("INPUT_INVALID_ACCOUNT","group","create",input);
+        if(!self.validAccounts(input.list)){
+            return self.error("INPUT_INVALID_ACCOUNT","group","create",input);
+        } 
 
         //1.prepare the group default data
         const gid=self.getGID();
@@ -96,10 +107,14 @@ module.exports = {
     detail:(input,from)=>{
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(data===null) return self.error("INPUT_INVALID_GROUP_ID","group","detail",input);
+        if(data===null){
+            return self.error("INPUT_INVALID_GROUP_ID","group","detail",input);
+        } 
 
         //1.check valid, only member of group can get it
-        if(!self.validInAccount(from,data.group)) return self.error("INPUT_UNEXCEPT","group","detail",input);
+        if(!self.validInAccount(from,data.group)){
+            return self.error("INPUT_UNEXCEPT","group","detail",input);
+        } 
 
         const todo=task("notice");
         todo.params.msg=data;
@@ -120,7 +135,9 @@ module.exports = {
         //1.save new account
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!self.validNewAccount(input.account,data.group)) return error("INPUT_UNEXCEPT");
+        if(!self.validNewAccount(input.account,data.group)){
+            return self.error("INPUT_UNEXCEPT","group","join",input);
+        } 
         data.group.push(input.account);
         DB.key_set(gid,data);
 
@@ -155,8 +172,12 @@ module.exports = {
 
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(data===null || !data) return self.error("SYSTEM_INVALID_DATA","group","leave",input);
-        if(!self.validInAccount(input.account,data.group)) return self.error("INPUT_UNEXCEPT","group","leave");
+        if(data===null || !data){
+            return self.error("SYSTEM_INVALID_DATA","group","leave",input);
+        } 
+        if(!self.validInAccount(input.account,data.group)){
+            return self.error("INPUT_UNEXCEPT","group","leave",input);
+        } 
 
         //1.notice to all and move target account
         const todos=[];
@@ -193,8 +214,14 @@ module.exports = {
         //1.check the permit and set new manager
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!data) return error("INPUT_UNEXCEPT");
-        if(data.manager!==from) return error("INPUT_UNEXCEPT");
+        if(!data){
+            return self.error("INPUT_UNEXCEPT","group","divert",input);
+        }
+
+        if(data.manager!==from){
+            return self.error("INPUT_UNEXCEPT","group","divert",input);
+        }
+
         data.manager=input.manager;
         DB.key_set(gid,data);
 
@@ -243,8 +270,12 @@ module.exports = {
         //1.check the permit and set new manager
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!data) return error("INPUT_UNEXCEPT");
-        if(data.manager!==from) return error("INPUT_UNEXCEPT");
+        if(!data){
+            return self.error("INPUT_UNEXCEPT","group","deport",input);
+        } 
+        if(data.manager!==from){
+            return self.error("INPUT_UNEXCEPT","group","deport",input);
+        }
 
         //2.add the account to block list
         data.block.push(input.account);
@@ -266,8 +297,13 @@ module.exports = {
         //1.check the permit and set new manager
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!data) return error("INPUT_UNEXCEPT");
-        if(data.manager!==from) return error("INPUT_UNEXCEPT");
+        if(!data){
+            return self.error("INPUT_UNEXCEPT","group","recover",input);
+        }
+
+        if(data.manager!==from){
+            return self.error("INPUT_UNEXCEPT","group","recover",input);
+        }
 
         //2.remove the account from block list
         const nlist=[];
@@ -295,8 +331,12 @@ module.exports = {
         //1.check the permit to remove group
         const gid=input.id;
         const data=DB.key_get(gid);
-        if(!data) return self.error("INPUT_UNEXCEPT","group","destory",input);
-        if(data.manager!==from) return self.error("INPUT_UNEXCEPT","group","destory",input);
+        if(!data){
+            return self.error("INPUT_UNEXCEPT","group","destory",input);
+        } 
+        if(data.manager!==from){
+            return self.error("INPUT_UNEXCEPT","group","destory",input);
+        } 
         DB.key_del(gid);
 
         //2.notice to all members.
@@ -327,7 +367,9 @@ module.exports = {
 
         const gid=input.to;
         const data=DB.key_get(gid);
-        if(data===null) return error("INPUT_INVALID_GROUP_ID");
+        if(data===null){
+            return self.error("INPUT_INVALID_GROUP_ID","group","message",input);
+        }
 
         const todos=[];
         for(let i=0;i<data.group.length;i++){
@@ -358,8 +400,9 @@ module.exports = {
 
         const gid=input.to;
         const data=DB.key_get(gid);
-        if(data===null) return error("INPUT_INVALID_GROUP_ID");
-
+        if(data===null){
+            return self.error("INPUT_INVALID_GROUP_ID","group","notice",input);
+        }
         const todos=[];
         for(let i=0;i<data.group.length;i++){
             const to=data.group[i];
@@ -379,5 +422,9 @@ module.exports = {
     //set the announcement of the group
     announce:(input,from)=>{
 
-    }
+    },
+
+    update:(input,from)=>{
+
+    },
 }
