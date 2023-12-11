@@ -36,24 +36,12 @@ function GroupOpt(props) {
 
   let [hidden, setHidden] = useState(true);
 
+  console.log(props);
+
   const UI = RUNTIME.getUI();
   const self = {
     click: () => {
       setHidden(!hidden);
-
-      // UI.mask(<Mask width={414} height={896} callback={()=>{
-      //   setHidden(true);
-      // }}/>);
-      //console.log(`Here to solve the popmenu hidden issue`);
-      // if(!hidden){
-      //   console.log(`Not hidden, try to set mask`);
-      //   UI.mask(<Mask width={414} height={896} callback={()=>{
-      //     setHidden(true);
-      //   }}/>);
-      // }else{
-      //   setHidden(!hidden);
-      // }
-
     },
     clickNick: (ev) => {
       UI.dialog.show(

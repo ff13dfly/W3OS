@@ -50,6 +50,7 @@ const delegate={
         destory:Group.destory,      //destory a group 
         chat:Group.message,         //chat in a group
         notice:Group.notice,        //sent notice to a target
+        update:Group.update,        //update group parameters
     },
     vertify:{           //server vertification functions
         init:null,

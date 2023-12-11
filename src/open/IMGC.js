@@ -219,12 +219,21 @@ const router={
       delete map[callback];
     }
   },
+  group_update:(res,callback)=>{
+    console.log(res);
+    console.log(callback);
+    //2.callback if there is
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
 };
 
 const decoder={
   try:(input)=>{
     if(recoder!==null) recoder(input);
-    //console.log(input.type);
+    console.log(input);
     switch (input.type){
       case "notice":
         //console.log("here to go");
@@ -367,15 +376,21 @@ const IMGC={
 
     //!important, key/val string only
     //update target group parameter
-    update:(key,val)=>{   
+    update:(key,val,id,ck)=>{   
+      //1.struct the request format
       const req={
         cat:"group",
-        act:"params",
+        act:"update",
+        id:id,
         key:key,
         val:val,
       }
+
+      //2.callback support, added to the callback map
+      if(ck) req.callback=self.setCallback(ck);
       self.send(req);
     },
+    
     switcher:(key,value)=>{
 
     },

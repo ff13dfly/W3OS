@@ -183,9 +183,13 @@ const errors={
     },
 
     "INPUT_UNEXCEPT":{
-        error:"Invalid Group ID.",
+        error:"Invalid input from request.",
         code:44744,
     },
+    "PERMIT_NOT_ALLOWED":{
+        error:"No permit to do.",
+        code:44501,
+    }
 }
 
 module.exports={

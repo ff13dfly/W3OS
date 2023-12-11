@@ -1,8 +1,11 @@
-import { Row, Col, Image } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useState,useEffect } from "react";
 import RUNTIME from "../lib/runtime";
 import tools from "../lib/tools";
 
+import IMGC from "../open/IMGC";
+
+let gp=null;
 function GroupNick(props) {
   const size = {
     row: [12],
@@ -14,22 +17,38 @@ function GroupNick(props) {
   let [disable, setDisalbe] = useState(true);
   let [nick, setNick]=useState("");
 
+  //console.log(props);
+
+
   const self = {
     change: (ev) => {
       setNick(ev.target.value);
-      if(!ev.target.value){
+      if(!ev.target.value || ev.target.value===gp.more.nick){
         setDisalbe(true);
       }else{
         setDisalbe(false);
       }
     },
     clickAdd:()=>{
-      console.log(`Ready to set group nickname.`);
+      console.log(`Ready to set group ${group} nickname: ${nick}`);
+      RUNTIME.getAccount((fa) => {
+        IMGC.group.update("nick",nick,group,(res)=>{
+          if(!res.error){
+            IMGC.group.detail(group);
+          }
+        });
+      })
     },
   };
 
   useEffect(() => {
-    console.log(group);
+    //console.log(group);
+    RUNTIME.getAccount((fa) => {
+      IMGC.local.view(fa.address,group,(res)=>{
+        gp=res;
+        setNick(gp.more.nick);
+      });
+    })
   }, []);
 
   return (
