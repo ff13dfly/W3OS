@@ -84,6 +84,7 @@ const file = {
 
 //convertor functions
 const cache = { "css": [], "js": [], "resource": {} }
+
 let websocket = null;
 const self = {
     getSuffix: (str) => {

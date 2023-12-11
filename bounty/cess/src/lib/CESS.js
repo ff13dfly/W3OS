@@ -17,6 +17,10 @@ const CESS={
         const space = new Space(api, keyring, true);
         const common = new Common(api, keyring, true);
         console.log(api);
+
+        // setInterval(()=>{
+        //     console.log(api);
+        // },5000);
         console.log(InitAPI);
         const accountId32 = "cXh5StobuVP4B7mGH9xn8dSsDtXks4qLAou8ZdkZ6DbB6zzxe";
         space.userOwnedSpace(accountId32).then((res)=>{

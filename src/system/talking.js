@@ -9,7 +9,7 @@ import Paybill from "../components/paybill";
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import SCROLLER from "../lib/scroll";
-//import tools from "../lib/tools";
+import tools from "../lib/tools";
 
 import IMGC from "../open/IMGC";
 //import Vertify from "../components/vertify";
@@ -32,12 +32,20 @@ function Talking(props) {
   //base on action to create notice recorder
   const decoder = {
     group_create: (mine, obj) => {
-      CHAT.save(mine, obj.msg.id, "New group created.", "notice", obj.msg.id, false, () => { });
+      CHAT.save(mine, obj.msg.id, "New group created, enjoy talking", "notice", obj.msg.id, false, () => { });
     },
     group_detail: (mine, obj) => {
       const msg=obj.msg;
-      const ctx=`${msg.group.length} members, enjoy talking.`;
+      const ctx=`${msg.group.length} members, group details updated.`;
       CHAT.save(mine, msg.id, ctx, "notice", msg.id, false, () => { });
+    },
+    group_divert:(mine,obj)=>{
+      console.log(obj);
+      const msg=obj.msg;
+      CHAT.save(mine, msg.id, `Group manager is ${tools.shorten(msg.manager)} now`, "notice", msg.id, false, () => { });
+    },
+    group_update:(mine,obj)=>{
+
     },
     group_leave: (mine, obj)=>{
       CHAT.save(mine, obj.msg.group, "Leave this group.", "notice", obj.msg.group, false, () => { });

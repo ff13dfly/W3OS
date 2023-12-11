@@ -226,7 +226,10 @@ module.exports = {
         for (let i = 0; i < data.group.length; i++) {
             const to = data.group[i];
             const todo = task("notice");
-            todo.params.msg = `Group manager is ${input.manager} now`;
+            todo.params.msg ={
+                id:gid,
+                manager:input.manager,
+            };
             todo.params.to = to;
             todo.params.method = {
                 act: "divert",
@@ -236,25 +239,25 @@ module.exports = {
         }
 
         //2.2.sent notice to new manager
-        const n_new = task("notice");
-        n_new.params.msg = `You are the new group manager`;
-        n_new.params.to = input.manager;
-        n_new.params.method = {
-            act: "divert",
-            cat: "group"
-        };
-        todos.push(n_new);
+        // const n_new = task("notice");
+        // n_new.params.msg = `You are the new group manager`;
+        // n_new.params.to = input.manager;
+        // n_new.params.method = {
+        //     act: "divert",
+        //     cat: "group"
+        // };
+        // todos.push(n_new);
 
         //2.3.sent notice to old manager
-        const o_new = task("notice");
-        o_new.params.msg = `You are not the group manager`;
-        o_new.params.to = from;
-        o_new.params.method = {
-            act: "divert",
-            cat: "group"
-        };
-        if (input.callback) o_new.callback = input.callback;
-        todos.push(o_new);
+        // const o_new = task("notice");
+        // o_new.params.msg = `You are not the group manager`;
+        // o_new.params.to = from;
+        // o_new.params.method = {
+        //     act: "divert",
+        //     cat: "group"
+        // };
+        // if (input.callback) o_new.callback = input.callback;
+        // todos.push(o_new);
 
         toast(todos.length);    //inc the notice amount
 
