@@ -210,11 +210,11 @@ module.exports = {
         const gid = input.id;
         const data = DB.key_get(gid);
         if (!data) {
-            return self.error("INPUT_UNEXCEPT", "group", "divert", input);
+            return self.error("INPUT_INVALID_GROUP_ID", "group", "divert", input);
         }
 
         if (data.manager !== from) {
-            return self.error("INPUT_UNEXCEPT", "group", "divert", input);
+            return self.error("PERMIT_NOT_ALLOWED", "group", "divert", input);
         }
 
         data.manager = input.manager;
@@ -229,7 +229,7 @@ module.exports = {
             todo.params.msg = `Group manager is ${input.manager} now`;
             todo.params.to = to;
             todo.params.method = {
-                act: "devert",
+                act: "divert",
                 cat: "group"
             };
             todos.push(todo);
@@ -240,7 +240,7 @@ module.exports = {
         n_new.params.msg = `You are the new group manager`;
         n_new.params.to = input.manager;
         n_new.params.method = {
-            act: "devert",
+            act: "divert",
             cat: "group"
         };
         todos.push(n_new);
@@ -250,9 +250,10 @@ module.exports = {
         o_new.params.msg = `You are not the group manager`;
         o_new.params.to = from;
         o_new.params.method = {
-            act: "devert",
+            act: "divert",
             cat: "group"
         };
+        if (input.callback) o_new.callback = input.callback;
         todos.push(o_new);
 
         toast(todos.length);    //inc the notice amount
@@ -421,7 +422,7 @@ module.exports = {
 
     update: (input, from) => {
         console.log(`Group/update params from ${from}: ${JSON.stringify(input)}`);
-        //console.log(input);
+        
         //1.check group status.
         const gid = input.id;
         const data = DB.key_get(gid);
@@ -442,10 +443,22 @@ module.exports = {
                 path:["nick"],
                 type:"string",
             },
-            "announce": [],
-            "expired": [],
-            "pmt_announce": [],
-            "pmt_free": [],
+            "announce":{
+                path:["announce","content"],
+                type:"string",
+            },
+            "expired": {
+                path:["announce","expired"],
+                type:"integer",
+            },
+            "pmt_announce": {
+                path:["permit","announce"],
+                type:"boolean",
+            },
+            "pmt_free": {
+                path:["permit","free"],
+                type:"boolean",
+            },
         }
         if (!keys[input.key]) {
             return self.error("INPUT_UNEXCEPT", "group", "update", input);

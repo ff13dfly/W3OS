@@ -197,7 +197,7 @@ function Chat(props) {
     });
 
     if(self.isGroup(to)){
-      console.log(`Here to get group details`);
+      //console.log(`Here to get group details`);
       IMGC.local.view(mine,to,(gp)=>{
         console.log(gp);
       });

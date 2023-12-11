@@ -36,8 +36,6 @@ function GroupOpt(props) {
 
   let [hidden, setHidden] = useState(true);
 
-  console.log(props);
-
   const UI = RUNTIME.getUI();
   const self = {
     click: () => {
@@ -162,7 +160,7 @@ function GroupOpt(props) {
                   setHidden(true);
                 }}>
                 <MdJoinLeft size={30} />
-                <p className="pt-2">Add</p>
+                <p className="pt-2">Members</p>
               </Col>
               <Col className="pb-2 pt-2 text-center" xs={size.cell[0]} sm={size.cell[0]} md={size.cell[0]}
                 lg={size.cell[0]} xl={size.cell[0]} xxl={size.cell[0]} onClick={(ev) => {

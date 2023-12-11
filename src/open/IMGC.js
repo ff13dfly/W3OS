@@ -209,6 +209,15 @@ const router={
       delete map[callback];
     } 
   },
+  group_divert:(res,callback)=>{
+    //1.
+
+    //2.callback if there is
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
 
   group_join:(res,callback)=>{
     //1.
@@ -260,7 +269,6 @@ const decoder={
         }else{
           //TODO, unreconginzed error process.
         }
-
         break;
 
       default:
@@ -352,6 +360,17 @@ const IMGC={
       if(ck) req.callback=self.setCallback(ck); 
       self.send(req);
     },
+    divert:(id,account,ck)=>{
+      const req={
+        cat:"group",
+        act:"divert",
+        id:id,
+        manager:account,
+      }
+      //2.callback support, added to the callback map
+      if(ck) req.callback=self.setCallback(ck); 
+      self.send(req);
+    },
 
     destory:(id,ck)=>{
       const req={
@@ -376,7 +395,7 @@ const IMGC={
 
     //!important, key/val string only
     //update target group parameter
-    update:(key,val,id,ck)=>{   
+    update:(id,key,val,ck)=>{   
       //1.struct the request format
       const req={
         cat:"group",

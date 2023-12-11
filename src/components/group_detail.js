@@ -14,6 +14,7 @@ function GroupDetail(props) {
   let [create,setCreate]=useState("");
   let [list,setList]=useState([]);
   let [founder,setFounder]=useState("");
+  let [manager,setManager]=useState("");
 
   const self = {
     change: (ev) => {
@@ -33,6 +34,7 @@ function GroupDetail(props) {
 
         setList(data.group);
         setFounder(data.founder);
+        setManager(data.manager);
       });
     });
   }, []);
@@ -50,6 +52,12 @@ function GroupDetail(props) {
           {row} 
         </Col>
       ))}
+      <Col className="pt-4" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+        <h6>Manager:</h6>  
+      </Col>
+      <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+        {manager}
+      </Col>
       <Col className="pt-4" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
         <h6>Founer:</h6>  
       </Col>

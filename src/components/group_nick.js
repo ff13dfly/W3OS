@@ -32,7 +32,7 @@ function GroupNick(props) {
     clickAdd:()=>{
       console.log(`Ready to set group ${group} nickname: ${nick}`);
       RUNTIME.getAccount((fa) => {
-        IMGC.group.update("nick",nick,group,(res)=>{
+        IMGC.group.update(group,"nick",nick,(res)=>{
           if(!res.error){
             IMGC.group.detail(group);
           }

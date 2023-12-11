@@ -29,23 +29,12 @@ function GroupDivert(props) {
     },
     clickAdd: () => {
       console.log(`Ready to change the manager`);
-      // setDisalbe(true);
       const target = self.getSelected(list);
-      console.log(target);
-      
-      // IMGC.group.create(accs, (res) => {
-      //   console.log(`Group created: ${JSON.stringify(res)}`);
-      //   IMGC.group.detail(res.id, (gp) => {
-      //     console.log(`Group details: ${JSON.stringify(gp)}`);
-
-      //     setInfo("Group created successful.");
-      //     setTimeout(() => {
-      //       setDisalbe(false);
-
-      //       props.back();
-      //     }, 1500);
-      //   });
-      // });
+      IMGC.group.divert(group,target[0], (res) => {
+        if(!res.error){
+          IMGC.group.detail(group);
+        }
+      });
     },
     fresh: () => {
       const nlist = JSON.parse(JSON.stringify(list));
