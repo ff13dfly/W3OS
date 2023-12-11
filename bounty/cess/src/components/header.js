@@ -5,9 +5,9 @@ function Nav(props) {
   return (
     <Navbar className="bg-body-tertiary">
       <Container>
-      <Navbar.Brand href="#">
-              <h5>ChainPhoto</h5>
-            </Navbar.Brand>
+        <Navbar.Brand href="#">
+          <h5>ChainPhoto</h5>
+        </Navbar.Brand>
         <Row>
           <Col className="text-end" hidden={true}>
             User

@@ -1,14 +1,14 @@
 {  
-    "name":"vara",
+    "name":"moonbeam",
     "framework":"frame_react.js",
     "version":"1.0.1",
     "related":{
-        "js":"sy_js",
-        "css":"sy_css",
-        "resource":"sy_data",
-        "resource_ref":"sy_map"
+        "js":"mm_js",
+        "css":"mm_css",
+        "resource":"mm_data",
+        "resource_ref":"mm_map"
     },
-    "directory":"package/vara",
+    "directory":"package/moonbeam",
     "asset":"asset-manifest.json",
     "globalVars":[],
     "blockmax":1500000,
