@@ -227,6 +227,11 @@ const self = {
             'svg': 'image/svg+xml'
         };
         if (img[check]) return img[check];
+
+        const apps={
+            'wasm': 'application/octet-stream',
+        }
+        if(apps[check]) return apps[check];
         return 'application';
     },
     auto: (server, ck) => {
@@ -453,6 +458,9 @@ file.read(cfgFile, (xcfg) => {
 
             //4.check the public folder to get resouce and convert to Base64
             self.resource(xcfg.directory, xcfg.ignor, (todo) => {
+                console.log(todo);
+                //return false;
+
                 const related = xcfg.related;
                 let list = [];
 

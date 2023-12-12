@@ -45,7 +45,8 @@ const target="sudoku_0001.zkey";
 file.read(target,(fa)=>{
     console.log(fa.substr(0,100)+'...');
     //1.try to cut the base64 string;
-
+    const len=1500000;
+    
 
     //2.combine the string here;
 
