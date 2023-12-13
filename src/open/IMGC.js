@@ -24,17 +24,11 @@ const table = {
 
 
 let DBname = "w3os_indexed";
-let prefix = "talking_";
+let prefix = "group_";
 const DB={
   setConfig: (name, pre) => {
     DBname = name;
     prefix = pre;
-  },
-  checkTable: (from, list) => {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i] === from) return true;
-    }
-    return false;
   },
   getTable: (name) => {
     const data = JSON.parse(JSON.stringify(table));
@@ -57,11 +51,18 @@ const DB={
       delete data.last;
       row.more=data;
 
-      if (!DB.checkTable(table, tbs)) {
+      if (!INDEXED.checkTable(tbs,table)) {
         const tb = DB.getTable(table);
         INDEXED.initDB(DBname, [tb], res.version + 1).then((db) => {
-          INDEXED.insertRow(db, table, [row]);
-          return ck && ck();
+          if(!db || !db.objectStoreNames || !INDEXED.checkTable(db.objectStoreNames,table)){
+            return setTimeout(()=>{
+              DB.save(mine,id,data,ck);
+              return ck && ck();
+            },1000);
+          }else{
+            INDEXED.insertRow(db, table, [row]);
+            return ck && ck();
+          }       
         });
       } else {
         INDEXED.insertRow(res, table, [row]);
@@ -72,7 +73,16 @@ const DB={
   update:(mine,rows,ck)=>{
     const table = `${prefix}${mine}`;
     INDEXED.checkDB(DBname, (db) => {
-      INDEXED.updateRow(db, table, rows, ck);
+      if(!db || !db.objectStoreNames || !INDEXED.checkTable(db.objectStoreNames,table)){
+        return setTimeout(()=>{
+          //console.log(`Retry to update`);
+          DB.update(mine,rows,ck);
+        },1000);
+      }else{
+        //console.log(`Got the table ${table}, ready to update these rows:`);
+        //console.log(rows);
+        INDEXED.updateRow(db, table, rows, ck);
+      }
     });
   },
   view:(mine,id,ck)=>{
@@ -89,7 +99,7 @@ const DB={
       const tbs = db.objectStoreNames;
       const table = `${prefix}${mine}`;
       //console.log(table);
-      if (!DB.checkTable(table, tbs)) return ck && ck(false);
+      if (!INDEXED.checkTable(tbs,table)) return ck && ck(false);
       const step = 20;
       INDEXED.pageRows(db, table, ck, { page: page, step: step });
     });
@@ -306,6 +316,14 @@ const agent={
 
 
 const IMGC={
+  preInit:(acc,ck)=>{
+    const table=`${prefix}${acc}`;
+    const tb=DB.getTable(table);
+    INDEXED.checkDB(DBname, (res) => {
+      const tbs = res.objectStoreNames;
+      return ck && ck(!INDEXED.checkTable(tbs,table)?tb:false);
+    });
+  },
   setRecoder:(fun)=>{
     recoder=fun;
   },

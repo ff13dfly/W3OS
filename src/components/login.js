@@ -32,6 +32,11 @@ function Login(props) {
                 sign.meta.name = self.randomName();
                 RUNTIME.setAccount(sign);
                 props.fresh();
+
+                //init IndexedDBs
+                RUNTIME.initAccount(sign.address,(res)=>{
+                  console.log(`[ New account ] inited.`);
+                });    
               }}
               account={pair.address}
               mnemonic={mnemonic}
@@ -73,7 +78,6 @@ function Login(props) {
     changePassword: (ev) => {
       setPassword(ev.target.value);
     },
-
     save: () => {
       if (!password) return false;
       if (!encoded) return setInfo("Load encoded JSON file first");
@@ -83,7 +87,13 @@ function Login(props) {
         try {
           pair.decodePkcs8(password);
           self.setSignJSON(encoded);
-          props.fresh(); //父组件传过来的
+          props.fresh(); 
+
+          //console.log(`[ File account ]Ready to init account related IndexedDB.`);
+          //init IndexedDBs
+          RUNTIME.initAccount(encoded.address,(res)=>{
+            console.log(`[ File account ] inited.`);
+          });
         } catch (error) {
           setInfo("Password error");
           if (error) return false;

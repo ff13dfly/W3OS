@@ -108,9 +108,7 @@ function Talking(props) {
       setTitle("Talking");
       RUNTIME.getAccount((fa)=>{
         if(!fa || !fa.address) return console.log(`Not login yet.`);
-        console.log(fa.address);
         RUNTIME.getTalking(fa.address,(list) => {
-          console.log(list)
           setFramework(
             <div className="talking_container" style={cmap}>
               {list.map((row, index) => (

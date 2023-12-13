@@ -14,7 +14,15 @@ const INDEXED = {
     hash = "";
   },
 
-  initDB: (name, tables, version) => {
+  //pending locker
+  setPending:(table)=>{
+
+  },
+  getPending:(table)=>{
+
+  },
+  
+  initDB: (name, tables, version,ck) => {
     return new Promise((resolve, reject) => {
       const indexedDB =
         window.indexedDB ||
@@ -40,6 +48,7 @@ const INDEXED = {
             store.createIndex(k, k, row.map);
           }
         }
+        return ck && ck(true);
       };
     });
   },
@@ -57,7 +66,6 @@ const INDEXED = {
       return ck && ck(false);
     };
   },
-
   insertRow: (db, table, list, ck) => {
     const request = db.transaction([table], "readwrite").objectStore(table);
     for (let i = 0; i < list.length; i++) {
@@ -87,7 +95,7 @@ const INDEXED = {
         return ck && ck(list);
       }
     };
-    request.onerror = function (e) {};
+    request.onerror = function (e) { };
   },
   checkTable: (tables, name) => {
     let valid = false;
@@ -119,11 +127,10 @@ const INDEXED = {
         return ck && ck({ count: count, latest: latest });
       }
     };
-    request.onerror = function (e) {};
+    request.onerror = function (e) { };
   },
   updateRow: (db, table, list, ck) => {
-    //console.log(table);
-    var store = db.transaction(table, "readwrite").objectStore(table);
+    const store = db.transaction(table, "readwrite").objectStore(table);
     for (let i = 0; i < list.length; i++) {
       const data = list[i];
       const request = store.put(data);
@@ -138,22 +145,18 @@ const INDEXED = {
   },
   pageRows: (db, table, ck, nav, search) => {
     let list = [];
-    var store = db.transaction(table, "readwrite").objectStore(table);
+    const store = db.transaction(table, "readwrite").objectStore(table);
+    const smap={}
     if (!search) {
-      var request = store.openCursor();
+      
     } else {
       //TODO, here to add the filter
     }
-
+    const request = store.openCursor(smap);
     let advanced = true;
     request.onsuccess = function (e) {
-      var cursor = e.target.result;
-      if (
-        advanced &&
-        nav !== undefined &&
-        nav.page !== undefined &&
-        nav.step !== undefined
-      ) {
+      const cursor = e.target.result;
+      if ( advanced && nav !== undefined && nav.page !== undefined && nav.step !== undefined){
         const skip = (nav.page - 1) * nav.step;
         if (skip > 0) cursor.advance((nav.page - 1) * nav.step);
         advanced = false;
@@ -163,11 +166,10 @@ const INDEXED = {
         list.push(cursor.value);
         cursor.continue(); // 遍历了存储对象中的所有内容
       } else {
-        //console.log(list);
         return ck && ck(list);
       }
     };
-    request.onerror = function (e) {};
+    request.onerror = function (e) { };
   },
   test: () => {
     //https://juejin.cn/post/7026900352968425486

@@ -2,7 +2,12 @@ import STORAGE from "./storage";
 import tools from "./tools";
 import Encry from "./encry";
 import Config from "../data/setting";
-//import Vertify from "../components/vertify";
+
+import INDEXED from "./indexed";
+import CHAT from "./chat";
+import BILL from "./bill";
+import IMGC from "../open/IMGC";
+
 
 let API = null;
 let wsAPI = null;
@@ -129,6 +134,9 @@ const RUNTIME = {
     nets[net](ck);
   },
 
+  /************************************************/
+  /************* Account Functions ****************/
+  /************************************************/
   getAccount: (ck) => {
     const fa = STORAGE.getKey("account");
     return ck && ck(fa);
@@ -139,6 +147,24 @@ const RUNTIME = {
   removeAccount: () => {
     STORAGE.removeKey("account");
     return true;
+  },
+  initAccount:(acc,ck)=>{
+    console.log(`Ready to init base indexedDB tables for account ${acc}`);
+    const list=[];
+    CHAT.preInit(acc,(tb_chat)=>{
+      if(tb_chat!==false) list.push(tb_chat);
+      BILL.preInit(acc,(tb_bill)=>{
+        if(tb_bill!==false) list.push(tb_bill);
+        IMGC.preInit(acc,(tb_group)=>{
+          if(tb_group!==false) list.push(tb_group);
+          if(list.length===0) return ck && ck(true);
+          const DBname = "w3os_indexed";
+          INDEXED.checkDB(DBname, (res) => {
+            INDEXED.initDB(DBname, list, res.version + 1,ck)
+          })
+        });
+      });
+    });
   },
 
   /************************************************/

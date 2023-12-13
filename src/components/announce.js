@@ -31,7 +31,7 @@ function Announce(props) {
   useEffect(() => {
     RUNTIME.getAccount((acc) => {
       IMGC.local.view(acc.address, group, (res) => {
-        console.log(res);
+        //console.log(res);
         if(res && res.more && res.more.announce && res.more.announce.content){
           if(tools.stamp()<res.more.announce.expired){
             setInfo(res.more.announce.content);

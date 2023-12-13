@@ -25,6 +25,14 @@ const status = {
 const map = {};
 
 const CHAT = {
+  preInit:(acc,ck)=>{
+    const table=`${prefix}${acc}`;
+    const tb=CHAT.getTable(table);
+    INDEXED.checkDB(DBname, (res) => {
+      const tbs = res.objectStoreNames;
+      return ck && ck(!INDEXED.checkTable(tbs,table)?tb:false);
+    });
+  },
   friends: (fs) => {
     //set friend list
     for (var k in fs) map[k] = true;
@@ -64,7 +72,7 @@ const CHAT = {
       }
       
       const tbs = res.objectStoreNames;
-      if (!CHAT.checkTable(table, tbs)) {
+      if (!INDEXED.checkTable(tbs, table)) {
         const tb = CHAT.getTable(table);
         INDEXED.initDB(DBname, [tb], res.version + 1).then((db) => {
           INDEXED.insertRow(db, table, [row]);
@@ -80,7 +88,7 @@ const CHAT = {
     INDEXED.checkDB(DBname, (db) => {
       const target = `${prefix}${mine}`;
       const tbs = db.objectStoreNames;
-      if (!CHAT.checkTable(target, tbs)) return ck && ck(false);
+      if (!INDEXED.checkTable(tbs,target)) return ck && ck(false);
       INDEXED.searchRows(db, target, "address", from, ck);
     });
   },
@@ -98,15 +106,7 @@ const CHAT = {
     INDEXED.checkDB(DBname, (db) => {
       INDEXED.updateRow(db, target, rows, ck);
     });
-  },
-
-  checkTable: (from, list) => {
-    for (let i = 0; i < list.length; i++) {
-      if (list[i] === from) return true;
-    }
-    return false;
-  },
-  
+  }
 };
 
 export default CHAT;

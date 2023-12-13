@@ -18,6 +18,14 @@ const table = {
   },
 };
 const BILL = {
+  preInit:(acc,ck)=>{
+    const table=`${prefix}${acc}`;
+    const tb=BILL.getTable(table);
+    INDEXED.checkDB(DBname, (res) => {
+      const tbs = res.objectStoreNames;
+      return ck && ck(!INDEXED.checkTable(tbs,table)?tb:false);
+    });
+  },
   setConfig: (name, pre) => {
     DBname = name;
     prefix = pre;
@@ -44,8 +52,16 @@ const BILL = {
       if (!BILL.checkTable(table, tbs)) {
         const tb = BILL.getTable(table);
         INDEXED.initDB(DBname, [tb], res.version + 1).then((db) => {
-          INDEXED.insertRow(db, table, [row]);
-          return ck && ck();
+          if(!INDEXED.checkTable(table,db.objectStoreNames)){
+            return setTimeout(()=>{
+              console.log(`Retry to insert paybill row`);
+              INDEXED.insertRow(db, table, [row]);
+              return ck && ck();
+            },1000);
+          }else{
+            INDEXED.insertRow(db, table, [row]);
+            return ck && ck();
+          }
         });
       } else {
         INDEXED.insertRow(res, table, [row]);
@@ -56,7 +72,14 @@ const BILL = {
   update: (mine, rows, ck) => {
     const table = `${prefix}${mine}`;
     INDEXED.checkDB(DBname, (db) => {
-      INDEXED.updateRow(db, table, rows, ck);
+      if(!INDEXED.checkTable(table,db.objectStoreNames)){
+        return setTimeout(()=>{
+          console.log(`Retry to update`);
+          INDEXED.updateRow(db, table, rows, ck);
+        },1000);
+      }else{
+        INDEXED.updateRow(db, table, rows, ck);
+      }
     });
   },
   page: (mine, page, ck) => {
