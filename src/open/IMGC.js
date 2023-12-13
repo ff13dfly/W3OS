@@ -94,14 +94,16 @@ const DB={
       INDEXED.pageRows(db, table, ck, { page: page, step: step });
     });
   },
-  groupList:(id,data,ck)=>{
+  groupList:(acc,id,data,ck)=>{
+    //console.log(acc);
     const nlist=[data];
-    RUNTIME.getTalking((list)=>{
+    RUNTIME.getTalking(acc,(list)=>{
+      console.log(list);
       for(let i=0;i<list.length;i++){
         const row=list[i];
         if(row.id!==id) nlist.push(row);
       }
-       RUNTIME.setTalking(nlist,ck);
+       RUNTIME.setTalking(acc,nlist,ck);
     });
   },
 }
@@ -159,7 +161,7 @@ const router={
           msg:"",
         }
       }
-      DB.groupList(res.id,odata,(res)=>{
+      DB.groupList(mine,res.id,odata,(res)=>{
         //console.log(`Group oreder index saved`);
       });
     });
@@ -198,7 +200,7 @@ const router={
           msg:"",
         }
       }
-      DB.groupList(row.id,odata,(res)=>{
+      DB.groupList(mine,row.id,odata,(res)=>{
         //console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
       });
     });

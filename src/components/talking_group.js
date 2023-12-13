@@ -23,7 +23,7 @@ function TalkingGroup(props) {
       //console.log(to);
       setTimeout(() => {
         const dom = (<div>
-          <Announce id={to} content="This is an announce" />
+          <Announce id={to} />
           <GroupOpt id={to} clean={clean}  />
           <Chat address={to} height={700} click={self.onBlank} />
         </div>);

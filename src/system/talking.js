@@ -106,17 +106,22 @@ function Talking(props) {
     },
     entry: () => {
       setTitle("Talking");
-      RUNTIME.getTalking((list) => {
-        setFramework(
-          <div className="talking_container" style={cmap}>
-            {list.map((row, index) => (
-              row.type === "group" ?
-                <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
-                <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
-            ))}
-          </div>
-        );
-        SCROLLER.allowScroll();
+      RUNTIME.getAccount((fa)=>{
+        if(!fa || !fa.address) return console.log(`Not login yet.`);
+        console.log(fa.address);
+        RUNTIME.getTalking(fa.address,(list) => {
+          console.log(list)
+          setFramework(
+            <div className="talking_container" style={cmap}>
+              {list.map((row, index) => (
+                row.type === "group" ?
+                  <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
+                  <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
+              ))}
+            </div>
+          );
+          SCROLLER.allowScroll();
+        });
       });
     },
     newGroup: () => {

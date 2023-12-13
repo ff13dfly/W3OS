@@ -23,7 +23,7 @@ const keys = {
   apps: `${prefix}_apps_list`,
   salt: `${prefix}_salt`,
   vertify: `${prefix}_check`,
-  talking:`${prefix}_talking`,
+  //talking:`${prefix}_talking`,
 };
 STORAGE.setMap(keys);
 
@@ -235,18 +235,31 @@ const RUNTIME = {
   /*************** Talking Setting ****************/
   /************************************************/
 
-  getTalking:(ck)=>{
-    const key="talking";
+  getTalking:(acc,ck)=>{
+    if(typeof acc != "string") return false;
+    const key=`talking_${acc}`;
+    if(!STORAGE.checkMap(key)){
+      const nmap={};
+      nmap[key]=`${prefix}_talking_${acc}`;
+      STORAGE.setMap(nmap);
+    }
+
     const list = STORAGE.getKey(key);
     if (list === null) {
       STORAGE.setKey(key,[]);
     }
     return ck && ck(STORAGE.getKey(key));
   },
-  setTalking:(list,ck)=>{
-    const key="talking";
+  setTalking:(acc,list,ck)=>{
+    if(typeof acc != "string") return false;
+    const key=`talking_${acc}`;
+    if(!STORAGE.checkMap(key)){
+      const nmap={};
+      nmap[key]=`${prefix}_talking_${acc}`;
+      STORAGE.setMap(nmap);
+    }
     STORAGE.setKey(key,list);
-    return ck && ck();
+    return ck && ck(true);
   },
 
   /************************************************/
@@ -444,7 +457,7 @@ const RUNTIME = {
   },
   updateTalkingIndex:(from,to,msg,ck,unread)=>{
     console.log(`From "RUNTIME.updateTalkingIndex": unread: ${unread}`);
-    RUNTIME.getTalking((list)=>{
+    RUNTIME.getTalking((to,list)=>{
       let nlist=[];
       let target=null;
       //1. filter out the target group
@@ -510,7 +523,7 @@ const RUNTIME = {
           nlist.unshift(atom);
         }
       }
-      RUNTIME.setTalking(nlist,ck);
+      RUNTIME.setTalking(to,nlist,ck);
     });
   },
 };

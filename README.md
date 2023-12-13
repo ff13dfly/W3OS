@@ -14,6 +14,16 @@
   1. The anchor owner can set the password to decode the data on chain.
   2. Only authed viewer can get the decoded data. Or, will get the encoded data.
 
+## Code
+
+- W3OS itself. It is a React project, the code is in the folder "src".
+
+- "service", the service support the W3OS, this time, it is IMS () and GCS (). You can get more details from [IMGC introduction](service/README.md).
+
+- "support", there are the support tools, including `loader` and `convertor`. The `loader` can load application from **Anchor Network** by Anchor name. The `convertor` can deploy normal React application to **Anchor Network**.
+
+- "bounty", there are the bouties which are deployed on **Anchor Network**.
+
 ## Resource
 
 - Polkadot/Substrate

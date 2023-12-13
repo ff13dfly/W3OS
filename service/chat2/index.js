@@ -124,7 +124,7 @@ const getData=()=>{
     const gs=DB.key_dump();
     const his=History.dump();
     const ver_data=DB.hash_all("vertification");
-    return {group:gs,history:his,vertification:ver_data}
+    return {history:his,group:gs,vertification:ver_data}
 };
 
 const setData=(json)=>{

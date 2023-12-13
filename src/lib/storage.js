@@ -34,6 +34,10 @@ const STORAGE = {
     for (var k in obj) map[k] = obj[k];
     return true;
   },
+  checkMap:(key)=>{
+    if(map[key]) return true;
+    return false;
+  },
 
   removeKey: (name) => {
     if (!map[name]) return false;

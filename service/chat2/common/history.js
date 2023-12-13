@@ -1,21 +1,7 @@
 let map={};
-let timer=null;
-
-const self={
-    auto:()=>{
-        if(timer===null){
-            console.log(`Ready to recover the history data`);
-            timer=setInterval(()=>{
-                //console.log(`Autosave chat history.`);
-            },2000);
-        }
-    },
-}
 
 module.exports = {
     message:(from, to, ctx, group) => {
-        if(timer===null) self.auto();
-
         if(!map[to]) map[to]=[];
         const row={
             from:from,
@@ -26,9 +12,19 @@ module.exports = {
         if(group) row.group=group;
         map[to].push(row)
     },
+    notice:(from,to,obj,group)=>{
+        if(!map[to]) map[to]=[];
+        const row={
+            type:"notice",
+            from:from,
+            to:to,
+            content:obj,            //{method:{cat:"",act:""},data:{}}
+            stamp:new Date().getTime(),
+        }
+        if(group) row.group=group;
+        map[to].push(row)
+    },
     mine:(address)=>{
-        if(timer===null) self.auto();
-
         if(!map[address]) return [];
         return map[address];
     },

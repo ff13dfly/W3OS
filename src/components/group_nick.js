@@ -18,8 +18,6 @@ function GroupNick(props) {
   let [nick, setNick]=useState("");
 
   //console.log(props);
-
-
   const self = {
     change: (ev) => {
       setNick(ev.target.value);
@@ -29,12 +27,14 @@ function GroupNick(props) {
         setDisalbe(false);
       }
     },
-    clickAdd:()=>{
-      console.log(`Ready to set group ${group} nickname: ${nick}`);
+    clickNick:()=>{
+      //console.log(`Ready to set group ${group} nickname: ${nick}`);
       RUNTIME.getAccount((fa) => {
         IMGC.group.update(group,"nick",nick,(res)=>{
           if(!res.error){
-            IMGC.group.detail(group);
+            IMGC.group.detail(group);   //update group details from server
+            const UI=RUNTIME.getUI();
+            UI.dialog.hide();
           }
         });
       })
@@ -66,7 +66,7 @@ function GroupNick(props) {
       </Col>
       <Col className="text-end" xs={size.opt[1]} sm={size.opt[1]} md={size.opt[1]} lg={size.opt[1]} xl={size.opt[1]} xxl={size.opt[1]}>
         <button disabled={disable} className="btn btn-md btn-primary" onClick={(ev) => {
-          self.clickAdd();
+          self.clickNick();
         }}>Set Group Name</button>
       </Col>
     </Row>

@@ -12,7 +12,7 @@ const accountSpam = {}, spamToAccount = {};
 const actions={
     message:(params,callback)=>{
         if(!accountSpam[params.to]){
-            console.log(`${params.to} is not active, ready to push history`);
+            console.log(`${params.to} is not active, ready to push message history`);
             History.message(params.from, params.to, params.msg, !params.group?undefined:params.group);
         }else{
             params.type="message";
@@ -20,17 +20,18 @@ const actions={
         }
     },
     notice:(params,callback)=>{
-        const data={}
-        data.type="notice";
-        data.msg=params.msg;
-        data.method=params.method;
-        if(callback!==undefined){
-            data.method.callback=callback;
-        }
-
         if(!accountSpam[params.to]){
-            console.log("Not active");
+            console.log(`${params.to} is not active, ready to push notice history`);
+            const dt={method:params.method,data:params.msg};
+            History.notice(params.from, params.to,dt,!params.group?undefined:params.group);
         }else{
+            const data={}
+            data.type="notice";
+            data.msg=params.msg;
+            data.method=params.method;
+            if(callback!==undefined){
+                data.method.callback=callback;
+            }
             self.success(data,accountSpam[params.to]);
         }
     },

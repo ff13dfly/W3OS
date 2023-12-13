@@ -20,11 +20,10 @@ const task={
     "notice":{
         action:"notice",
         params:{
-            act:"notice",
-            cat:"chat",
             msg:{},
             from:"System",
             to:"SS58_ACCOUNT",
+            group:"GROUP ID",           //Group ID, if there is
             method:{
                 cat:"",
                 act:"",

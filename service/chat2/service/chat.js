@@ -22,17 +22,31 @@ module.exports = {
         const list=History.mine(from);
         for(let i=0;i<list.length;i++){
             const row=list[i];
-            const mm=task("message");
-            mm.params.msg=row.content;
-            mm.params.to=row.to;
-            mm.params.from=row.from;
-            if(row.group){
-                mm.params.group=row.group;
-                mm.params.method.cat="group";
+            if(!row.type){
+                const mm=task("message");
+                mm.params.msg=row.content;
+                mm.params.to=row.to;
+                mm.params.from=row.from;
+                if(row.group){
+                    mm.params.group=row.group;
+                    mm.params.method.cat="group";
+                }else{
+                    delete mm.params.group;
+                } 
+                nlist.push(mm);
             }else{
-                delete mm.params.group;
-            } 
-            nlist.push(mm);
+                const nn=task("notice");
+                nn.params.msg=row.content;
+                nn.params.to=row.to;
+                nn.params.from=row.from;
+                if(row.group){
+                    nn.params.group=row.group;
+                    nn.params.method=row.content.method;
+                }else{
+                    delete nn.params.group;
+                } 
+                nlist.push(nn);
+            }        
         }
         History.clean(from,list.length);
 

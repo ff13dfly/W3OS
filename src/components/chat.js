@@ -120,15 +120,15 @@ function Chat(props) {
         }
       });
     },
-    indexUpdate: (id) => {
+    indexUpdate: (acc,id) => {
       //console.log(`Update the localStorage index here. ${to}`);
-      RUNTIME.getTalking((list) => {
+      RUNTIME.getTalking(acc,(list) => {
         for (let i = 0; i < list.length; i++) {
           if (list[i].id === id) {
             list[i].un = 0;
           }
         }
-        RUNTIME.setTalking(list);
+        RUNTIME.setTalking(acc,list);
       });
     },
     live: (res) => {
@@ -189,7 +189,7 @@ function Chat(props) {
 
   useEffect(() => {
     self.entry(() => {
-      self.indexUpdate(to);
+      self.indexUpdate(mine,to);
     });
 
     RUNTIME.setMailer(to, (res) => {
