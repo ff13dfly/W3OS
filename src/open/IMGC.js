@@ -104,8 +104,8 @@ const DB={
       INDEXED.pageRows(db, table, ck, { page: page, step: step });
     });
   },
+  //put target group on top of the list
   groupList:(acc,id,data,ck)=>{
-    //console.log(acc);
     const nlist=[data];
     RUNTIME.getTalking(acc,(list)=>{
       console.log(list);

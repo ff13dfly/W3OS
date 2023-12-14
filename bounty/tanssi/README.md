@@ -6,7 +6,7 @@
 
 - [https://docs.tanssi.network](https://docs.tanssi.network)
 
-## How to
+## Development
 
 - Folk [https://github.com/moondance-labs/tanssi](https://github.com/moondance-labs/tanssi) to [https://github.com/ff13dfly/tanssi](https://github.com/ff13dfly/tanssi)
 
@@ -21,6 +21,14 @@
 - Last step, modify the "Cargo.toml" of anchor-pallet. Copy all the content from [https://github.com/ff13dfly/Anchor/blob/main/frame/anchor/Cargo.toml](https://github.com/ff13dfly/Anchor/blob/main/frame/anchor/Cargo.toml) to [https://github.com/ff13dfly/tanssi/blob/master/container-chains/pallets/anchor/Cargo.toml](https://github.com/ff13dfly/tanssi/blob/master/container-chains/pallets/anchor/Cargo.toml). Then modify the path such as `path = "../pallet-name"` to `{ workspace = true }`.
 
 - Then you can build the appchain successful with `cargo build`.
+
+## Deployment
+
+- Get the JSON file.
+
+```SHELL
+    ./tanssi-node build-spec --disable-default-bootnode --chain local > anchor.json
+```
 
 ## Result
 
