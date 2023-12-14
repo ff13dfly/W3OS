@@ -5,6 +5,7 @@ import { mnemonicGenerate } from "@polkadot/util-crypto";
 
 import RUNTIME from "../lib/runtime";
 import Password from "./password";
+import tools from "../lib/tools";
 
 function Login(props) {
   let [password, setPassword] = useState("");
@@ -92,7 +93,7 @@ function Login(props) {
           //console.log(`[ File account ]Ready to init account related IndexedDB.`);
           //init IndexedDBs
           RUNTIME.initAccount(encoded.address,(res)=>{
-            console.log(`[ File account ] inited.`);
+            console.log(`[ File account ] inited. At ${tools.stamp().toLocaleString()}`);
           });
         } catch (error) {
           setInfo("Password error");

@@ -158,7 +158,7 @@ const router={
         msg:"",
       }
     }
-    console.log(data);
+    //console.log(data);
     DB.save(mine,res.id,data,()=>{
       const odata={
         id:res.id,
@@ -254,6 +254,7 @@ const router={
 const decoder={
   try:(input)=>{
     if(recoder!==null) recoder(input);
+    console.log(`Here to check the input and call the method to deal with notice`);
     console.log(input);
     switch (input.type){
       case "notice":
@@ -294,6 +295,7 @@ const decoder={
 const agent={
   open:(res)=>{},
   message:(res)=>{
+    console.warn(`!!! The raw message from websockekt: ${res.data}`);
     try {
       const input=JSON.parse(res.data);
       if(input.act==="init"){
@@ -330,7 +332,8 @@ const IMGC={
   init:(fun)=>{
     if(fun) IMGC.setRecoder(fun); //set out recoder
 
-    //Set IO decoder
+    //Set IO decoder, get the parameters from URL
+    //Support to join the group by QR
     IO.regOpen("IMGC",(params,UI)=>{
       console.log(params);
     });

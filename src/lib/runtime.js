@@ -149,7 +149,7 @@ const RUNTIME = {
     return true;
   },
   initAccount:(acc,ck)=>{
-    console.log(`Ready to init base indexedDB tables for account ${acc}`);
+    console.log(`Ready to init base indexedDB tables for account ${acc}, at ${tools.stamp().toLocaleString()}`);
     const list=[];
     CHAT.preInit(acc,(tb_chat)=>{
       if(tb_chat!==false) list.push(tb_chat);

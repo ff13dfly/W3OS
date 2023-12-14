@@ -139,8 +139,11 @@ function Talking(props) {
     },
 
     recorder: (input) => {
+      console.log(`Here to get all the messages.`);
+      console.log(input);
+      
       if (!input || !input.type) return false;
-      //console.log(input);
+
       const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
       switch (input.type) {
         case "message":     //message recorder process

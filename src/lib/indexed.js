@@ -146,13 +146,16 @@ const INDEXED = {
   pageRows: (db, table, ck, nav, search) => {
     let list = [];
     const store = db.transaction(table, "readwrite").objectStore(table);
-    const smap={}
+    
+    let request=null;
     if (!search) {
-      
+      request = store.openCursor();
     } else {
       //TODO, here to add the filter
+      const smap={}
     }
-    const request = store.openCursor(smap);
+    if(request===null) return ck && ck(false);
+
     let advanced = true;
     request.onsuccess = function (e) {
       const cursor = e.target.result;
