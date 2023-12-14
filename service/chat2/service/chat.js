@@ -5,8 +5,6 @@ const History = require("../common/history");
 
 module.exports = {
     online:(input,from)=>{
-        //const data=status();        //get the server status
-        
         //1.sent the servee
         const todo=task("notice");
         todo.params.method={
@@ -36,7 +34,7 @@ module.exports = {
                 nlist.push(mm);
             }else{
                 const nn=task("notice");
-                nn.params.msg=row.content;
+                nn.params.msg=row.content.data;
                 nn.params.to=row.to;
                 nn.params.from=row.from;
                 if(row.group){

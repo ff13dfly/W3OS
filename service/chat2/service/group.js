@@ -84,18 +84,23 @@ module.exports = {
         DB.key_set(gid, data);
 
         //2.sent notification to creator
-        const todo = task("notice");
-        todo.params.msg = { id: gid };
-        todo.params.to = from;
-        todo.params.method = {
-            act: "create",
-            cat: "group"
-        };
-        if (input.callback) todo.callback = input.callback;
+        const todos=[];
+        for(let i=0;i<input.list.length;i++){
+            const acc=input.list[i];        //member of group
+            const todo = task("notice");
+            todo.params.msg = { id: gid };
+            todo.params.from = from;            //action account
+            todo.params.to = acc;               //receiver account
+            todo.params.group=gid;
+            todo.params.method = {
+                act: "create",
+                cat: "group"
+            };
+            if (acc===from && input.callback) todo.callback = input.callback;
+            todos.push(todo);
+        }
 
-        //TODO,sent notification to related customer
-
-        return [todo];
+        return todos;
     },
 
     //get the group details
@@ -114,6 +119,7 @@ module.exports = {
         const todo = task("notice");
         todo.params.msg = data;
         todo.params.to = from;
+        todo.params.group = gid;
         todo.params.method = {
             act: "detail",
             cat: "group"
