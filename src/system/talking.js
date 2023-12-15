@@ -104,21 +104,51 @@ function Talking(props) {
       setHidden(true);
       if (header) setTitle(header);
     },
+    getPendingGroups:(list)=>{
+      const ps=[];
+      for(let i=0;i<list.length;i++){
+        const row=list[i];
+        if(row.type==="group" && row.group.length<2){
+          ps.push(row.id);
+        }
+      }
+      return ps;
+    },
+    updateGroup:(ps,ck)=>{
+      if(ps.length===0) return ck && ck();
+      const id=ps.pop();
+      IMGC.group.detail(id,(res)=>{
+        //console.log("Callback? ");
+        //console.log(res);
+        self.updateGroup(ps,ck);
+      });
+    },
+    render:(list)=>{
+      setFramework(
+        <div className="talking_container" style={cmap}>
+          {list.map((row, index) => (
+            row.type === "group" ?
+              <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
+              <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
+          ))}
+        </div>
+      );
+      SCROLLER.allowScroll();
+    },
     entry: () => {
       setTitle("Talking");
       RUNTIME.getAccount((fa)=>{
         if(!fa || !fa.address) return console.log(`Not login yet.`);
         RUNTIME.getTalking(fa.address,(list) => {
-          setFramework(
-            <div className="talking_container" style={cmap}>
-              {list.map((row, index) => (
-                row.type === "group" ?
-                  <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
-                  <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
-              ))}
-            </div>
-          );
-          SCROLLER.allowScroll();
+          //console.log(list);
+          const ps=self.getPendingGroups(list);
+          if(ps.length!==0){
+            self.updateGroup(ps,()=>{
+
+            });
+          }else{
+            self.render(list);
+          }
         });
       });
     },

@@ -108,7 +108,7 @@ const DB={
   groupList:(acc,id,data,ck)=>{
     const nlist=[data];
     RUNTIME.getTalking(acc,(list)=>{
-      console.log(list);
+      //console.log(list);
       for(let i=0;i<list.length;i++){
         const row=list[i];
         if(row.id!==id) nlist.push(row);

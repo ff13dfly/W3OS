@@ -20,9 +20,9 @@ const actions={
         }
     },
     notice:(params,callback)=>{
-        console.log(`Here to push notice history`);
-        console.log(params);
-        console.log(callback);
+        //console.log(`Here to push notice history`);
+        //console.log(params);
+        //console.log(callback);
         if(!accountSpam[params.to]){
             console.log(`${params.to} is not active, ready to push notice history`);
             const dt={method:params.method,data:params.msg};
@@ -62,7 +62,7 @@ const self = {
         if(Array.isArray(list)){
             for(let i=0;i<list.length;i++){
                 const todo=list[i];
-                console.log(JSON.stringify(todo));
+                console.log(`Todo:${JSON.stringify(todo)}`);
                 if(actions[todo.action]){
                     actions[todo.action](todo.params,!todo.callback?undefined:todo.callback); 
                 }else{
