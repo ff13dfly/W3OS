@@ -169,7 +169,7 @@ function Bill(props) {
                       className="btn btn-sm btn-warning"
                       onClick={() => {
                         UI.dialog.show(
-                          <Chat address={row.to} fresh={() => {}} />,
+                          <Chat address={row.to} fresh={() => {}} fixed={false} height={560}/>,
                           <ContactTitle address={row.to}/>,
                         );
                       }}

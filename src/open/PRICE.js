@@ -4,6 +4,7 @@ import tools from "../lib/tools";
 
 const PRICE={
   init:(ck)=>{
+    return false;
     const uri="wss://ws.coincap.io/prices?assets=bitcoin,ethereum,kusama";
     //const uri="wss://ws.coincap.io/prices?assets=ALL";
     const wsPrice = new WebSocket(uri)
@@ -15,7 +16,6 @@ const PRICE={
         } catch (error) {
           return ck && ck(false);
         }
-        
     }
   },
 }

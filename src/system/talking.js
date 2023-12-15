@@ -177,15 +177,20 @@ function Talking(props) {
       const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
       switch (input.type) {
         case "message":     //message recorder process
-          if (input.group) {
-            RUNTIME.updateTalkingIndex(input.from, input.group, input.msg, () => {
-              if (!active) self.entry();
-            }, !un);
-          } else {
-            RUNTIME.updateTalkingIndex(input.from, input.to, input.msg, () => {
-              if (!active) self.entry();
-            }, !un);
-          }
+          //1.update talking index
+          // if (input.group) {
+          //   RUNTIME.updateTalkingIndex(input.from, input.group, input.msg, () => {
+          //     if (!active) self.entry();
+          //   }, !un);
+          // } else {
+          //   RUNTIME.updateTalkingIndex(input.from, input.to, input.msg, () => {
+          //     if (!active) self.entry();
+          //   }, !un);
+          // }
+
+          RUNTIME.updateTalkingIndex(input.from, !input.group?input.to:input.group, input.msg, () => {
+            if (!active) self.entry();
+          }, !un,"from");
 
           //2.save the message record
           RUNTIME.getAccount((acc) => {

@@ -20,12 +20,12 @@ function Chat(props) {
     row: [12],
   };
 
-  const to = props.address;
-  //const dv = { xs: 4, sm: 4, md: 4, lg: 4, xl: 6, xxl: 6 };
+  const to = props.address
   let [content, setContent] = useState("");
   let [list, setList] = useState([]);
   let mine = "";
 
+  console.log(`Chat dialog init: ${JSON.stringify(props)}`)
   const self = {
     isGroup: (address) => {
       if (address.length === 48) return false;
@@ -35,10 +35,10 @@ function Chat(props) {
     chat: (ev) => {
       if (!content) return false;
       self.append(content);
-      CHAT.save(mine, to, content, "to", to, false, () => {
+      CHAT.save(mine, to, content, "to", self.isGroup(to)?to:undefined, false, () => {
         RUNTIME.updateTalkingIndex(mine, to, content, () => {
-
-        });
+          console.log("Talking index updated.");
+        },false,"to");
       });
       if (self.isGroup(to)) {
         IMGC.group.chat(content, to);
@@ -205,19 +205,19 @@ function Chat(props) {
   }, []);
 
   const dv = DEVICE.getDevice("screen");
+  console.log(props.height);
 
   return (
     <Row className="pb-2">
-      <Col className="chat_container" style={{ height: `${dv[1] - 140}px` }} id={`con_${props.address}`}
-        xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
-        lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+      <Col className="chat_container" style={{ height: `${!props.height?(dv[1] - 140):props.height}px` }} id={`con_${props.address}`}
+        xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
         <div id={`scroll_${props.address}`}>
           {list.map((row, key) =>
             self.format(row, key)
           )}
         </div>
       </Col>
-      <div className="fixfooter">
+      <div className={!props.fixed?"":"fixfooter"}>
         <Row className="pb-2 pt-2">
           <Col xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
             lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
@@ -227,9 +227,8 @@ function Chat(props) {
               }}
             />
           </Col>
-          <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]} lg={size.content[1]}
-            xl={size.content[1]} xxl={size.content[1]} className="text-end"
-          >
+          <Col className="text-end" xs={size.content[1]} sm={size.content[1]} md={size.content[1]} lg={size.content[1]}
+            xl={size.content[1]} xxl={size.content[1]}>
             <button className="btn btn-md btn-primary"
               onClick={(ev) => {
                 self.chat(ev);
@@ -238,7 +237,6 @@ function Chat(props) {
           </Col>
         </Row>
       </div>
-
     </Row>
   );
 }

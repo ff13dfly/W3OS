@@ -47,6 +47,7 @@ const CHAT = {
     return data;
   },
   save: (mine,from, ctx, way,group,un,ck) => {
+    console.log(`My account: ${mine}, from: ${from}, way: ${way}, group:${group}, un: ${un}, content: ${ctx}`);
     const table = `${prefix}${mine}`;
     INDEXED.checkDB(DBname, (res) => {
       let row=null;

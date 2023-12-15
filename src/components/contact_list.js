@@ -23,19 +23,23 @@ function ContactList(props) {
   const UI=RUNTIME.getUI();
   const self = {
     click: (address, unread) => {
+
+      UI.dialog.show(
+        <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
+        <ContactTitle address={address} />,
+      );
       // check unread to open right dialog
-      //console.log(unread);
-      if(unread===0){
-        UI.dialog.show(
-          <ContactDetail address={address}/>,
-          `Contact details`//tools.shorten(address,6),
-        );
-      }else{
-        UI.dialog.show(
-          <Chat address={address} fresh={props.fresh} />,
-          <ContactTitle address={address} />,
-        );
-      }
+      // if(unread===0){
+      //   UI.dialog.show(
+      //     <ContactDetail address={address}/>,
+      //     `Contact details`//tools.shorten(address,6),
+      //   );
+      // }else{
+      //   UI.dialog.show(
+      //     <Chat address={address} fresh={props.fresh} height={600} />,
+      //     <ContactTitle address={address} />,
+      //   );
+      // }
     },
     select: (address) => {
       select[address] = !select[address];

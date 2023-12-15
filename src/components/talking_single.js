@@ -16,7 +16,7 @@ function TalkingSingle(props) {
   const self={
     click:(ev)=>{
       setTimeout(()=>{
-        props.page(<Chat address={to} height={700}/>,to,tools.shorten(to));
+        props.page(<Chat address={to} fixed={true}/>,to,tools.shorten(to));
       },300);
     },
     getDate:(stamp)=>{

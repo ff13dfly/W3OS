@@ -24,7 +24,7 @@ function StrangerList(props) {
   const self = {
     click: (address, ev) => {
       UI.dialog.show(
-        <Chat address={address} fresh={props.fresh} />,
+        <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
         <ContactTitle address={address} />,
       );
     },
