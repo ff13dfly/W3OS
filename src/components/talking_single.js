@@ -49,7 +49,7 @@ function TalkingSingle(props) {
     }}>
       <Col className="text-end" xs={size.content[0]} sm={size.content[0]} md={size.content[0]}
         lg={size.content[0]} xl={size.content[0]} xxl={size.content[0]}>
-        <Thumbnail list={[to]} />
+        <Thumbnail list={[to]} group={false}/>
         <span className="count" style={{marginLeft:"45px"}} hidden={!props.unread}>{!props.unread?0:props.unread}</span>
       </Col>
       <Col xs={size.content[1]} sm={size.content[1]} md={size.content[1]}

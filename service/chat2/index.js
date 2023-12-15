@@ -42,7 +42,8 @@ const delegate={
     group:{             //normal group functions
         create:Group.create,        //create a chat group, the owner must be in 
         detail:Group.detail,        //get the group detail by GID
-        join:Group.join,            //join a target group
+        join:Group.join,            //join a target group with single account
+        members:Group.members,        //check the accounts to join and leave from target group
         leave:Group.leave,          //leave a target group 
         divert:Group.divert,        //change the group manager
         deport:Group.deport,        //add account to the block list

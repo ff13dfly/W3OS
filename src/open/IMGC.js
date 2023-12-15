@@ -111,7 +111,13 @@ const DB={
       //console.log(list);
       for(let i=0;i<list.length;i++){
         const row=list[i];
-        if(row.id!==id) nlist.push(row);
+        if(row.id!==id){
+          nlist.push(row);
+        }else{
+          console.log(row)
+          if(!row.last.from && !row.last.msg) continue;
+          nlist[0].last=row.last;
+        } 
       }
        RUNTIME.setTalking(acc,nlist,ck);
     });
@@ -235,6 +241,15 @@ const router={
     //1.
 
     //2.callback if there is
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
+  group_members:(res,callback)=>{
+    console.log(res);
+    console.log(callback);
+
     if(callback!==undefined){
       map[callback](res);
       delete map[callback];
@@ -367,6 +382,17 @@ const IMGC={
         id:id,
       }
       if(ck) req.callback=self.setCallback(ck); //2.callback support
+      self.send(req);
+    },
+    members:(id,ms,ck)=>{
+      const req={
+        cat:"group",
+        act:"members",
+        id:id,
+        members:ms,
+      }
+      //2.callback support, added to the callback map
+      if(ck) req.callback=self.setCallback(ck); 
       self.send(req);
     },
     join:(id)=>{

@@ -21,6 +21,10 @@ function GroupJoin(props) {
   console.log(group);
 
   const self = {
+    back:()=>{
+      const UI=RUNTIME.getUI();
+      UI.dialog.hide();
+    },
     click: (index) => {
       list[index].selected = !list[index].selected;
       self.fresh();
@@ -29,19 +33,18 @@ function GroupJoin(props) {
       setDisalbe(true);
       const accs = self.getSelected(list);
       console.log(`Ready to set new members ${JSON.stringify(accs)}`);
-      // IMGC.group.create(accs, (res) => {
-      //   console.log(`Group created: ${JSON.stringify(res)}`);
-      //   IMGC.group.detail(res.id, (gp) => {
-      //     console.log(`Group details: ${JSON.stringify(gp)}`);
 
-      //     setInfo("Group created successful.");
-      //     setTimeout(() => {
-      //       setDisalbe(false);
-
-      //       props.back();
-      //     }, 1500);
-      //   });
-      // });
+      IMGC.group.members(group,accs.join("_"), (res) => {
+        console.log(`Group created: ${JSON.stringify(res)}`);
+        IMGC.group.detail(group, (gp) => {
+          console.log(`Group details: ${JSON.stringify(gp)}`);
+          setInfo("Members changed.");
+          setTimeout(() => {
+            setDisalbe(false);
+            self.back();
+          }, 1500);
+        });
+      });
     },
     fresh: () => {
       const nlist = JSON.parse(JSON.stringify(list));

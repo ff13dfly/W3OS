@@ -25,7 +25,7 @@ function Chat(props) {
   let [list, setList] = useState([]);
   let mine = "";
 
-  console.log(`Chat dialog init: ${JSON.stringify(props)}`)
+  //console.log(`Chat dialog init: ${JSON.stringify(props)}`)
   const self = {
     isGroup: (address) => {
       if (address.length === 48) return false;
@@ -197,15 +197,13 @@ function Chat(props) {
     });
 
     if(self.isGroup(to)){
-      //console.log(`Here to get group details`);
       IMGC.local.view(mine,to,(gp)=>{
-        console.log(gp);
+        //console.log(gp);
       });
     }
   }, []);
 
   const dv = DEVICE.getDevice("screen");
-  console.log(props.height);
 
   return (
     <Row className="pb-2">

@@ -129,6 +129,87 @@ module.exports = {
         return [todo];
     },
 
+    members:(input, from)=>{
+        console.log(`From group.js/members, input: ${JSON.stringify(input)}`);
+        //1.save new account
+        const gid = input.id;
+        const data = DB.key_get(gid);
+        if (data === null || !data) {
+            return self.error("SYSTEM_INVALID_DATA", "group", "members", input);
+        }
+        if( !input.members){
+            return self.error("INPUT_UNEXCEPT", "group", "members", input);
+        }
+
+        //check the members accounts
+        const ms=input.members.split("_");
+        if(!ms || ms.length===0){
+            return self.error("INPUT_UNEXCEPT", "group", "members", input);
+        }
+
+        for(let i=0;i<ms.length;i++){
+            const acc=ms[i]; 
+            if(acc.length!==48){
+                return self.error("INPUT_UNEXCEPT", "group", "members", input);
+            }
+        }
+
+        //isolate the added members;
+        const as=[];
+        for(let i=0;i<ms.length;i++){
+            const acc=ms[i];
+            if(!data.group.includes(acc)){
+                as.push(acc);
+            }
+        }
+
+        //isolate the deleted members;
+        const ds=[];
+        for (let i = 0; i < data.group.length; i++) {
+            const acc=ms[i];
+            if(!ms.includes(acc)){
+                ds.push(acc);
+            }
+        }
+
+        //update group data
+        data.group=ms;
+
+        const todos=[];
+        //sent notice to all new members
+        for (let i = 0; i < data.group.length; i++) {
+            const to = data.group[i];
+            const todo = task("notice");
+            todo.params.msg = `Members changed.`;
+            todo.params.to = to;
+            todo.params.from=from;
+            todo.params.method = {
+                cat: "group",
+                act: "members"               
+            };
+
+            //add the callback ref
+            if(input.callback && to===from) todo.callback=input.callback;
+            todos.push(todo);
+        }
+
+        //sent notice to deleted members
+        for (let i = 0; i < ds.length; i++) {
+            const to = ds[i];
+            const todo = task("notice");
+            todo.params.msg = `Removed from group.`;
+            todo.params.to = to;
+            todo.params.from=from;
+            todo.params.method = {
+                cat: "group",
+                act: "members"               
+            };
+            todos.push(todo);
+        }
+
+        return todos;
+    },
+
     //join a group
     join: (input, from) => {
         console.log(`From group.js/join, input: ${JSON.stringify(input)}`);

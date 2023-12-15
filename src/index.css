@@ -119,8 +119,14 @@ code {
   line-height: 18px;
   margin-top: -60px;
 }
-.thumbnail{
+.thumbgroup{
   background: #fae9e9;
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+}
+.thumbsingle{
+  background: #e9faed;
   width: 60px;
   height: 60px;
   border-radius: 10px;

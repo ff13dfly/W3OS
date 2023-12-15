@@ -98,7 +98,7 @@ function Thumbnail(props) {
             break;
     }
 
-    return (<div className="thumbnail">{dom}</div>);
+    return (<div className={!props.group?"thumbsingle":"thumbgroup"} >{dom}</div>);
 }
 
 export default Thumbnail;
