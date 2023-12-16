@@ -17,18 +17,23 @@ function TalkingGroup(props) {
   };
 
   let [clean, setClean] = useState(false);
-
+  let n=0;
   const self = {
-    click: (ev) => {
-      //console.log(to);
+    click: (ev,n) => {
+      //TODO, check the account in group 
       setTimeout(() => {
         const dom = (<div>
           <Announce id={to} />
-          <GroupOpt id={to} clean={clean}  />
-          <Chat address={to} click={self.onBlank} fixed={true} />
+          <GroupOpt id={to} clean={clean} fresh={self.fresh} back={props.back}/>
+          <Chat address={to} click={self.onBlank} fixed={true} n={n}/>
         </div>);
         props.page(dom, to, `ID: ${to}`);
       }, 300);
+    },
+    fresh:()=>{
+      n++;
+      console.log(`Fresh data`);
+      self.click(n,n);
     },
     //TODO, this can not make the opts menu hide
     onBlank:()=>{
@@ -64,11 +69,11 @@ function TalkingGroup(props) {
         }
         return `(${group.length})${list.join(",")}...`;
       }
-      return `(${group.length})${nick}`;
+      return `(${group.length})${nick.length>20?tools.tail(nick,12):nick}`;
     },
     getLatest:(from,msg)=>{
       if(!from || !msg) return "Nothing yet";
-      return `${tools.shorten(from,6)}:${msg}`;
+      return `${tools.shorten(from,6)}:${tools.tail(msg,12)}`;
     },
   }
 

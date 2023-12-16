@@ -38,6 +38,9 @@ const self = {
     if (n === undefined) n = 10;
     return addr.substr(0, n) + "..." + addr.substr(addr.length - n, n);
   },
+  tail:(str,n)=>{
+    return str.substr(0, n) + "...";
+  },
   empty: (obj) => {
     if (JSON.stringify(obj) === "{}") return true;
     return false;

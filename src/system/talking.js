@@ -25,6 +25,7 @@ function Talking(props) {
   };
   let [animation, setAnimation] = useState("ani_scale_in");
   let [framework, setFramework] = useState("");
+  let [count, setCount]=useState(0);
   let [title, setTitle] = useState("Talking");
   let [hidden, setHidden] = useState(false);
   let [toast, setToast]=useState("");
@@ -100,7 +101,8 @@ function Talking(props) {
   const self = {
     page: (ctx, address, header) => {
       active = address;
-      setFramework(ctx);
+      //setCount(n);
+      setFramework(ctx);    //fresh the content, if changed
       setHidden(true);
       if (header) setTitle(header);
     },
@@ -123,13 +125,17 @@ function Talking(props) {
         self.updateGroup(ps,ck);
       });
     },
+    back:()=>{
+      console.log(`Back function from talking...`);
+      self.entry();
+    },
     render:(list)=>{
       setFramework(
         <div className="talking_container" style={cmap}>
           {list.map((row, index) => (
             row.type === "group" ?
-              <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} /> :
-              <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} />
+              <TalkingGroup to={row.id} page={self.page} key={index} details={row} unread={row.un} back={self.back} /> :
+              <TalkingSingle to={row.id} page={self.page} key={index} details={row} unread={row.un} back={self.back}/>
           ))}
         </div>
       );
@@ -231,7 +237,7 @@ function Talking(props) {
   }, []);
 
   return (
-    <div id="page" className={animation}>
+    <div id="page" className={animation} count={count}>
       <Navbar className="bg-body-tertiary">
         <Container>
           <Row style={{ width: "100%", margin: "0 auto" }}>

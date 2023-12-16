@@ -96,7 +96,7 @@ function GroupJoin(props) {
         <span className="status green" style={{ margin: "0 auto" }}></span>
       </Col>
       <Col className="text-center" xs={size.row[1]} sm={size.row[1]} md={size.row[1]} lg={size.row[1]} xl={size.row[1]} xxl={size.row[1]}>
-        <Row className="talking_container" style={{ height: "540px",background:"#EEEEEE" }}>
+        <Row className="talking_container" style={{height:"100%",maxHeight: "540px",background:"#EEEEEE" }}>
           {list.map((row, index) => (
             <Col className="pt-2" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}
               key={index} onClick={(ev) => {

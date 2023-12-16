@@ -43,51 +43,55 @@ function GroupOpt(props) {
     },
     clickNick: (ev) => {
       UI.dialog.show(
-        <GroupNick id={group} />,
+        <GroupNick id={group} fresh={props.fresh}/>,
         "Group Name"
       );
     },
     clickAnnounce: (ev) => {
       UI.dialog.show(
-        <GroupAnnouncement id={group} />,
+        <GroupAnnouncement id={group} fresh={props.fresh}/>,
         "Announcement"
       );
     },
     clickInformation: (ev) => {
       UI.dialog.show(
-        <GroupDetail id={group} />,
+        <GroupDetail id={group} fresh={props.fresh}/>,
         "Group Information"
       );
     },
     clickAdd: (ev) => {
       UI.dialog.show(
-        <GroupJoin back={self.back} id={group} />,
+        <GroupJoin back={self.back} id={group} fresh={props.fresh}/>,
         "Members"
       );
     },
     clickDivert: (ev) => {
       UI.dialog.show(
-        <GroupDivert back={self.back} id={group} />,
+        <GroupDivert back={self.back} id={group} fresh={props.fresh}/>,
         "Set Manager"
       );
     },
     clickBlock: (ev) => {
       UI.dialog.show(
-        <GroupBlock back={self.back} id={group} />,
+        <GroupBlock back={self.back} id={group} fresh={props.fresh}/>,
         "Set Block Accounts"
       );
     },
     clickLeave: (ev) => {
       RUNTIME.getAccount((fa) => {
         IMGC.group.leave(group, fa.address,(res)=>{
-          console.log(`Leave requested.`);
-          console.log(res);
+          console.log(`Leaving...`);
+          props.fresh();
+          setTimeout(()=>{
+            props.back();
+          },1500);
         });
       })
     },
     clickDestory: (ev) => {
       IMGC.group.destory(group,(res)=>{
-        console.log(res);
+        //console.log(res);
+        props.fresh();
       });
     },
     clickMore: (ev) => {

@@ -201,7 +201,7 @@ function Chat(props) {
         //console.log(gp);
       });
     }
-  }, []);
+  }, [props.n]);
 
   const dv = DEVICE.getDevice("screen");
 

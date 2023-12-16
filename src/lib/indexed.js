@@ -147,11 +147,13 @@ const INDEXED = {
   tiktok: () => {
     if (timer === null) {
       timer = setInterval(() => {
-        console.log(`Check the indexedDB queue, data: ${JSON.stringify(queue)}`);
+        //console.log(`Check the indexedDB queue, data: ${JSON.stringify(queue)}`);
         if (!INDEXED.empty(queue.insert)) {
           INDEXED.getDB((db) => {
+            console.log(`Insert from tiktok, DB: ${db.name}`);
             for (let table in queue.insert) {
               const todo = JSON.parse(JSON.stringify(queue.insert[table]));
+              console.log(`Table:${table}, todo: ${JSON.stringify(todo)}`);
               delete queue.insert[table];
               return INDEXED.insertRow(db, table, todo);
             }
@@ -160,8 +162,10 @@ const INDEXED = {
 
         if (!INDEXED.empty(queue.update)) {
           INDEXED.getDB((db) => {
+            console.log(`Update from tiktok, DB: ${db.name}`);
             for (let table in queue.update) {
               const todo = JSON.parse(JSON.stringify(queue.update[table]));
+              console.log(`Table:${table}, todo: ${JSON.stringify(todo)}`);
               delete queue.update[table];
               return INDEXED.updateRow(db, table, todo);
             }
@@ -182,64 +186,70 @@ const INDEXED = {
     return true;
   },
   insertRow: (db, table, list, ck) => {
-    console.log(`Function[insertRow], locker: ${lock}, table: ${table}`);
-    if (lock) return INDEXED.cacheRows(db.name, table, list, "insert");
-    lock = true;
+    //console.log(`Function[insertRow], locker: ${lock}, table: ${table}`);
+    //if (lock) return INDEXED.cacheRows(db.name, table, list, "insert");
+    //lock = true;
     const request = db.transaction([table], "readwrite").objectStore(table);
-    console.log(request);
-
-    // if(queue.insert[table] && queue.insert[table].length!==0){
-    //   for (let i = 0; i < queue.insert[table].length; i++) {
-    //     request.add(queue.insert[table][i]);
-    //   }
-    // }
-
-    let count = list.length;
     for (let i = 0; i < list.length; i++) {
       const reqObj = request.add(list[i]);
-      reqObj.onsuccess = function (ev) {
-        console.log(`Function[insertRow] done.`);
-        count--;
-        if (count === 0) lock = false;
-        return ck && ck(true);
-      };
-
-      reqObj.onerror = function (ev) {
-        count--;
-        if (count === 0) lock = false;
-        return ck && ck({ error: "Failed to insert" });
-      };
+        reqObj.onsuccess = function (ev) {
+          return ck && ck(true);
+        };
+        reqObj.onerror = function (ev) {
+          return ck && ck({ error: "Failed to insert" });
+        }
     }
+
+    // Queue support
+    // let count = list.length;
+    // for (let i = 0; i < list.length; i++) {
+    //   const reqObj = request.add(list[i]);
+    //   reqObj.onsuccess = function (ev) {
+    //     console.log(`Function[insertRow] done.`);
+    //     count--;
+    //     if (count === 0) lock = false;
+    //     return ck && ck(true);
+    //   };
+
+    //   reqObj.onerror = function (ev) {
+    //     count--;
+    //     if (count === 0) lock = false;
+    //     return ck && ck({ error: "Failed to insert" });
+    //   };
+    // }
   },
   updateRow: (db, table, list, ck) => {
-    if (lock) return INDEXED.cacheRows(db.name, table, list, "update");
-    lock = true;
+    //if (lock) return INDEXED.cacheRows(db.name, table, list, "update");
+    //lock = true;
 
     const request = db.transaction(table, "readwrite").objectStore(table);
-
-    // if(queue.update[table] && queue.update[table].length!==0){
-    //   for (let i = 0; i < queue.update[table].length; i++) {
-    //     request.add(queue.update[table][i]);
-    //   }
-    // }
-
-    let count = list.length;
     for (let i = 0; i < list.length; i++) {
-      const data = list[i];
       const reqObj = request.add(list[i]);
-      reqObj.onsuccess = function (ev) {
-        console.log(`Function[updateRow] done.`);
-        count--;
-        if (count === 0) lock = false;
-        return ck && ck(true);
-      };
-
-      reqObj.onerror = function (ev) {
-        count--;
-        if (count === 0) lock = false;
-        return ck && ck({ error: "Failed to insert" });
-      };
+        reqObj.onsuccess = function (ev) {
+          return ck && ck(true);
+        };
+        reqObj.onerror = function (ev) {
+          return ck && ck({ error: "Failed to insert" });
+        }
     }
+    // Queue support
+    // let count = list.length;
+    // for (let i = 0; i < list.length; i++) {
+    //   const data = list[i];
+    //   const reqObj = request.add(list[i]);
+    //   reqObj.onsuccess = function (ev) {
+    //     console.log(`Function[updateRow] done.`);
+    //     count--;
+    //     if (count === 0) lock = false;
+    //     return ck && ck(true);
+    //   };
+
+    //   reqObj.onerror = function (ev) {
+    //     count--;
+    //     if (count === 0) lock = false;
+    //     return ck && ck({ error: "Failed to insert" });
+    //   };
+    // }
   },
   pageRows: (db, table, ck, nav, search) => {
     let list = [];

@@ -204,8 +204,6 @@ const router={
     delete res.id;
     delete res.update;
 
-    console.log(res);
-
     DB.update(mine,[row],()=>{
       console.log(`Group[${row.id}] updated.`);
       const odata={
@@ -252,6 +250,20 @@ const router={
   group_members:(res,callback)=>{
     console.log(res);
     console.log(callback);
+
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
+  group_leave:(res,callback)=>{
+    
+    if(callback!==undefined){
+      map[callback](res);
+      delete map[callback];
+    }
+  },
+  group_destory:(res,callback)=>{
 
     if(callback!==undefined){
       map[callback](res);

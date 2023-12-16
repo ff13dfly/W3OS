@@ -142,17 +142,22 @@ module.exports = {
         }
 
         //check the members accounts
-        const ms=input.members.split("_");
-        if(!ms || ms.length===0){
+        const inms=input.members.split("_");
+        if(!inms || inms.length===0){
             return self.error("INPUT_UNEXCEPT", "group", "members", input);
         }
 
-        for(let i=0;i<ms.length;i++){
-            const acc=ms[i]; 
+        const ms=[];
+        for(let i=0;i<inms.length;i++){
+            const acc=inms[i]; 
             if(acc.length!==48){
                 return self.error("INPUT_UNEXCEPT", "group", "members", input);
             }
+
+            if(!ms.includes(acc)) ms.push(acc);
         }
+
+        if(ms.length===0) return self.error("INPUT_UNEXCEPT", "group", "members", input);
 
         //isolate the added members;
         const as=[];
@@ -276,6 +281,7 @@ module.exports = {
                 act: "leave",
                 cat: "group"
             };
+            if(input.callback && to===from) todo.callback=input.callback;
             todos.push(todo);
             if (to !== input.account) ngroup.push(to);
         }

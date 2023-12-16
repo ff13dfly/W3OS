@@ -35,6 +35,7 @@ function GroupNick(props) {
             IMGC.group.detail(group);   //update group details from server
             const UI=RUNTIME.getUI();
             UI.dialog.hide();
+            props.fresh();
           }
         });
       })

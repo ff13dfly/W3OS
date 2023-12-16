@@ -22,6 +22,14 @@ function GroupDetail(props) {
     change: (ev) => {
 
     },
+    fresh:(ev)=>{
+      IMGC.group.detail(group,(res)=>{
+        //console.log(res);
+        const UI=RUNTIME.getUI();
+        UI.dialog.hide();
+        props.fresh();
+      });
+    },
   };
 
   useEffect(() => {
@@ -74,6 +82,11 @@ function GroupDetail(props) {
       <Col xs={size.thumb[0]} sm={size.thumb[0]} md={size.thumb[0]} lg={size.thumb[0]} xl={size.thumb[0]} xxl={size.thumb[0]}>
         <Image src={RUNTIME.getAvatar(founder)} rounded width="100%" />
         {tools.shorten(founder,3)}
+      </Col>
+      <Col className="pt-4 text-end" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+        <button className="btn btn-md btn-primary" onClick={(ev)=>{
+          self.fresh(ev);
+        }}>Fresh</button>
       </Col>
     </Row>
   );
