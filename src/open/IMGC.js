@@ -203,13 +203,16 @@ const router={
     }
     delete res.id;
     delete res.update;
+
+    console.log(res);
+
     DB.update(mine,[row],()=>{
       console.log(`Group[${row.id}] updated.`);
       const odata={
         id:row.id,
         type:"group",
         group:res.group,
-        nick:"",
+        nick:res.nick,
         update:row.update,
         last:{
           from:"",
