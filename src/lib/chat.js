@@ -24,13 +24,17 @@ const status = {
 
 const map = {};
 
+
+let queue = [];     //queue to cache the chat records
+let lock = false;   //locker to insert IndexedDB
+
 const CHAT = {
-  preInit:(acc,ck)=>{
-    const table=`${prefix}${acc}`;
-    const tb=CHAT.getTable(table);
+  preInit: (acc, ck) => {
+    const table = `${prefix}${acc}`;
+    const tb = CHAT.getTable(table);
     INDEXED.checkDB(DBname, (res) => {
       const tbs = res.objectStoreNames;
-      return ck && ck(!INDEXED.checkTable(tbs,table)?tb:false);
+      return ck && ck(!INDEXED.checkTable(tbs, table) ? tb : false);
     });
   },
   friends: (fs) => {
@@ -46,50 +50,89 @@ const CHAT = {
     data.table = name;
     return data;
   },
-  save: (mine,from, ctx, way,group,un,ck) => {
-    console.log(`My account: ${mine}, from: ${from}, way: ${way}, group:${group}, un: ${un}, content: ${ctx}`);
-    const table = `${prefix}${mine}`;
+  write:(table,rows,from,ck)=>{
+    lock = true;
+
     INDEXED.checkDB(DBname, (res) => {
-      let row=null;
-      const state= way === "to" ? status.NORMAL: (!un? status.UNREAD :status.NORMAL);
-      //console.log(state,from,un);
-      if(!group){
-        row = {
-          address: from,
-          msg: ctx,
-          status:state,
-          way: way,
-          stamp: tools.stamp(),
-        };
-      }else{
-        row = {
-          address: group,
-          from: from,
-          msg: ctx,
-          status: state,
-          way: way,
-          stamp: tools.stamp(),
-        };
+      if(!res){
+        lock=false;
+        return ck && ck({error:"failed to write DB"});
       }
-      
+
       const tbs = res.objectStoreNames;
+      const nlist = JSON.parse(JSON.stringify(queue));
+      for(let i=0;i<rows.length;i++){
+        const row=rows[i];
+        nlist.push(row);
+      }
+      queue = [];
+      
       if (!INDEXED.checkTable(tbs, table)) {
         const tb = CHAT.getTable(table);
         INDEXED.initDB(DBname, [tb], res.version + 1).then((db) => {
-          INDEXED.insertRow(db, table, [row]);
-          return ck && ck(map[from] ? true : from);
+          INDEXED.insertRow(db, table, nlist, () => {
+            lock = false;
+            console.log("Done, chat saved.");
+            if(queue.length!==0){
+              console.log("Dealing with queue.");
+              const rs = JSON.parse(JSON.stringify(queue));
+              queue=[];
+              CHAT.write(table,rs,from);
+            }
+          });
+          return ck && ck(map[from] ? true : from);   //callback before write to DB really
         });
       } else {
-        INDEXED.insertRow(res, table, [row]);
-        return ck && ck(map[from] ? true : from);
+        INDEXED.insertRow(res, table, nlist, () => {
+          lock = false;
+          console.log("Done, chat saved.");
+          if(queue.length!==0){
+            console.log("Dealing with queue.");
+            const rs = JSON.parse(JSON.stringify(queue));
+            queue=[];
+            CHAT.write(table,rs,from);
+          }
+        });
+        return ck && ck(map[from] ? true : from);   //callback before write to DB really
       }
     });
+  },
+  save: (mine, from, ctx, way, group, un, ck) => {
+    console.log(`My account: ${mine}, from: ${from}, way: ${way}, group:${group}, un: ${un}, content: ${ctx}`);
+    let row = null;
+    const state = way === "to" ? status.NORMAL : (!un ? status.UNREAD : status.NORMAL);
+    //console.log(state,from,un);
+    if (!group) {
+      row = {
+        address: from,
+        msg: ctx,
+        status: state,
+        way: way,
+        stamp: tools.stamp(),
+      };
+    } else {
+      row = {
+        address: group,
+        from: from,
+        msg: ctx,
+        status: state,
+        way: way,
+        stamp: tools.stamp(),
+      };
+    }
+
+    if (lock) {
+      queue.push(row);
+      return ck && ck({ status: "pending" });
+    }
+    const table = `${prefix}${mine}`;
+    CHAT.write(table,[row],from,ck);
   },
   page: (mine, from, step, page, ck) => {
     INDEXED.checkDB(DBname, (db) => {
       const target = `${prefix}${mine}`;
       const tbs = db.objectStoreNames;
-      if (!INDEXED.checkTable(tbs,target)) return ck && ck(false);
+      if (!INDEXED.checkTable(tbs, target)) return ck && ck(false);
       INDEXED.searchRows(db, target, "address", from, ck);
     });
   },
