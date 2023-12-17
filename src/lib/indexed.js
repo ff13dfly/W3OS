@@ -186,18 +186,18 @@ const INDEXED = {
     return true;
   },
   insertRow: (db, table, list, ck) => {
-    //console.log(`Function[insertRow], locker: ${lock}, table: ${table}`);
+    console.log(`Function[insertRow], table: ${table}, list:${JSON.stringify(list)}`);
     //if (lock) return INDEXED.cacheRows(db.name, table, list, "insert");
     //lock = true;
     const request = db.transaction([table], "readwrite").objectStore(table);
     for (let i = 0; i < list.length; i++) {
       const reqObj = request.add(list[i]);
-        reqObj.onsuccess = function (ev) {
-          return ck && ck(true);
-        };
-        reqObj.onerror = function (ev) {
-          return ck && ck({ error: "Failed to insert" });
-        }
+      reqObj.onsuccess = function (ev) {
+        return ck && ck(true);
+      };
+      reqObj.onerror = function (ev) {
+        return ck && ck({ error: "Failed to insert" });
+      }
     }
 
     // Queue support
@@ -225,12 +225,12 @@ const INDEXED = {
     const request = db.transaction(table, "readwrite").objectStore(table);
     for (let i = 0; i < list.length; i++) {
       const reqObj = request.add(list[i]);
-        reqObj.onsuccess = function (ev) {
-          return ck && ck(true);
-        };
-        reqObj.onerror = function (ev) {
-          return ck && ck({ error: "Failed to insert" });
-        }
+      reqObj.onsuccess = function (ev) {
+        return ck && ck(true);
+      };
+      reqObj.onerror = function (ev) {
+        return ck && ck({ error: "Failed to insert" });
+      }
     }
     // Queue support
     // let count = list.length;
