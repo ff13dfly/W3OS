@@ -16,6 +16,7 @@ import IMGC from "../open/IMGC";
 
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
+import { FaServer } from "react-icons/fa6";
 
 let active = "";
 function Talking(props) {
@@ -125,10 +126,10 @@ function Talking(props) {
         self.updateGroup(ps,ck);
       });
     },
-    back:()=>{
-      console.log(`Back function from talking...`);
-      self.entry();
-    },
+    // back:()=>{
+    //   console.log(`Back function from talking...`);
+    //   self.entry();
+    // },
     render:(list)=>{
       setFramework(
         <div className="talking_container" style={cmap}>
@@ -166,6 +167,10 @@ function Talking(props) {
         IMGC.vertify.reg(acc.address);
       });
     },
+    serverSetting:(ev)=>{
+      console.log(`Here to select server, or add server`);
+      //self.page(<GroupAdd back={self.back} />, "server_select", "Select server");
+    },
     back: () => {
       self.entry();
       RUNTIME.clearMailer(active);    //remove the mailer
@@ -173,7 +178,6 @@ function Talking(props) {
       setHidden(false);
       setTitle("Talking");
     },
-
     recorder: (input) => {
       console.log(`Here to get all the messages.`);
       console.log(input);
@@ -288,7 +292,12 @@ function Talking(props) {
             self.newGroup(ev);
           }}
         />
-        <RiSecurePaymentFill color="grey" style={{marginLeft:"10px"}}
+        <FaServer color="grey" size={24} style={{marginLeft:"20px"}}
+          onClick={(ev) => {
+            self.serverSetting(ev);
+          }}
+        />
+        <RiSecurePaymentFill color="grey" style={{marginLeft:"20px"}}
           onClick={(ev) => {
             self.payToVertify(ev);
           }}

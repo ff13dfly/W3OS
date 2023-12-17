@@ -122,6 +122,8 @@ const CHAT = {
       };
     }
 
+    //FIXME,need to category by from address, to avoid write wrong rows.
+    // will fix this after hackthon
     if (lock) {
       queue.push(row);
       return ck && ck({ status: "pending" });
