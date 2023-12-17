@@ -50,6 +50,7 @@ const CHAT = {
     data.table = name;
     return data;
   },
+  //!important, here to cache the chat insert queue to avoid missing messages.
   write:(table,rows,from,ck)=>{
     lock = true;
 
@@ -77,7 +78,7 @@ const CHAT = {
               console.log("Dealing with queue.");
               const rs = JSON.parse(JSON.stringify(queue));
               queue=[];
-              CHAT.write(table,rs,from);
+              CHAT.write(table,rs,from);    //skip the callback
             }
           });
           return ck && ck(map[from] ? true : from);   //callback before write to DB really
@@ -90,7 +91,7 @@ const CHAT = {
             console.log("Dealing with queue.");
             const rs = JSON.parse(JSON.stringify(queue));
             queue=[];
-            CHAT.write(table,rs,from);
+            CHAT.write(table,rs,from);     //skip the callback
           }
         });
         return ck && ck(map[from] ? true : from);   //callback before write to DB really
