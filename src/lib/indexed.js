@@ -85,6 +85,8 @@ const INDEXED = {
   },
 
   searchRows: (db, table, key, val, ck) => {
+    console.log(`Table: ${table}, key: ${key}, value: ${val}`);
+    if(typeof table!=='string') return ck && ck({error:"wrong table."});
     let list = [];
     var store = db.transaction(table, "readwrite").objectStore(table);
     var request = store.index(key).openCursor(IDBKeyRange.only(val));
@@ -199,57 +201,22 @@ const INDEXED = {
         return ck && ck({ error: "Failed to insert" });
       }
     }
-
-    // Queue support
-    // let count = list.length;
-    // for (let i = 0; i < list.length; i++) {
-    //   const reqObj = request.add(list[i]);
-    //   reqObj.onsuccess = function (ev) {
-    //     console.log(`Function[insertRow] done.`);
-    //     count--;
-    //     if (count === 0) lock = false;
-    //     return ck && ck(true);
-    //   };
-
-    //   reqObj.onerror = function (ev) {
-    //     count--;
-    //     if (count === 0) lock = false;
-    //     return ck && ck({ error: "Failed to insert" });
-    //   };
-    // }
   },
   updateRow: (db, table, list, ck) => {
-    //if (lock) return INDEXED.cacheRows(db.name, table, list, "update");
-    //lock = true;
+    console.log(`Function[updateRow], table: ${table}, list:${JSON.stringify(list)}`);
 
-    const request = db.transaction(table, "readwrite").objectStore(table);
+    const store = db.transaction(table, "readwrite").objectStore(table);
     for (let i = 0; i < list.length; i++) {
-      const reqObj = request.add(list[i]);
-      reqObj.onsuccess = function (ev) {
+      const data = list[i];
+      const request = store.put(data);
+      request.onsuccess = function () {
         return ck && ck(true);
       };
-      reqObj.onerror = function (ev) {
-        return ck && ck({ error: "Failed to insert" });
-      }
-    }
-    // Queue support
-    // let count = list.length;
-    // for (let i = 0; i < list.length; i++) {
-    //   const data = list[i];
-    //   const reqObj = request.add(list[i]);
-    //   reqObj.onsuccess = function (ev) {
-    //     console.log(`Function[updateRow] done.`);
-    //     count--;
-    //     if (count === 0) lock = false;
-    //     return ck && ck(true);
-    //   };
 
-    //   reqObj.onerror = function (ev) {
-    //     count--;
-    //     if (count === 0) lock = false;
-    //     return ck && ck({ error: "Failed to insert" });
-    //   };
-    // }
+      request.onerror = function () {
+        return ck && ck({ error: "Failed to update rows" });
+      };
+    }
   },
   pageRows: (db, table, ck, nav, search) => {
     let list = [];

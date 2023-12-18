@@ -52,13 +52,14 @@ module.exports={
 
         if(checker===null){
             checker=setInterval(()=>{
+                //1.chcke the expired link
                 for(let acc in map){
                     if(map[acc].expired < self.stamp()){
                         output(`Deleting expired: ${acc}`,"error");
                         delete map[acc];
                     }
                 };
-
+                
             },config.at);
         }
 

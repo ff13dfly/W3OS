@@ -13,20 +13,28 @@
 
 - IMS and GCS are basice service for W3OS, you can get in touch with other people just via Polkadot/Substrate account.
 
-## Instant Messaging Service
+## Instant Messaging Service & Group Chat Service
 
-### IMS Develop Language
+- Language: Javascript
+- Framework: NodeJS
+- Link between server and client: Websocket
 
-- NodeJS
-- Websocket
+### Build and Put On Chain
 
-### IMS Protocol
+- Build the NodeJS project to a single file as follow. Please change the directory to **chat2** and run the command under it.
 
-## Group Chat Service
+    ```SHELL
+        #please install the esbuild first
+        yarn add esbuild
 
-### GCS Develop Language
+        #package the application by esbuild
+        ./node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./chat_server.min.js --platform=node
+    ```
 
-- NodeJS
-- Websocket
+### IMS
 
-### GCS Protocol
+### GCS
+
+### Vertification By Payment
+
+### Deployment

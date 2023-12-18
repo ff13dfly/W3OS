@@ -72,15 +72,13 @@ const DB={
   },
   update:(mine,rows,ck)=>{
     const table = `${prefix}${mine}`;
+    console.log(`IMGC ready to update group details, table: ${table}`);
     INDEXED.checkDB(DBname, (db) => {
       if(!db || !db.objectStoreNames || !INDEXED.checkTable(db.objectStoreNames,table)){
         return setTimeout(()=>{
-          //console.log(`Retry to update`);
           DB.update(mine,rows,ck);
         },1000);
       }else{
-        //console.log(`Got the table ${table}, ready to update these rows:`);
-        //console.log(rows);
         INDEXED.updateRow(db, table, rows, ck);
       }
     });
@@ -155,6 +153,7 @@ const router={
   //!important, when your friend create a group which you are included, then you will get a notice.
   //!important, there is no callback, but still need to create the target group
   group_create:(res,callback)=>{
+    console.log(res);
     //1.update group index
     const data={
       id:res.id,
@@ -177,6 +176,8 @@ const router={
           msg:"",
         }
       }
+
+      //update the localstorage index here
       DB.groupList(mine,res.id,odata,(res)=>{
         //console.log(`Group oreder index saved`);
       });
@@ -217,6 +218,8 @@ const router={
           msg:"",
         }
       }
+
+      //update the localstorage index here
       DB.groupList(mine,row.id,odata,(res)=>{
         //console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
       });

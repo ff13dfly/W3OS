@@ -40,8 +40,8 @@ function Thumbnail(props) {
                     <Image src={RUNTIME.getAvatar(list[1])} rounded width="48%" />
                 </Col>
                 <Col xs={12} sm={12} md={12} lg={12} xl={12} xxl={12}>
-                    <Image src={RUNTIME.getAvatar(list[0])} rounded width="48%" />
-                    <Image src={RUNTIME.getAvatar(list[1])} rounded width="48%" />
+                    <Image src={RUNTIME.getAvatar(list[2])} rounded width="48%" />
+                    <Image src={RUNTIME.getAvatar(list[3])} rounded width="48%" />
                 </Col>
             </Row>);
             break;

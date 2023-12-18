@@ -22,21 +22,25 @@ function GroupDetail(props) {
     change: (ev) => {
 
     },
-    fresh:(ev)=>{
+    fresh:(ck)=>{
       IMGC.group.detail(group,(res)=>{
-        //console.log(res);
         const UI=RUNTIME.getUI();
         UI.dialog.hide();
         props.fresh();
+        return ck && ck();
       });
     },
-  };
-
-  useEffect(() => {
-    RUNTIME.getAccount((acc) => {
-      IMGC.local.view(acc.address, group, (res) => {
-        console.log(res);
+    render:(address)=>{
+      IMGC.local.view(address, group, (res) => {
         const data = res.more;
+        if(!data.group){
+          return IMGC.group.detail(group,(rs)=>{
+            setTimeout(()=>{
+              self.render(address);
+            },1000)
+          })
+        }
+
         setNick(!data.nick ? "no nickname yet" : data.nick);
 
         const dt = new Date(data.create);
@@ -46,6 +50,12 @@ function GroupDetail(props) {
         setFounder(data.founder);
         setManager(data.manager);
       });
+    }
+  };
+
+  useEffect(() => {
+    RUNTIME.getAccount((acc) => {
+      self.render(acc.address);
     });
   }, []);
 

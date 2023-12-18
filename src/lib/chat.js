@@ -134,6 +134,7 @@ const CHAT = {
   page: (mine, from, step, page, ck) => {
     INDEXED.checkDB(DBname, (db) => {
       const target = `${prefix}${mine}`;
+      console.log(`here? target: ${target}`);
       const tbs = db.objectStoreNames;
       if (!INDEXED.checkTable(tbs, target)) return ck && ck(false);
       INDEXED.searchRows(db, target, "address", from, ck);
