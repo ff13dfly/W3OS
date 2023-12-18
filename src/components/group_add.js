@@ -82,7 +82,7 @@ function GroupAdd(props) {
       Your address: {tools.shorten(my)}
       </Col>
       <Col className="pt-2 pb-2 text-secondary text-end" xs={size.header[1]} sm={size.header[1]} md={size.header[1]} lg={size.header[1]} xl={size.header[1]} xxl={size.header[1]}>
-        <span className="status green" style={{margin:"0 auto"}}></span>
+        {/* <span className="status green" style={{margin:"0 auto"}}></span> */}
       </Col>
       <Col className="" xs={size.row[1]} sm={size.row[1]} md={size.row[1]} lg={size.row[1]} xl={size.row[1]} xxl={size.row[1]}> 
         <Row className="talking_container" style={{height:"750px"}}>

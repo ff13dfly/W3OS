@@ -5,6 +5,7 @@ import TalkingSingle from "../components/talking_single";
 import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
 import Paybill from "../components/paybill";
+import TalkingServer from "../components/talking_server";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
@@ -168,7 +169,9 @@ function Talking(props) {
       });
     },
     serverSetting:(ev)=>{
-      console.log(`Here to select server, or add server`);
+      const UI=RUNTIME.getUI();
+      UI.dialog.show(<TalkingServer />,"Server Management");
+      //console.log(`Here to select server, or add server`);
       //self.page(<GroupAdd back={self.back} />, "server_select", "Select server");
     },
     back: () => {
