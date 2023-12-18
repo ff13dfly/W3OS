@@ -17,7 +17,14 @@ function User(props) {
 
   const self = {
     remove: () => {
+      //1.remove the account localstorage
       RUNTIME.removeAccount();
+
+      //2.close the websocket
+      const cfg = RUNTIME.getConfig("system");
+      const uri=cfg.basic.talking[0];
+      if(uri) RUNTIME.wsRemove(uri);
+
       props.fresh(); //父组件传过来的
     },
     charge: () => {

@@ -75,18 +75,20 @@ module.exports = {
         //1.prepare the group default data
         const gid = self.getGID();
         const data = format("group");
+        const ms=Array.from(new Set(input.list));       //remove duplicate member
+
         data.id = gid;
         data.update = tools.stamp();
         data.create = tools.stamp();
-        data.group = input.list;
+        data.group = ms;
         data.manager = from;
         data.founder = from;
         DB.key_set(gid, data);
 
         //2.sent notification to creator
         const todos=[];
-        for(let i=0;i<input.list.length;i++){
-            const acc=input.list[i];        //member of group
+        for(let i=0;i<ms.length;i++){
+            const acc=ms[i];        //member of group
             const todo = task("notice");
             todo.params.msg = { id: gid };
             todo.params.from = from;            //action account

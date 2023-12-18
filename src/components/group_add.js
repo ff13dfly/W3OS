@@ -26,7 +26,7 @@ function GroupAdd(props) {
     clickAdd:()=>{
       setDisalbe(true);
       const accs=self.getSelected(list);
-      IMGC.group.create(accs,(res)=>{
+      IMGC.group.create(Array.from(new Set(accs)),(res)=>{
         console.log(`Group created: ${JSON.stringify(res)}`);
         IMGC.group.detail(res.id,(gp)=>{
           console.log(`Group details: ${JSON.stringify(gp)}`);

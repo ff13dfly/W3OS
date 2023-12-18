@@ -38,6 +38,12 @@ const self = {
     if (n === undefined) n = 10;
     return addr.substr(0, n) + "..." + addr.substr(addr.length - n, n);
   },
+  copy:(arr_obj)=>{
+    return JSON.parse(JSON.stringify(arr_obj));
+  },
+  clean:(arr)=>{
+    return Array.from(new Set(arr));
+  },
   tail:(str,n)=>{
     return str.substr(0, n) + "...";
   },

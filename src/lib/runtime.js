@@ -363,6 +363,8 @@ const RUNTIME = {
     return wss[uri].readyState;
   },
   wsRemove: (uri) => {
+    if(!wss[uri]) return true;
+    wss[uri].close();
     delete wss[uri];
     return true;
   },

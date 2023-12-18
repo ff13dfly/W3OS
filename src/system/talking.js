@@ -127,10 +127,6 @@ function Talking(props) {
         self.updateGroup(ps,ck);
       });
     },
-    // back:()=>{
-    //   console.log(`Back function from talking...`);
-    //   self.entry();
-    // },
     render:(list)=>{
       setFramework(
         <div className="talking_container" style={cmap}>
@@ -148,7 +144,6 @@ function Talking(props) {
       RUNTIME.getAccount((fa)=>{
         if(!fa || !fa.address) return console.log(`Not login yet.`);
         RUNTIME.getTalking(fa.address,(list) => {
-          //console.log(list);
           const ps=self.getPendingGroups(list);
           if(ps.length!==0){
             self.updateGroup(ps,()=>{
@@ -241,6 +236,9 @@ function Talking(props) {
   useEffect(() => {
     self.entry();
     IMGC.init(self.recorder);
+    setTimeout(()=>{
+      if(!active) self.entry();
+    },2000);
   }, []);
 
   return (
