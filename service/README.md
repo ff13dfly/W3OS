@@ -4,11 +4,11 @@
 
 - W3OS Instant Messaging Service bases on Polkadot account, only with the account, you can start to join Web3.0 world.
 
-- IMS and GCS are deployed on Anchor Network, anybody can run the services by sinlge command.
+- IMS and GCS are deployed on Anchor Network, anybody can run the services by sinlge command. The **nodejs.loader.js** is under the folder `chat2/support`, **nodejs.loader.js** is a single file application, no support needed.
 
     ```SHELL
         # nodejs.loader.js is the loader for nodeJS
-        node nodejs.loader.js anchor://ims_service
+        node nodejs.loader.js anchor://imgc
     ```
 
 - IMS and GCS are basice service for W3OS, you can get in touch with other people just via Polkadot/Substrate account.

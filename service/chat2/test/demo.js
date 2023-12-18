@@ -1,4 +1,5 @@
 // chat server , nodeJS
+// Basic server framework
 const { ApiPromise, WsProvider } = require('@polkadot/api');
 
 const { WebSocketServer } = require('ws');
