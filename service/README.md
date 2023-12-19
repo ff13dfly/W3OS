@@ -38,3 +38,5 @@
 ### Vertification By Payment
 
 ### Deployment
+
+- Test server `45.63.84.74`
