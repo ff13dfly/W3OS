@@ -26,9 +26,17 @@ function ContactList(props) {
   const self = {
     click: (address, unread) => {
       //UI.page("");
-      UI.page(
-        <Talking address={address}/>
-      );
+      if(unread===0){
+        UI.dialog.show(
+          <ContactDetail address={address} fresh={self.fresh}/>,
+          `Contact details`//tools.shorten(address,6),
+        );
+      }else{
+        UI.page(
+          <Talking address={address}/>
+        );
+      }
+     
       //1.open chat dailog way
       // UI.dialog.show(
       //   <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
@@ -91,33 +99,36 @@ function ContactList(props) {
       }
       return arr;
     },
+    fresh:()=>{
+      RUNTIME.getAccount((fa) => {
+        if (fa === null) return false;
+        const mine = fa.address;
+        RUNTIME.getContact((cs) => {
+          const nlist = [];
+          for (var k in cs) nlist.push(k);
+  
+          self.getCount(mine, nlist, (un, order) => {
+            //console.log(order);
+            const ulist = [],
+              zlist = [];
+            for (var k in cs) {
+              const atom = cs[k];
+              atom.address = k;
+              atom.unread = !un[k] ? 0 : un[k];
+              !un[k] ? zlist.push(atom) : ulist.push(atom);
+            }
+  
+            const olist = self.sortList(ulist, order);
+            const list = olist.concat(zlist);
+            setContact(list);
+          });
+        });
+      });
+    },
   };
 
   useEffect(() => {
-    RUNTIME.getAccount((fa) => {
-      if (fa === null) return false;
-      const mine = fa.address;
-      RUNTIME.getContact((cs) => {
-        const nlist = [];
-        for (var k in cs) nlist.push(k);
-
-        self.getCount(mine, nlist, (un, order) => {
-          //console.log(order);
-          const ulist = [],
-            zlist = [];
-          for (var k in cs) {
-            const atom = cs[k];
-            atom.address = k;
-            atom.unread = !un[k] ? 0 : un[k];
-            !un[k] ? zlist.push(atom) : ulist.push(atom);
-          }
-
-          const olist = self.sortList(ulist, order);
-          const list = olist.concat(zlist);
-          setContact(list);
-        });
-      });
-    });
+    self.fresh();
   }, [count]);
 
   return (

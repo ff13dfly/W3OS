@@ -10,21 +10,16 @@ import Login from "../components/login";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
-import IMGC from "../open/IMGC";
 
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { RiLinkUnlink } from "react-icons/ri";
 
 let selected = { contact: null, stranger: null };
 
-let websocket = null;
-let spam = "";
-//let chats = {};       //mailer, need to add to RUNTIME
-let active = false; //account reg to server status
+
 let friend = false;
 let fresh_contact = 0;
 let fresh_stranger = 0;
-let checker = null;
 
 function Contact(props) {
   const size = {
@@ -35,11 +30,9 @@ function Contact(props) {
   let [editing, setEditing] = useState(false);
   let [count, setCount] = useState(0);
   let [stranger, setStranger] = useState(0);
-  let [hidelink, setHidelink] = useState(false);
   let [animation, setAnimation] = useState("ani_scale_in");
   let [reg, setReg] = useState("");
 
-  const decoder = {};
   const UI=RUNTIME.getUI();
   const self = {
     clickSetting: (ev) => {
@@ -79,51 +72,6 @@ function Contact(props) {
         );
       }
     },
-
-    recorder: (input) => {
-      console.log(`Here to get all the messages.`);
-      console.log(input);
-      
-      if (!input || !input.type) return false;
-
-      const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
-      switch (input.type) {
-        case "message":     //message recorder process
-          RUNTIME.updateTalkingIndex(input.from, !input.group?input.to:input.group, input.msg, () => {
-            if (!active) self.entry();
-          }, !un,"from");
-
-          //2.save the message record
-          RUNTIME.getAccount((acc) => {
-            const mine = acc.address;
-            if (input.group) {
-              CHAT.save(mine, input.from, input.msg, "from", input.group, un, () => { });
-            } else {
-              CHAT.save(mine, input.from, input.msg, "from", input.from, un, () => { });
-            }
-          });
-          break;
-
-        case "notice":     //notice recorder process
-          //console.log(`Write the notice recoder here.`);
-          if (input.method) {
-            const key = `${input.method.cat}_${input.method.act}`;
-            if (decoder[key]) {
-              RUNTIME.getAccount((acc) => {
-                const mine = acc.address;
-                decoder[key](mine, input);
-              });
-            }
-          }
-          break;
-        case "error":
-          //console.log(`Got error here.`);
-          //TODO, here to check the system error.
-          break;
-        default:
-          break;
-      }
-    },
     fresh: () => {
       //console.log(`Fresh page, new chat,${fresh_contact},${fresh_stranger}`);
       fresh_contact++;
@@ -155,10 +103,6 @@ function Contact(props) {
   }
 
   useEffect(() => {
-    // IMGC.init(self.recorder,(res)=>{
-    //   setHidelink(true);
-    // },true);
-
     RUNTIME.getAccount((acc) => {
       if (acc === null || !acc.address) {
         setReg(
@@ -244,7 +188,7 @@ function Contact(props) {
       <div className="opts">
         <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} onClick={(ev) => {
             self.clickEdit(ev);
-        }}/>r
+        }}/>
         {/* <RiLinkUnlink color="grey" style={{marginLeft:"10px"}}
           hidden={hidelink}
         /> */}

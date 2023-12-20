@@ -180,6 +180,7 @@ const RUNTIME = {
       let list = STORAGE.getKey(nkey);
       if (list === null) list = {};
       list[address] = {
+        short: "",
         intro: "",
         status: 1,
         type: !stranger ? "friend" : "stranger",
@@ -223,6 +224,24 @@ const RUNTIME = {
       }
       return ck && ck(STORAGE.getKey(nkey));
     });
+  },
+  setContact:(address,data,ck,stranger)=>{
+
+    RUNTIME.getAccount((acc) => {
+      if (!acc || !acc.address) return ck && ck(false);
+      const mine = acc.address;
+      RUNTIME.getContact((clist)=>{
+        if(!clist[address]) return false;
+        console.log(clist[address]);
+        for(let k in clist[address]){
+          if(data[k]) clist[address][k]=data[k];
+        }
+        const nkey = !stranger ? mine : `${mine}_stranger`;
+        STORAGE.setKey(nkey, clist);
+        return ck && ck(true);
+      });
+    });
+    
   },
   singleContact:(address,ck,stranger)=>{
     RUNTIME.getContact((clist)=>{
