@@ -195,18 +195,18 @@ function Talking(props) {
       setTitle("Talking");
     },
     recorder: (input) => {
-      console.log(`Here to get all the messages.`);
-      console.log(input);
+      //console.log(`Here to get all the messages.`);
+      //console.log(input);
       
       if (!input || !input.type) return false;
 
       const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
       switch (input.type) {
         case "message":     //message recorder process
-
+          console.log(`Here check message and update index, data:${JSON.stringify(input)}`);
           RUNTIME.updateTalkingIndex(input.from, !input.group?input.to:input.group, input.msg, () => {
             if (!active) self.entry();
-          }, !un,"from");
+          },!un,"from");
 
           //2.save the message record
           RUNTIME.getAccount((acc) => {
@@ -220,7 +220,7 @@ function Talking(props) {
           break;
 
         case "notice":     //notice recorder process
-          //console.log(`Write the notice recoder here.`);
+          console.log(`Here check notice and update index, data:${JSON.stringify(input)}`);
           if (input.method) {
             const key = `${input.method.cat}_${input.method.act}`;
             if (decoder[key]) {

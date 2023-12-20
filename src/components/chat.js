@@ -37,7 +37,7 @@ function Chat(props) {
       self.append(content);
       CHAT.save(mine, to, content, "to", self.isGroup(to)?to:undefined, false, () => {
         RUNTIME.updateTalkingIndex(mine, to, content, () => {
-          console.log("Talking index updated.");
+          //console.log("Talking index updated.");
         },false,"to");
       });
       if (self.isGroup(to)) {

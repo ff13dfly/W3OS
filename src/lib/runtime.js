@@ -155,7 +155,7 @@ const RUNTIME = {
     return true;
   },
   initAccount:(acc,ck)=>{
-    console.log(`Ready to init base indexedDB tables for account ${acc}, at ${tools.stamp().toLocaleString()}`);
+    //console.log(`Ready to init base indexedDB tables for account ${acc}, at ${tools.stamp().toLocaleString()}`);
     const list=[];
     CHAT.preInit(acc,(tb_chat)=>{
       if(tb_chat!==false) list.push(tb_chat);
@@ -527,83 +527,116 @@ const RUNTIME = {
   getAvatar:(str)=>{
     return `${base}/${str}.png${type}`;
   },
+
+  /***************************************************************/
+  /******************* Index update functions ********************/
+  /***************************************************************/
+  getTalkingMastor:(way,from,to)=>{
+    if(way==="to") return from;
+    return to;
+  },
+  isGroup: (address) => {
+    if (address.length === 48) return false;
+    return true;
+  },
+  newContact:()=>{
+    return {
+      id:"",                  //address unique id
+      nick:"",                //nickname of contact
+      update:tools.stamp(),   //group update time
+      last:"",                //last message
+      type:"contact",         //talking type
+      un:0,
+    }
+  },
+  newGroup:()=>{
+    return {
+      id:"",
+      last:{
+        from:"",
+        msg:"",
+      },
+      update:tools.stamp(),
+      type:"group",
+      un:0,
+    }
+  },
+  exsistID:(id,list)=>{
+    //console.log(`[exsistID] get the index of ${id} from ${JSON.stringify(list)}`)
+    for(let i=0;i<list.length;i++){
+      if(list[i].id===id) return i;
+    }
+    return null;
+  },
+  getAtomID:(way,from,to)=>{
+    if(way==="to") return to;
+    return from;
+  },
+  getAtomFromTalking:(way,from,to,ck)=>{
+    console.log(`[getAtomFromTalking] From ${from}, to ${to}, way: ${way}`);
+    //1.which account to update 
+    const key=RUNTIME.getTalkingMastor(way,from,to);   
+    RUNTIME.getTalking(key,(list)=>{
+
+      //2.check the atom ID
+      if(to.length===48){
+        //2.1. index order when contact
+        const id=RUNTIME.getAtomID(way,from,to);
+        const index=RUNTIME.exsistID(id,list);
+        console.log(`Contact index: ${index}, ID: ${id}`);
+        if(index===null){
+          const atom=RUNTIME.newContact();
+          atom.id=id;     //set the contact ID
+          list.unshift(atom);
+          return ck && ck(list);
+        }else{
+          const nlist=[list[index]];
+          for(let i=0;i<list.length;i++){
+            if(i!==index) nlist.push(list[i]);
+          }
+          return ck && ck(nlist);
+        }
+      }else{
+        //2.2. index order when group
+        const index=RUNTIME.exsistID(to,list);
+        console.log(`Group index: ${index}`);
+        if(index===null){
+          const atom=RUNTIME.newGroup();
+          atom.id=to;
+          list.unshift(atom);
+          return ck && ck(list);
+        }else{
+          const nlist=[list[index]];
+          for(let i=0;i<list.length;i++){
+            if(i!==index) nlist.push(list[i]);
+          }
+          return ck && ck(nlist);
+        }
+      }
+    })
+  },
+
   updateTalkingIndex:(from,to,msg,ck,unread,way)=>{
     console.log(`From "RUNTIME.updateTalkingIndex":`);
     console.log(`From: ${from}, to: ${to}, unread: ${unread}, way: ${way}, message: ${msg}`);
 
-    RUNTIME.getTalking(from,(list)=>{
-      //console.log(list);
-      let nlist=[];
-      let target=null;
+    //1. order the talking list
+    RUNTIME.getAtomFromTalking(way,from,to,(list)=>{
+      console.log(`Ordered list: ${JSON.stringify(list)}`);
 
-      //1. filter out the target group
-      for(let i=0;i<list.length;i++){
-        const row=list[i];
-        if(to.length===48){
-          if(row.id===to){
-            target=row;
-          }else{
-            nlist.push(row);
-          }
-        }else{
-          if(row.id===to){
-            target=row;
-          }else{
-            nlist.push(row);
-          }
-        }
+      //2.update the messages
+      if(RUNTIME.isGroup(to)){
+        list[0].last.from=from;
+        list[0].last.msg=msg;
+      }else{  
+        list[0].last=msg;
       }
 
-      console.log(`The target is : ${JSON.stringify(target)}`);
+      //3.update the unread amount
+      if(unread) list[0].un=parseInt(list[0].un)+1;
 
-      //2.update data
-      if(target!==null){
-        //2.1.regroup the index order
-        if(target.type!=="group"){
-          target.last=msg;
-        }else{
-          target.last.from=from;
-          target.last.msg=msg;
-        }
-        target.update=tools.stamp();
-
-        if(unread){
-          if(!target.un) target.un=0;
-          target.un++;
-        }
-        nlist.unshift(target);
-      }else{
-
-        //2.2.create new group here, need to get the details of group
-        if(to.length===48){
-          const contact={
-            id:to,              //address unique id
-            nick:"",            //nickname of contact
-            update:tools.stamp(),         //group update time
-            last:msg,            //last message
-            type:"contact"      //talking type
-          }
-          nlist.unshift(contact);
-        }else{
-          const atom={
-            id:to,
-            last:{
-              from:from,
-              msg:msg,
-            },
-            update:tools.stamp(),
-            type:"group",
-          }
-
-          if(unread){
-            if(!target.un) target.un=0;
-            atom.un++;
-          }
-          nlist.unshift(atom);
-        }
-      }
-
-      RUNTIME.setTalking(from,nlist,ck);
+      const key=RUNTIME.getTalkingMastor(way,from,to);
+      RUNTIME.setTalking(key,list,ck);
     });
   },
 };

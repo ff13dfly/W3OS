@@ -287,11 +287,9 @@ const router={
 const decoder={
   try:(input)=>{
     if(recoder!==null) recoder(input);
-    console.log(`Here to check the input and call the method to deal with notice`);
-    console.log(input);
+    //console.log(`Here to check the input and call the method to deal with notice`);
     switch (input.type){
       case "notice":
-        //console.log("here to go");
         const name=`${input.method.cat}_${input.method.act}`;
         const callback=!input.method.callback?undefined:input.method.callback;
         
@@ -343,10 +341,10 @@ const agent={
   },
   close:(res)=>{
     SVC=null;   //set websocket
-    console.log("closed")
+    //console.log("closed")
   },
   error:(res)=>{
-    console.log(res);
+    //console.log(res);
   },
 };
 
