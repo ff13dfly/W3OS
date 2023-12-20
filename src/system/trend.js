@@ -8,7 +8,9 @@ function Trend(props) {
   let [animation, setAnimation] = useState("ani_scale_in");
 
   useEffect(() => {
-    PRICE.init();
+    PRICE.more((map)=>{
+      console.log(map);
+    });
   }, []);
 
   return (

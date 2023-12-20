@@ -7,6 +7,7 @@ import GroupAdd from "../components/group_add";
 import Paybill from "../components/paybill";
 import TalkingServer from "../components/talking_server";
 import Chat from "../components/chat";
+import Login from "../components/login";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
@@ -34,6 +35,8 @@ function Talking(props) {
   let [hidden, setHidden] = useState(false);
   let [toast, setToast]=useState("");
   let [hiddenLinking,setHiddenLinking] =useState(false);
+
+  let [reg, setReg] = useState("");
 
   //base on action to create notice recorder
   const decoder = {
@@ -145,7 +148,14 @@ function Talking(props) {
     entry: () => {
       setTitle("Talking");
       RUNTIME.getAccount((fa)=>{
-        if(!fa || !fa.address) return console.log(`Not login yet.`);
+        if(!fa || !fa.address){
+          setReg(
+            <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
+              <Login fresh={self.fresh} />
+            </Col>,
+          );
+          return console.log(`Not login yet.`);
+        } 
         RUNTIME.getTalking(fa.address,(list) => {
           const ps=self.getPendingGroups(list);
           if(ps.length!==0){
@@ -294,6 +304,7 @@ function Talking(props) {
         </Container>
       </Navbar>
       <Container>
+        {reg}
         {framework}
       </Container>
       <div className="opts" hidden={hidden}>

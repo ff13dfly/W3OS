@@ -59,15 +59,18 @@ const RUNTIME = {
     //1. creat salt anyway.
     STORAGE.setIgnore(["salt", "vertify"]); //public data;
     let salt = STORAGE.getKey("salt");
+
+    //1.first time to run W3OS
     if (salt === null) {
-      //1.first time to run W3OS
       const char = tools.char(28, prefix);
       STORAGE.setKey("salt", char);
     }
+
+    //2.check wether no password
     salt = STORAGE.getKey("salt");
     const login = STORAGE.getEncry(); //check storage md5 password hash
     if (!login) {
-      setPass((pass) => {
+      setPass((pass,fresh) => {
         const md5 = Encry.md5(`${salt}${pass}`);
         const check = STORAGE.getKey("vertify");
         //console.log(check);
@@ -75,11 +78,13 @@ const RUNTIME = {
           //a. no password check, create one
           STORAGE.setEncry(md5);
           STORAGE.setKey("vertify", md5);
+          if(fresh) fresh();    //if fresh, do it
+
         } else {
-          //b. no password check, create one
+          //b. do have password
           if (check !== md5) return ck && ck({ msg: "Error password" });
           STORAGE.setEncry(md5);
-          //console.log(`vertify:${check},pass:${md5}`);
+          if(fresh) fresh();    //if fresh, do it
           return ck && ck(true);
         }
       });
@@ -179,15 +184,19 @@ const RUNTIME = {
       const nkey = !stranger ? mine : `${mine}_stranger`;
       let list = STORAGE.getKey(nkey);
       if (list === null) list = {};
-      list[address] = {
-        short: "",
-        intro: "",
-        status: 1,
-        type: !stranger ? "friend" : "stranger",
-        network: "Anchor",
-      };
-      STORAGE.setKey(nkey, list);
-      return ck && ck(true);
+      if(!list[address]){
+        list[address] = {
+          short: "",
+          intro: "",
+          status: 1,
+          type: !stranger ? "friend" : "stranger",
+          network: "Anchor",
+        };
+        STORAGE.setKey(nkey, list);
+        return ck && ck(true);
+      }else{
+        return ck && ck(true);
+      }  
     });
   },
   removeContact: (list, ck, stranger) => {

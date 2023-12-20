@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import RUNTIME from "../lib/runtime";
 import Talking from "../system/talking";
 import Payment from "../system/payment";
+import Copy from "../lib/clipboard";
 
 function ContactDetail(props) {
   const size={
@@ -17,6 +18,8 @@ function ContactDetail(props) {
   let [info, setInfo] = useState("");
   let [intro, setIntro] = useState("");
   let [short, setShort] = useState("");
+  let [disable, setDisable] = useState(false);
+  let [clip, setClip] = useState("Copy");
 
   const self = {
     changeShort: (ev) => {
@@ -46,6 +49,15 @@ function ContactDetail(props) {
         <Payment amount={0} target={address} history={false} />,
       );
     },
+    clickCopy:(addr)=>{
+      Copy(addr);
+      setDisable(true);
+      setClip("Done");
+      setTimeout(() => {
+        setDisable(false);
+        setClip("Copy");
+      }, 1000);
+    },
   };
 
   useEffect(() => {
@@ -56,18 +68,33 @@ function ContactDetail(props) {
     });
   }, []);
 
+  const cmap = {
+    whiteSpace: "pre-wrap",
+    wordBreak: "break-all",
+    fontSize: "14px",
+  };
+
   return (
     <Row>
       <Col className="pb-2" xs={size.table[0]} sm={size.table[0]} md={size.table[0]} lg={size.table[0]} xl={size.table[0]} xxl={size.table[0]}>
        Functions
       </Col>
       <Col className="pb-2 text-end" xs={size.table[1]} sm={size.table[1]} md={size.table[1]} lg={size.table[1]} xl={size.table[1]} xxl={size.table[1]}>
-        <button className="btn btn-md btn-primary" onClick={(ev)=>{
+        <button hidden={props.chatHidden?true:false} className="btn btn-md btn-primary" onClick={(ev)=>{
           self.clickChat(ev);
         }}>Chat</button>
         <button className="btn btn-md btn-primary" style={{"marginLeft":"24px"}} onClick={(ev)=>{
           self.clickPayment(ev);
         }}>Pay to</button>
+      </Col>
+
+      <Col className="pb-2 pt-2" xs={size.save[0]} sm={size.save[0]} md={size.save[0]} lg={size.save[0]} xl={size.save[0]} xxl={size.save[0]}>
+        <span style={cmap}>{address}</span>
+      </Col>
+      <Col className="pb-2 pt-2 text-end" xs={size.save[1]} sm={size.save[1]} md={size.save[1]} lg={size.save[1]} xl={size.save[1]} xxl={size.save[1]}>
+        <button className="btn btn-sm btn-primary mt-3" disabled={disable} onClick={(ev)=>{
+          self.clickCopy(address);
+        }}>{clip}</button>
       </Col>
       <Col className="pb-2" xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
        <hr/>
@@ -98,14 +125,11 @@ function ContactDetail(props) {
       <Col className="pb-2 pt-2" xs={size.save[0]} sm={size.save[0]} md={size.save[0]} lg={size.save[0]} xl={size.save[0]} xxl={size.save[0]}>
         {info}
       </Col>
-      <Col className="pb-2 pt-2" xs={size.save[1]} sm={size.save[1]} md={size.save[1]} lg={size.save[1]} xl={size.save[1]} xxl={size.save[1]}>
+      <Col className="pb-2 pt-2 text-end" xs={size.save[1]} sm={size.save[1]} md={size.save[1]} lg={size.save[1]} xl={size.save[1]} xxl={size.save[1]}>
         <button className="btn btn-md btn-primary" onClick={(ev)=>{
           self.clickSave(ev);
         }}>Save</button>
       </Col>
-
-      
-      
     </Row>
   );
 }
