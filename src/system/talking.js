@@ -157,6 +157,7 @@ function Talking(props) {
         }
         setReg("");
         RUNTIME.getTalking(fa.address,(list) => {
+          console.log(list);
           const ps=self.getPendingGroups(list);
           if(ps.length!==0){
             self.updateGroup(ps,()=>{

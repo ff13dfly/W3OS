@@ -531,10 +531,10 @@ const RUNTIME = {
   /***************************************************************/
   /******************* Index update functions ********************/
   /***************************************************************/
-  getTalkingMastor:(way,from,to)=>{
-    if(way==="to") return from;
-    return to;
-  },
+  // getTalkingMastor:(way,from,to)=>{
+  //   if(way==="to") return from;
+  //   return to;
+  // },
   isGroup: (address) => {
     if (address.length === 48) return false;
     return true;
@@ -543,7 +543,7 @@ const RUNTIME = {
     return {
       id:"",                  //address unique id
       nick:"",                //nickname of contact
-      update:tools.stamp(),   //group update time
+      update:0,   //group update time
       last:"",                //last message
       type:"contact",         //talking type
       un:0,
@@ -556,13 +556,13 @@ const RUNTIME = {
         from:"",
         msg:"",
       },
-      update:tools.stamp(),
+      update:0,
       type:"group",
       un:0,
     }
   },
   exsistID:(id,list)=>{
-    //console.log(`[exsistID] get the index of ${id} from ${JSON.stringify(list)}`)
+    console.log(`[exsistID] get the index of ${id} from ${JSON.stringify(list)}`)
     for(let i=0;i<list.length;i++){
       if(list[i].id===id) return i;
     }
@@ -575,47 +575,51 @@ const RUNTIME = {
   getAtomFromTalking:(way,from,to,ck)=>{
     console.log(`[getAtomFromTalking] From ${from}, to ${to}, way: ${way}`);
     //1.which account to update 
-    const key=RUNTIME.getTalkingMastor(way,from,to);   
-    RUNTIME.getTalking(key,(list)=>{
-
-      //2.check the atom ID
-      if(to.length===48){
-        //2.1. index order when contact
-        const id=RUNTIME.getAtomID(way,from,to);
-        const index=RUNTIME.exsistID(id,list);
-        console.log(`Contact index: ${index}, ID: ${id}`);
-        if(index===null){
-          const atom=RUNTIME.newContact();
-          atom.id=id;     //set the contact ID
-          list.unshift(atom);
-          return ck && ck(list);
-        }else{
-          const nlist=[list[index]];
-          for(let i=0;i<list.length;i++){
-            if(i!==index) nlist.push(list[i]);
+    
+    RUNTIME.getAccount((fa)=>{
+      //const key=RUNTIME.getTalkingMastor(way,from,to);
+      const key=fa.address;
+      console.log(`Account: ${key} need to update talking index.`);
+      RUNTIME.getTalking(key,(list)=>{
+  
+        //2.check the atom ID
+        if(to.length===48){
+          //2.1. index order when contact
+          const id=RUNTIME.getAtomID(way,from,to);
+          const index=RUNTIME.exsistID(id,list);
+          console.log(`Contact index: ${index}, ID: ${id}`);
+          if(index===null){
+            const atom=RUNTIME.newContact();
+            atom.id=id;     //set the contact ID
+            list.unshift(atom);
+            return ck && ck(list);
+          }else{
+            const nlist=[list[index]];
+            for(let i=0;i<list.length;i++){
+              if(i!==index) nlist.push(list[i]);
+            }
+            return ck && ck(nlist);
           }
-          return ck && ck(nlist);
-        }
-      }else{
-        //2.2. index order when group
-        const index=RUNTIME.exsistID(to,list);
-        console.log(`Group index: ${index}`);
-        if(index===null){
-          const atom=RUNTIME.newGroup();
-          atom.id=to;
-          list.unshift(atom);
-          return ck && ck(list);
         }else{
-          const nlist=[list[index]];
-          for(let i=0;i<list.length;i++){
-            if(i!==index) nlist.push(list[i]);
+          //2.2. index order when group
+          const index=RUNTIME.exsistID(to,list);
+          console.log(`Group index: ${index}`);
+          if(index===null){
+            const atom=RUNTIME.newGroup();
+            atom.id=to;
+            list.unshift(atom);
+            return ck && ck(list);
+          }else{
+            const nlist=[list[index]];
+            for(let i=0;i<list.length;i++){
+              if(i!==index) nlist.push(list[i]);
+            }
+            return ck && ck(nlist);
           }
-          return ck && ck(nlist);
         }
-      }
-    })
+      });
+    });
   },
-
   updateTalkingIndex:(from,to,msg,ck,unread,way)=>{
     console.log(`From "RUNTIME.updateTalkingIndex":`);
     console.log(`From: ${from}, to: ${to}, unread: ${unread}, way: ${way}, message: ${msg}`);
@@ -625,18 +629,21 @@ const RUNTIME = {
       console.log(`Ordered list: ${JSON.stringify(list)}`);
 
       //2.update the messages
+      console.log(`[updateTalkingIndex] To: ${to}`);
       if(RUNTIME.isGroup(to)){
+        console.log(list[0]);
         list[0].last.from=from;
         list[0].last.msg=msg;
       }else{  
         list[0].last=msg;
       }
+      list[0].update=tools.stamp();
 
       //3.update the unread amount
       if(unread) list[0].un=parseInt(list[0].un)+1;
-
-      const key=RUNTIME.getTalkingMastor(way,from,to);
-      RUNTIME.setTalking(key,list,ck);
+      RUNTIME.getAccount((fa)=>{
+        RUNTIME.setTalking(fa.address,list,ck);
+      });
     });
   },
 };
