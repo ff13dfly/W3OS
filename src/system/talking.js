@@ -102,7 +102,7 @@ function Talking(props) {
   }
 
   const cmap={
-    height:"750px",
+    height:`${window.innerHeight-120}px`,
   }
 
   const UI=RUNTIME.getUI();
@@ -149,13 +149,13 @@ function Talking(props) {
       setTitle("Talking");
       RUNTIME.getAccount((fa)=>{
         if(!fa || !fa.address){
-          setReg(
+          return setReg(
             <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]} lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}>
               <Login fresh={self.fresh} />
             </Col>,
           );
-          return console.log(`Not login yet.`);
-        } 
+        }
+        setReg("");
         RUNTIME.getTalking(fa.address,(list) => {
           const ps=self.getPendingGroups(list);
           if(ps.length!==0){
@@ -169,7 +169,12 @@ function Talking(props) {
       });
     },
     newGroup: () => {
-      self.page(<GroupAdd back={self.back} />, "group_add", "Select contact");
+      RUNTIME.getContact((res) => {
+        console.log(res);
+        let count=0;
+        for(let k in res) count++;
+        self.page(<GroupAdd back={self.back} amount={count}/>, "group_add", "Select contact");
+      });
     },
     payToVertify: (ev) => {
       RUNTIME.getAccount((acc) => {
@@ -240,24 +245,27 @@ function Talking(props) {
     chatGroup:(addr)=>{
 
     },
+    fresh:()=>{
+      self.entry();
+      IMGC.init(self.recorder,(res)=>{
+        setHiddenLinking(true);
+        if(props.address){
+          console.log(`Ready to load chat`);
+          if(props.address.length===48){
+            self.chatSingle(props.address);
+          }else{
+            self.chatGroup(props.address);
+          }
+        }
+      });
+      setTimeout(()=>{
+        if(!active) self.entry();
+      },2000);
+    }
   }
 
   useEffect(() => {
-    self.entry();
-    IMGC.init(self.recorder,(res)=>{
-      setHiddenLinking(true);
-      if(props.address){
-        console.log(`Ready to load chat`);
-        if(props.address.length===48){
-          self.chatSingle(props.address);
-        }else{
-          self.chatGroup(props.address);
-        }
-      }
-    });
-    setTimeout(()=>{
-      if(!active) self.entry();
-    },2000);
+    self.fresh();
   }, []);
 
   return (

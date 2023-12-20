@@ -363,7 +363,7 @@ const IMGC={
   setRecoder:(fun)=>{
     recoder=fun;
   },
-  init:(fun,ck,force)=>{
+  init:(fun,ck,force,ignor)=>{
     if(fun) IMGC.setRecoder(fun); //set out recoder
 
     //Set IO decoder, get the parameters from URL
@@ -381,7 +381,15 @@ const IMGC={
       RUNTIME.websocket(uri,(ws)=>{
         SVC=ws;
         return ck && ck(true);
-      },agent,force)
+      },agent,force);
+
+      if(!ignor){
+        RUNTIME.wsClose(uri,(res)=>{
+          console.log(`Websocket link closed, ready to reconnect.`);
+          RUNTIME.wsRemove(uri);
+          IMGC.init(fun,ck,force,true);
+        });
+      }
     });
   },
   group:{

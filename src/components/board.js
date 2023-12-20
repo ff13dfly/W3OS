@@ -27,7 +27,7 @@ function Board(props) {
   };
   useEffect(() => {
     PRICE.init((data)=>{
-      console.log(data);
+      //console.log(data);
       if(data!==false){
         for(var k in data){
           if(router[k])router[k](data[k]);

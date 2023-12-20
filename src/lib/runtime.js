@@ -10,12 +10,13 @@ import IMGC from "../open/IMGC";
 
 
 let API = null;
-let wsAPI = null;
-let wss = {};
+let wsAPI = null;   //Polkadot node link
+let wss = {};       //servers links
 let spams = {};
 let nets = {};
 let UI = null;
-let mailer = {}; //mailer cache
+let mailer = {};    //mailer cache
+let closing={};     //closing monitor
 
 let base="";  //avatar base URL
 let type="";  //avatar type set
@@ -396,6 +397,11 @@ const RUNTIME = {
     delete wss[uri];
     return true;
   },
+  wsClose:(uri,fun)=>{
+    if(!closing[uri])closing[uri]=[];
+    closing[uri].push(fun);
+    return true;
+  },
   websocket: (uri, ck, agent,force) => {
     if (wss[uri] && !force) return ck && ck(wss[uri]);
 
@@ -413,6 +419,11 @@ const RUNTIME = {
       };
       ws.onclose = (res) => {
         if (agent && agent.close) agent.close(res);
+        if(closing[uri] && closing[uri].length!==0){
+          for(let i=0;i<closing[uri].length;i++){
+            closing[uri][i](res);
+          }
+        }
       };
       ws.onerror = (res) => {
         if (agent && agent.error) agent.error(res);
