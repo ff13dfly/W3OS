@@ -8,6 +8,8 @@ import ContactDetail from "./contact_detail";
 //import Friend from './friend';
 //import Contact from '../system/contact';
 
+import Talking from "../system/talking";
+
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
 import tools from "../lib/tools";
@@ -23,12 +25,18 @@ function ContactList(props) {
   const UI=RUNTIME.getUI();
   const self = {
     click: (address, unread) => {
-
-      UI.dialog.show(
-        <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
-        <ContactTitle address={address} />,
+      //UI.page("");
+      UI.page(
+        <Talking address={address}/>
       );
-      // check unread to open right dialog
+      //1.open chat dailog way
+      // UI.dialog.show(
+      //   <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
+      //   <ContactTitle address={address} />,
+      // );
+
+
+      // 2.check unread to open right dialog
       // if(unread===0){
       //   UI.dialog.show(
       //     <ContactDetail address={address}/>,

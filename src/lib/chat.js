@@ -38,7 +38,6 @@ const CHAT = {
     });
   },
   friends: (fs) => {
-    //set friend list
     for (var k in fs) map[k] = true;
   },
   setConfig: (name, pre) => {

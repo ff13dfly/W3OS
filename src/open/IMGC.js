@@ -343,6 +343,7 @@ const agent={
   },
   close:(res)=>{
     SVC=null;   //set websocket
+    console.log("closed")
   },
   error:(res)=>{
     console.log(res);
@@ -362,7 +363,7 @@ const IMGC={
   setRecoder:(fun)=>{
     recoder=fun;
   },
-  init:(fun)=>{
+  init:(fun,ck,force)=>{
     if(fun) IMGC.setRecoder(fun); //set out recoder
 
     //Set IO decoder, get the parameters from URL
@@ -371,7 +372,7 @@ const IMGC={
       console.log(params);
     });
 
-    if(SVC!==null) return true;
+    if(SVC!==null) return ck && ck(true);
     RUNTIME.getAccount((fa)=>{
       if(!fa) return false;
       mine=fa.address;
@@ -379,7 +380,8 @@ const IMGC={
       const uri=cfg.basic.talking[0];
       RUNTIME.websocket(uri,(ws)=>{
         SVC=ws;
-      },agent)
+        return ck && ck(true);
+      },agent,force)
     });
   },
   group:{

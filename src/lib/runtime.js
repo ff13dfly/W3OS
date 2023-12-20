@@ -368,8 +368,13 @@ const RUNTIME = {
     delete wss[uri];
     return true;
   },
-  websocket: (uri, ck, agent) => {
-    if (wss[uri]) return ck && ck(wss[uri]);
+  websocket: (uri, ck, agent,force) => {
+    if (wss[uri] && !force) return ck && ck(wss[uri]);
+
+    if(force && wss[uri]){
+      wss[uri].close();
+    }
+
     try {
       const ws = new WebSocket(uri);
       ws.onopen = (res) => {

@@ -10,8 +10,10 @@ import Login from "../components/login";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
+import IMGC from "../open/IMGC";
 
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { RiLinkUnlink } from "react-icons/ri";
 
 let selected = { contact: null, stranger: null };
 
@@ -37,6 +39,7 @@ function Contact(props) {
   let [animation, setAnimation] = useState("ani_scale_in");
   let [reg, setReg] = useState("");
 
+  const decoder = {};
   const UI=RUNTIME.getUI();
   const self = {
     clickSetting: (ev) => {
@@ -76,131 +79,50 @@ function Contact(props) {
         );
       }
     },
-    send: (obj) => {
-      //console.log(websocket.readyState,spam)
-      if (!spam || websocket === null || websocket.readyState !== 1)
-        return setTimeout(() => {
-          self.send(obj);
-        }, 500);
-      obj.spam = spam;
-      websocket.send(JSON.stringify(obj));
-    },
-    linkChatting: (ev) => {
-      if (checker !== null) {
-        clearInterval(checker);
-        checker = null;
-      }
-      if (websocket !== null) websocket = null;
 
-      RUNTIME.getSetting((cfg) => {
-        const config = cfg.apps.contact,
-          uri = config.node[0];
-        const agent = {
-          open: (res) => {},
-          message: (res) => {
-            const str = res.data;
-            try {
-              const input = JSON.parse(str);
-              const postman = RUNTIME.getMailer(input.from);
-              console.log(input);
-              switch (input.act) {
-                case "init": //websocket init, use is not active yet.
-                  spam = input.spam;
-                  RUNTIME.setSpam(uri, input.spam);
-                  break;
+    recorder: (input) => {
+      console.log(`Here to get all the messages.`);
+      console.log(input);
+      
+      if (!input || !input.type) return false;
 
-                case "history":
-                  RUNTIME.getAccount((acc) => {
-                    CHAT.save(
-                      acc.address,
-                      input.from,
-                      input.msg,
-                      "from",
-                      (res) => {
-                        self.fresh();
-                        if (res !== true) {
-                          RUNTIME.addContact(res, () => {}, true);
-                        }
-                      },
-                    );
-                  });
-                  break;
+      const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
+      switch (input.type) {
+        case "message":     //message recorder process
+          RUNTIME.updateTalkingIndex(input.from, !input.group?input.to:input.group, input.msg, () => {
+            if (!active) self.entry();
+          }, !un,"from");
 
-                case "chat":
-                  if (postman) postman(input);
-                  RUNTIME.getAccount((acc) => {
-                    CHAT.save(
-                      acc.address,
-                      input.from,
-                      input.msg,
-                      "from",
-                      (res) => {
-                        self.fresh();
-                        if (res !== true) {
-                          RUNTIME.addContact(res, () => {}, true);
-                        }
-                      },
-                    );
-                  });
-                  break;
-                case "reg":
-                  break;
-                case "active":
-                  if (input.success) {
-                    active = true;
-                    setHidelink(true);
-                    self.fresh();
-                  }
-                  break;
-                case "notice":
-                  if (postman) postman(input);
-                  break;
-                default:
-                  break;
-              }
-            } catch (error) {}
-          },
-          close: (res) => {
-            websocket = null; //remove websocket link
-            active = false;
-          },
-          error: (res) => {
-            console.log(res);
-          },
-        };
+          //2.save the message record
+          RUNTIME.getAccount((acc) => {
+            const mine = acc.address;
+            if (input.group) {
+              CHAT.save(mine, input.from, input.msg, "from", input.group, un, () => { });
+            } else {
+              CHAT.save(mine, input.from, input.msg, "from", input.from, un, () => { });
+            }
+          });
+          break;
 
-        RUNTIME.getAccount((acc) => {
-          if (acc === null || !acc.address) {
-            setHidelink(true);
-            return false;
+        case "notice":     //notice recorder process
+          //console.log(`Write the notice recoder here.`);
+          if (input.method) {
+            const key = `${input.method.cat}_${input.method.act}`;
+            if (decoder[key]) {
+              RUNTIME.getAccount((acc) => {
+                const mine = acc.address;
+                decoder[key](mine, input);
+              });
+            }
           }
-          RUNTIME.websocket(
-            uri,
-            (ws) => {
-              websocket = ws;
-              setHidelink(true);
-              checker = setInterval(() => {
-                const status = RUNTIME.wsCheck(uri);
-                //console.log(`Websocket status:${status}, checker: ${checker}`);
-                if (status === 3) {
-                  setHidelink(false);
-                  RUNTIME.wsRemove(uri);
-                  setTimeout(() => {
-                    self.linkChatting(ev);
-                  }, 1000);
-                }
-              }, 5000);
-
-              const data = {
-                act: "active",
-                acc: acc.address,
-              };
-              self.send(data);
-            },
-            agent,
-          );
-        });
-      });
+          break;
+        case "error":
+          //console.log(`Got error here.`);
+          //TODO, here to check the system error.
+          break;
+        default:
+          break;
+      }
     },
     fresh: () => {
       //console.log(`Fresh page, new chat,${fresh_contact},${fresh_stranger}`);
@@ -224,6 +146,7 @@ function Contact(props) {
     },
   };
 
+  // set the friends list;
   if (!friend) {
     RUNTIME.getContact((fs) => {
       CHAT.friends(fs);
@@ -232,9 +155,9 @@ function Contact(props) {
   }
 
   useEffect(() => {
-    // if (!active) {
-    //   self.linkChatting();
-    // }
+    // IMGC.init(self.recorder,(res)=>{
+    //   setHidelink(true);
+    // },true);
 
     RUNTIME.getAccount((acc) => {
       if (acc === null || !acc.address) {
@@ -321,24 +244,9 @@ function Contact(props) {
       <div className="opts">
         <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} onClick={(ev) => {
             self.clickEdit(ev);
-        }}/>
-        {/* <img
-          src="icons/setting.svg"
-          hidden={editing}
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
-            self.clickSetting(ev);
-          }}
-        /> */}
-        {/* <img
-          src="icons/link.svg"
-          hidden={hidelink || active || editing}
-          className="opt_button"
-          alt=""
-          onClick={(ev) => {
-            self.linkChatting(ev);
-          }}
+        }}/>r
+        {/* <RiLinkUnlink color="grey" style={{marginLeft:"10px"}}
+          hidden={hidelink}
         /> */}
       </div>
     </div>

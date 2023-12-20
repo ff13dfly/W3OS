@@ -193,6 +193,8 @@ function Chat(props) {
     });
 
     RUNTIME.setMailer(to, (res) => {
+      console.log(to);
+      console.log(res);
       self.live(res);
     });
 

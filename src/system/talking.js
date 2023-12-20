@@ -6,6 +6,7 @@ import TalkingGroup from "../components/talking_group";
 import GroupAdd from "../components/group_add";
 import Paybill from "../components/paybill";
 import TalkingServer from "../components/talking_server";
+import Chat from "../components/chat";
 
 import RUNTIME from "../lib/runtime";
 import CHAT from "../lib/chat";
@@ -18,6 +19,7 @@ import IMGC from "../open/IMGC";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { FaUsers } from "react-icons/fa";
 import { FaServer } from "react-icons/fa6";
+import { RiLinkUnlink } from "react-icons/ri";
 
 let active = "";
 function Talking(props) {
@@ -31,6 +33,7 @@ function Talking(props) {
   let [title, setTitle] = useState("Talking");
   let [hidden, setHidden] = useState(false);
   let [toast, setToast]=useState("");
+  let [hiddenLinking,setHiddenLinking] =useState(false);
 
   //base on action to create notice recorder
   const decoder = {
@@ -185,16 +188,6 @@ function Talking(props) {
       const un = RUNTIME.exsistMailer(!input.group ? input.from : input.group);
       switch (input.type) {
         case "message":     //message recorder process
-          //1.update talking index
-          // if (input.group) {
-          //   RUNTIME.updateTalkingIndex(input.from, input.group, input.msg, () => {
-          //     if (!active) self.entry();
-          //   }, !un);
-          // } else {
-          //   RUNTIME.updateTalkingIndex(input.from, input.to, input.msg, () => {
-          //     if (!active) self.entry();
-          //   }, !un);
-          // }
 
           RUNTIME.updateTalkingIndex(input.from, !input.group?input.to:input.group, input.msg, () => {
             if (!active) self.entry();
@@ -231,11 +224,27 @@ function Talking(props) {
           break;
       }
     },
+    chatSingle:(addr)=>{
+      self.page(<Chat address={addr} fixed={true}/>,addr,tools.shorten(addr));
+    },
+    chatGroup:(addr)=>{
+
+    },
   }
 
   useEffect(() => {
     self.entry();
-    IMGC.init(self.recorder);
+    IMGC.init(self.recorder,(res)=>{
+      setHiddenLinking(true);
+      if(props.address){
+        console.log(`Ready to load chat`);
+        if(props.address.length===48){
+          self.chatSingle(props.address);
+        }else{
+          self.chatGroup(props.address);
+        }
+      }
+    });
     setTimeout(()=>{
       if(!active) self.entry();
     },2000);
@@ -303,6 +312,11 @@ function Talking(props) {
             self.payToVertify(ev);
           }}
         />
+        <RiLinkUnlink color="grey" style={{marginLeft:"20px"}}
+          hidden={hiddenLinking}
+          onClick={(ev) => {
+            self.linkChatting(ev);
+          }}/>
       </div>
       {toast}
     </div>
