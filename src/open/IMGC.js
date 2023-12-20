@@ -190,6 +190,7 @@ const router={
     } 
   },
   group_detail:(res,callback)=>{
+    console.log(`Group details: ${JSON.stringify(res)}`);
     //1.check the group exsist
     const row={
       id:res.id,
@@ -206,7 +207,7 @@ const router={
     delete res.update;
 
     DB.update(mine,[row],()=>{
-      console.log(`Group[${row.id}] updated.`);
+      //console.log(`Group[${row.id}] updated.`);
       const odata={
         id:row.id,
         type:"group",
@@ -220,16 +221,14 @@ const router={
       }
 
       //update the localstorage index here
-      DB.groupList(mine,row.id,odata,(res)=>{
-        //console.log(`Group oreder index saved, data: ${JSON.stringify(res)}`);
+      DB.groupList(mine,row.id,odata,(rs)=>{
+        //2.callback if there is
+        if(callback!==undefined){
+          map[callback](res);
+          delete map[callback];
+        } 
       });
     });
-
-    //2.callback if there is
-    if(callback!==undefined){
-      map[callback](res);
-      delete map[callback];
-    } 
   },
   group_divert:(res,callback)=>{
     //1.
@@ -274,8 +273,7 @@ const router={
     }
   },
   group_update:(res,callback)=>{
-    console.log(res);
-    console.log(callback);
+
     //2.callback if there is
     if(callback!==undefined){
       map[callback](res);

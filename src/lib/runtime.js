@@ -640,6 +640,7 @@ const RUNTIME = {
       list[0].update=tools.stamp();
 
       //3.update the unread amount
+      if(!list[0].un) list[0].un=0;
       if(unread) list[0].un=parseInt(list[0].un)+1;
       RUNTIME.getAccount((fa)=>{
         RUNTIME.setTalking(fa.address,list,ck);
