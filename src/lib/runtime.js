@@ -29,7 +29,6 @@ const keys = {
   apps: `${prefix}_apps_list`,
   salt: `${prefix}_salt`,
   vertify: `${prefix}_check`,
-  //talking:`${prefix}_talking`,
 };
 STORAGE.setMap(keys);
 
@@ -193,6 +192,11 @@ const RUNTIME = {
           type: !stranger ? "friend" : "stranger",
           network: "Anchor",
         };
+        if(!STORAGE.checkMap(nkey)){
+          const nmap={};
+          nmap[nkey]=`${prefix}_${nkey}`;
+          STORAGE.setMap(nmap);
+        }
         STORAGE.setKey(nkey, list);
         return ck && ck(true);
       }else{
@@ -227,7 +231,6 @@ const RUNTIME = {
       const nkey = !stranger ? mine : `${mine}_stranger`;
       nmap[nkey] = skey;
       STORAGE.setMap(nmap);
-
       const list = STORAGE.getKey(nkey);
       if (list === null) {
         STORAGE.setKey(nkey, !stranger ? config.contacts : {});

@@ -235,6 +235,18 @@ function Talking(props) {
             if (!active) self.entry();
           }, !un, "from");
 
+          //2.add stranger if neccessary
+          console.log(`Checking address ${input.to} wether stranger.`);
+          if(!input.group){  
+            RUNTIME.getContact((tmap)=>{
+              if(!tmap[input.from]){
+                RUNTIME.addContact(input.from,()=>{
+
+                },true);
+              }
+            });
+          }
+
           //2.save the message record
           RUNTIME.getAccount((acc) => {
             const mine = acc.address;

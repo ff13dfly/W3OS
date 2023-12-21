@@ -172,18 +172,8 @@ function Contact(props) {
       <Container>
         <ContactAdd fresh={self.fresh} count={count} />
         {reg}
-        <ContactList
-          fresh={self.fresh}
-          select={self.select}
-          edit={editing}
-          count={count}
-        />
-        <StrangerList
-          fresh={self.fresh}
-          select={self.select}
-          edit={editing}
-          count={stranger}
-        />
+        <ContactList fresh={self.fresh} select={self.select} edit={editing} count={count} />
+        <StrangerList fresh={self.fresh} select={self.select} edit={editing} count={stranger} />
       </Container>
       <div className="opts">
         <IoMdCloseCircleOutline color={editing?"#F3A433":"grey"} onClick={(ev) => {

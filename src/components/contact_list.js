@@ -25,7 +25,6 @@ function ContactList(props) {
   const UI=RUNTIME.getUI();
   const self = {
     click: (address, unread) => {
-      //UI.page("");
       if(unread===0){
         UI.dialog.show(
           <ContactDetail address={address} fresh={self.fresh}/>,
@@ -36,26 +35,6 @@ function ContactList(props) {
           <Talking address={address}/>
         );
       }
-     
-      //1.open chat dailog way
-      // UI.dialog.show(
-      //   <Chat address={address} fresh={props.fresh} height={560} fixed={false}/>,
-      //   <ContactTitle address={address} />,
-      // );
-
-
-      // 2.check unread to open right dialog
-      // if(unread===0){
-      //   UI.dialog.show(
-      //     <ContactDetail address={address}/>,
-      //     `Contact details`//tools.shorten(address,6),
-      //   );
-      // }else{
-      //   UI.dialog.show(
-      //     <Chat address={address} fresh={props.fresh} height={600} />,
-      //     <ContactTitle address={address} />,
-      //   );
-      // }
     },
     select: (address) => {
       select[address] = !select[address];
