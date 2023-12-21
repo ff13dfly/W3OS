@@ -1,28 +1,17 @@
 {
     "target":{
-        "folder":"package/demo/",
-        "entry":"index.js",
-        "single":"single.min.js"
+        "single":"chat_server.min.js"
     },
-    "anchor":"node_test",
+    "anchor":"imgc",
     "server":"ws://127.0.0.1:9944",
     "version":"1.0.0",
     "autowrite":true,
-    "libs":{
-        "koa":{
-            "file":"../../../package/node/koa.node",
-            "anchor":"node_koa"
-        },
-        "koa-router":{
-            "file":"../../../package/node/koa-router.node",
-            "anchor":"node_koa_router"
-        }
-    },
+    "libs":{},
     "symbol":["%{{%","%}}%"],
     "replace":"XxX",
     "account":{
-        "seed":"Dave",
-        "file":"encry_json_file.json",
+        "seed":"Alice",
+        "file":"",
         "password":""
     }
 }

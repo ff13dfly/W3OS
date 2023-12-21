@@ -26,9 +26,9 @@ if(!args[0]){
 }
 
 const fs=require('fs');
-const anchorJS= require('../../package/node/anchor.node');
-const { ApiPromise, WsProvider } = require('../../package/node/polkadot.node');
-const { Keyring } = require('../../package/node/polkadot.node');
+const anchorJS= require('./lib/anchor.node');
+const { ApiPromise, WsProvider } = require('./lib/polkadot.node');
+const { Keyring } = require('./lib/polkadot.node');
 
 const cfile=args[0];
 const file={
@@ -159,13 +159,15 @@ return file.read(cfile,(config)=>{
             }
 
             //3.get the target anchor data
+
             const protocol={
                 "type": "app",
                 "fmt": "js",
-                "lib":alist,
+                //"lib":alist,
                 "ver":"1.0.1",
                 "tpl":"nodejs"
             }
+            if(alist.length!==0) protocol.lib=alist;
             const anchor={name:config.anchor,raw:final,protocol:protocol}
 
             //4.write to file or save
