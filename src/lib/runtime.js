@@ -9,6 +9,43 @@ import BILL from "./bill";
 import IMGC from "../open/IMGC";
 
 
+import { FcEngineering } from "react-icons/fc";
+import { FcDataProtection } from "react-icons/fc";
+import { FcMoneyTransfer } from "react-icons/fc";
+import { FcContacts } from "react-icons/fc";
+import { FcPhone } from "react-icons/fc";
+import { FcHome } from "react-icons/fc";
+import { FcLineChart } from "react-icons/fc";
+import { FcMindMap } from "react-icons/fc";
+import { FcOrgUnit } from "react-icons/fc";
+import { FcMultipleDevices } from "react-icons/fc";
+import { FcOrganization } from "react-icons/fc";
+import { FcPodiumWithAudience } from "react-icons/fc";
+import { FcSelfie } from "react-icons/fc";
+import { FcSalesPerformance } from "react-icons/fc";
+import { FcPuzzle } from "react-icons/fc";
+import { FcProcess } from "react-icons/fc";
+
+const isize=66;
+const icons=[
+  <FcEngineering size={isize} />,
+  <FcDataProtection size={isize} />,
+  <FcMoneyTransfer size={isize}/>,
+  <FcContacts size={isize}/>,
+  <FcPhone size={isize}/>,
+  <FcHome size={isize}/>,
+  <FcLineChart size={isize}/>,    //app random icon from here
+  <FcMindMap size={isize}/>,
+  <FcOrgUnit size={isize}/>,
+  <FcMultipleDevices size={isize}/>,
+  <FcOrganization size={isize}/>,
+  <FcPodiumWithAudience size={isize}/>,
+  <FcSelfie size={isize}/>,
+  <FcSalesPerformance size={isize}/>,
+  <FcPuzzle size={isize}/>,
+  <FcProcess size={isize}/>,
+];
+
 let API = null;
 let wsAPI = null;   //Polkadot node link
 let wss = {};       //servers links
@@ -49,6 +86,13 @@ const Easy = window.Easy;
 const Pok = window.Polkadot;
 
 const RUNTIME = {
+  getICON:(index)=>{
+    if(icons[index]) return icons[index];
+    return icons[0];
+  },
+  getRandomICON:()=>{
+    return tools.rand(5,icons.length-1);
+  },
   /************************************************/
   /********** System initialization ***************/
   /************************************************/
