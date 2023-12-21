@@ -6,9 +6,34 @@ import RUNTIME from "../lib/runtime";
 function Trend(props) {
   const size = [3, 6, 3];
   let [animation, setAnimation] = useState("ani_scale_in");
+  let [coins, setCoins]= useState("");
+
+  const base="public/coins/";
+  const list={
+    "bitcoin":{
+
+    },
+    "ethereum":{
+
+    },
+    "polkadot":{
+
+    },
+    "kusama":{
+
+    },
+  }
+
+  const self={
+    render:(prices)=>{
+      
+    }
+  };
 
   useEffect(() => {
-    PRICE.more((map)=>{
+    const clist=Object.keys(list);
+    PRICE.more(clist,(map)=>{
+
       console.log(map);
     });
   }, []);
@@ -18,41 +43,15 @@ function Trend(props) {
       <Navbar className="bg-body-tertiary">
         <Container>
           <Row style={{ width: "100%", margin: "0 auto" }}>
-            <Col
-              xs={size[0]}
-              sm={size[0]}
-              md={size[0]}
-              lg={size[0]}
-              xl={size[0]}
-              xxl={size[0]}
-              style={{ paddingTop: "6px" }}
-            >
+            <Col xs={size[0]} sm={size[0]} md={size[0]} lg={size[0]} xl={size[0]} xxl={size[0]} style={{ paddingTop: "6px" }}>
               <Navbar.Brand href="#">
                 W<span className="logo">3</span>OS
               </Navbar.Brand>
             </Col>
-            <Col
-              xs={size[1]}
-              sm={size[1]}
-              md={size[1]}
-              lg={size[1]}
-              xl={size[1]}
-              xxl={size[1]}
-              style={{ paddingTop: "10px" }}
-              className="text-center"
-            >
+            <Col className="text-center" xs={size[1]} sm={size[1]} md={size[1]} lg={size[1]} xl={size[1]} xxl={size[1]} style={{ paddingTop: "10px" }} >
               Trends
             </Col>
-            <Col
-              xs={size[2]}
-              sm={size[2]}
-              md={size[2]}
-              lg={size[2]}
-              xl={size[2]}
-              xxl={size[2]}
-              className="text-end pb-2"
-              style={{ paddingTop: "10px" }}
-            >
+            <Col className="text-end pb-2" xs={size[2]} sm={size[2]}  md={size[2]} lg={size[2]} xl={size[2]} xxl={size[2]} style={{ paddingTop: "10px" }}>
               <span
                 className="close"
                 onClick={(ev) => {
@@ -69,7 +68,9 @@ function Trend(props) {
           </Row>
         </Container>
       </Navbar>
-      <Container></Container>
+      <Container>
+
+      </Container>
     </div>
   );
 }
