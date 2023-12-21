@@ -12,11 +12,19 @@
 
 ## Technical And Functions
 
-### Technical Architecture
+### Technical Details
 
 - W3OS. The frontend of W3OS is base on React.
+  1. Account: usage of @polladot/keyring
+  2. Payment: usage of @polkadot/api
+  3. Contact: encried local storage
+  4. Talking: encried local storage, indexedDB
+  5. Dapps: usage of EasyPolka, usage of Anchor Network
 
-- IMGC service. IMGC is base on NodeJS.
+- IMGC ( Instant Messaging & Group Chat ) service. IMGC is base on NodeJS.
+  1. Instant Messaging: websocket
+  2. Group Chat: websocket
+  3. Vertification of Payment: usage of @polkadot/api
 
 - Full on chain. The on-chain deployment is base on Anchor Network. Test Network here [wss://dev2.metanchor.net](wss://dev2.metanchor.net)
 
