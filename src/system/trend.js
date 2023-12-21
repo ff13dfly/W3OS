@@ -20,6 +20,14 @@ const list = {
     "price": 0,
     "update": 0,
   },
+  // "bnb":{
+  //   "price":0,
+  //   "update": 0,
+  // },
+  "solana":{
+    "price":0,
+    "update": 0,
+  },
 }
 
 function Trend(props) {

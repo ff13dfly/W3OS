@@ -1,7 +1,7 @@
 module.exports = {
   basic: {
     //OS basic parameters
-    endpoint: ["wss://dev2.metanchor.net", "ws://127.0.0.1:9944"],
+    endpoint: ["ws://127.0.0.1:9944","wss://dev2.metanchor.net"],
     //endpoint: ["ws://127.0.0.1:9944","wss://dev2.metanchor.net"],
     name: "W3OS",
     desc: "Full on chain OS for Web3.0, base on Anchor Network.",
@@ -10,7 +10,7 @@ module.exports = {
     loader: "loader.html",
     protocol: ["Easy Protocol"],
     avatar: ["https://robohash.org"],
-    talking:["wss://chat.metanchor.net","ws://127.0.0.1:7788"],
+    talking:["ws://127.0.0.1:7788","wss://chat.metanchor.net"],
     theme:2,
   },
   APIs: {

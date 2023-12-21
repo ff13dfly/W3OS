@@ -10,7 +10,7 @@
     },
     "directory":"package/w3os",
     "asset":"asset-manifest.json",
-    "globalVars":["polkadot","anchorJS","easy"],
+    "globalVars":[],
     "blockmax":1500000,
     "ignor":{
         "files":{
@@ -22,8 +22,8 @@
             "logo512.png":true,
             "robots.txt":true,
             ".DS_Store":true,
-            "anchor.min.js":true,
-            "polkadot.min.js":true
+            "anchor.min.js":false,
+            "polkadot.min.js":false
         },
         "folder":{
             "js":true,
