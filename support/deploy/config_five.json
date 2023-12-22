@@ -1,22 +1,16 @@
 {  
-    "name":"w3os",
+    "name":"five",
     "framework":"frame_react.js",
-    "version":"1.0.8",
+    "version":"1.0.1",
     "related":{
-        "js":"w3_js",
-        "css":"w3_css",
-        "resource":"w3_data",
-        "resource_ref":"w3_map"
+        "js":"fv_js",
+        "css":"fv_css",
+        "resource":"fv_data",
+        "resource_ref":"fv_map"
     },
-    "directory":"package/w3os",
+    "directory":"package/five",
     "asset":"asset-manifest.json",
-    "globalExsist":true,
-    "globalLibs":{
-        "AnchorJS":"anchor.min.js",
-        "Polkadot":"polkadot.min.js",
-        "Easy":"easy.min.js"
-    },
-    "globalVars":["Polkadot","AnchorJS","Easy"],
+    "globalVars":[],
     "blockmax":1500000,
     "ignor":{
         "files":{
@@ -29,13 +23,11 @@
             "robots.txt":true,
             ".DS_Store":true,
             "anchor.min.js":true,
-            "polkadot.min.js":true,
-            "easy.min.js":true
+            "polkadot.min.js":true
         },
         "folder":{
             "js":true,
             "css":true,
-            "package":true,
             ".DS_Store":true
         },
         "system":{
@@ -45,6 +37,6 @@
     "server":"wss://dev2.metanchor.net",
     "account":{
         "password":"",
-        "seed":"Alice"
+        "seed":"Bob"
     }
 }
