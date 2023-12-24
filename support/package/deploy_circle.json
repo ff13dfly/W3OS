@@ -1,14 +1,14 @@
 {  
-    "name":"lst",
+    "name":"circle",
     "framework":"frame_react.js",
     "version":"1.0.1",
     "related":{
-        "js":"lst_js",
-        "css":"lst_css",
-        "resource":"lst_data",
-        "resource_ref":"lst_map"
+        "js":"cy_js",
+        "css":"cy_css",
+        "resource":"cy_data",
+        "resource_ref":"cy_map"
     },
-    "directory":"package/lst",
+    "directory":"package/circle",
     "asset":"asset-manifest.json",
     "globalVars":[],
     "blockmax":1500000,
