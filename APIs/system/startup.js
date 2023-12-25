@@ -5,10 +5,10 @@
 *  @date 2023-12-25
 *  @functions
 *  1.init all stuffs
-*  2.account JSON file storage 
+*  2.keep the system status.
 */
 
-
+// The agent should be got from frontend
 const agent_sample={
     init:{
         salt:"",            //encry salt
@@ -18,7 +18,8 @@ const agent_sample={
 }
 
 //TODO, whole system status, it is important
-//system status: [0,started;  9.noraml;]
+
+//system status: [0,started; 4.restart ( fresh the system ) ;  9.noraml;]
 const status=0;     
 
 const map={}        //startup functions

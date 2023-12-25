@@ -11,3 +11,7 @@
     ```
 
 - It is better to add w3api as NPM package on line.
+
+## Test
+
+- All unit test is in the folder **test**

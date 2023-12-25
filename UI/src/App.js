@@ -36,7 +36,7 @@ function App() {
   let [hidelink, setHidelink] = useState(false);
 
   let [apps, setApps] = useState([[]]);
-  console.log(W3API);
+  
   const funs = {
     stage: (ctx) => {
       setStageContent(ctx);
@@ -164,6 +164,7 @@ function App() {
   };
 
   useEffect(() => {
+    console.log(W3API);
     self.system(()=>{
       self.login();
       self.linkNetwork();

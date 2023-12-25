@@ -3,6 +3,7 @@
 *  @auth [ Fuu ]
 *  @creator Fuu
 *  @date 2023-12-25
+*  @functions
 */
 
 const map={
@@ -19,6 +20,9 @@ const map={
         status: 1,          //account status [1.normal, 0.removed, 3.pending ]
         type: "stranger",
         network: "anchor",  //network name
+    },
+    app:{
+        
     },
     message:{},
     payment:{},

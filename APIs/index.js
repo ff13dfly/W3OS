@@ -1,6 +1,7 @@
 import Friend from "./contact/friend.js";
 import Stranger from "./contact/stranger.js";
 import Startup from "./system/startup.js";
+
 const W3API={
     startup:Startup,//W3API init process
     account:{       //Account management
@@ -23,12 +24,14 @@ const W3API={
     system:{       //W3OS system functions
         setting:null,       //System setting functions
         node:null,          //Anchor network management
-        loader:null,        //Anchor loader
-        format:null,        //W3OS system format
+        loader:null,        //Anchor loader, decode API from Anchor Network
+        definition:{        //W3OS system difinitions
+            error:null,     //Errors
+            status:null,    //W3OS system status
+            format:null,    //data structure
+        }
     },
-    web3:{        //On-chain API/SDK loaded here.
-
-    },
+    web3:{},        //On-chain API/SDK will be loaded here. The loader is "system.loader"
     service:{       //service links management
         network:null,       //different blockchain network
         link:null,          //W3OS service management

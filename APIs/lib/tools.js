@@ -1,8 +1,10 @@
 /* 
-*  common functions
+*  Tools unity, common functions
 *  @auth [ Fuu ]
 *  @creator Fuu
 *  @date 2023-12-25
+*  @functions
+*  1.get price of different coins/tokens
 */
 
 const self = {
