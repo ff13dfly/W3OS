@@ -24,6 +24,7 @@ const W3API={
         setting:null,       //System setting functions
         node:null,          //Anchor network management
         loader:null,        //Anchor loader
+        format:null,        //W3OS system format
     },
     web3:{        //On-chain API/SDK loaded here.
 

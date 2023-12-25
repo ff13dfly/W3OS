@@ -1,3 +1,10 @@
+/* 
+*  common functions
+*  @auth [ Fuu ]
+*  @creator Fuu
+*  @date 2023-12-25
+*/
+
 const self = {
   // checkEncryFile: (fa, ck) => {
   //   const reader = new FileReader();
