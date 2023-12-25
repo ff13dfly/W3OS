@@ -1,12 +1,12 @@
 import Friend from "./contact/friend";
 import Stranger from "./contact/stranger";
-
+import Startup from "./system/startup";
 const W3API={
+    startup:Startup,//W3API init process
     account:{       //Account management
         local:null,     //local account management
         wallet:null,    //normal web3.0 account way
     },
-    
     payment:{       //Anchor Network payment
         payto:null,     //transaction of Anchor Network 
         vertify:null,   //vertification on Anchor Network

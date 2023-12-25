@@ -1,14 +1,16 @@
 const Account={
-    list:(ming,page)=>{
+    //load account from JSON file
+    load:(file,ck)=>{
 
     },
-    add:(mine,addr)=>{
+    //download target JSON file
+    download:(addr,password,ck)=>{
 
     },
-    remove:(mine,addr)=>{
+    remove:(addr,ck)=>{
 
     },
-    update:(mine,addr,data)=>{
+    password:(addr,pass,ck)=>{
 
     },
 }
