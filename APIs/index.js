@@ -49,44 +49,49 @@ const W3API={
         stranger:Stranger,  //stranger management
     },
     message:{       //W3OS basic message service
-        chat:Chat,       //IM functions
-        manage:null,    //IMGC service management
-        group:Group,     //Group functions
+        chat:Chat,          //IM functions
+        group:Group,        //Group functions
     },
     system:{       //W3OS system functions
-        setting:Setting,       //System setting functions
+        setting:Setting,    //System setting functions
         node:Node,          //Anchor network management
-        loader:Loader,        //Anchor loader, decode API from Anchor Network
-        input:Input,         //Input from URL, can call the system function
-        UI:Userinterface,            //W3OS UI functions, need to be injected from outside
+        loader:Loader,      //Anchor loader, decode API from Anchor Network
+        input:Input,        //Input from URL, can call the system function
+        UI:Userinterface,   //W3OS UI functions, need to be injected from outside
         definition:{        //W3OS system difinitions
-            error:Error,     //Errors
-            status:Status,    //W3OS system status
-            format:Format.data,    //data structure
-            agent:Format.agent,     //W3OS agent definition
+            error:Error,        //Errors
+            status:Status,      //W3OS system status
+            format:Format.data, //data structure
+            agent:Format.agent, //W3OS agent definition
         }
     },
     web3:{},        //On-chain API/SDK will be loaded here. The loader is "system.loader"
     service:{       //service links management
-        network:Network,       //different blockchain network
+        network:Network,    //different blockchain network
         link:Link,          //W3OS service management
     },
     storage:{       //W3OS storage functions
-        local:Local,         //frontend storage, encry storage
-        DB:DB,            //frontend database functions
-        anchor:Anchor,        //anchor storage
+        local:Local,        //frontend storage, encry storage
+        DB:DB,              //frontend database functions
+        anchor:Anchor,      //anchor storage
         IPFS:IPFS,          //on-chain IPFS support
-        chain:Chain,         //other on-chain storage support
+        chain:Chain,        //other on-chain storage support
     },
     exchange:{     //Market functions
-        price:Price,     //the price of tokens
-        buy:Buy,       //buy coins function
-        sell:Sell,      //sell coins function
-        market:Market,    //market APIs to exchange
+        price:Price,        //the price of tokens
+        buy:Buy,            //buy coins function
+        sell:Sell,          //sell coins function
+        market:Market,      //market APIs to exchange
     },
     funs:{        //functions for W3API, such as added the SDK to "web3" key
-        setSDK:(name,fun)=>{
-
+        setSDK:(name,fun,alink)=>{    //set the target web3.0 SDK
+            W3API.web3[name]=fun;
+            if(alink) W3API.web3[name].anchor_link=alink;
+            return true;
+        },
+        removeSDK:(name)=>{     //remove the target web3.0 SDK
+            delete W3API.web3[name];
+            return true;
         },
     },
 }
