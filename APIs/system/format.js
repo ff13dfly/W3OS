@@ -28,10 +28,28 @@ const map={
     payment:{},
 }
 
+const agent={
+    userinterface:{
+
+    },
+    startup:{
+        init:{
+            salt:"",            //encry salt
+            login:()=>{},       //login fun from UI side
+            render:()=>{},      //render fun from UI side
+        },
+    }
+}
+
 const Formate={
+    //get w3os data structure definition
     get:(name)=>{
         if(!map[name]) return null;
         return map[name];
+    },
+    //get w3os agent definition
+    agent:(name)=>{
+        
     },
 }
 export default Formate;
