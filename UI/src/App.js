@@ -17,6 +17,7 @@ import { RiFingerprintLine } from "react-icons/ri";
 import { RiLinkUnlink } from "react-icons/ri";
 
 import IO from "./open/IO";
+import W3API from "w3api";
 
 const size = Device.grids();
 
@@ -35,7 +36,7 @@ function App() {
   let [hidelink, setHidelink] = useState(false);
 
   let [apps, setApps] = useState([[]]);
-
+  console.log(W3API);
   const funs = {
     stage: (ctx) => {
       setStageContent(ctx);

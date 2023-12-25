@@ -1,6 +1,6 @@
-import Friend from "./contact/friend";
-import Stranger from "./contact/stranger";
-import Startup from "./system/startup";
+import Friend from "./contact/friend.js";
+import Stranger from "./contact/stranger.js";
+import Startup from "./system/startup.js";
 const W3API={
     startup:Startup,//W3API init process
     account:{       //Account management

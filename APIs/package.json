@@ -1,0 +1,23 @@
+{
+    "name": "w3api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "APIs for W3OS",
+    "author": "Fuu",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "http://w3os.net",
+    "dependencies": {
+   
+    },
+    "devDependencies": {
+   
+    }
+   }
+   
