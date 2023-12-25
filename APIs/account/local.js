@@ -8,7 +8,7 @@
 *  2.account JSON file storage 
 */
 
-import Encry from "./encry";
+import Encry from "../lib/encry";
 
 const Account={
     //load account from JSON file

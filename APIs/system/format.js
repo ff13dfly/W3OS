@@ -41,15 +41,19 @@ const agent={
     }
 }
 
-const Formate={
+const Format={
     //get w3os data structure definition
-    get:(name)=>{
-        if(!map[name]) return null;
-        return map[name];
+    data:{
+        get:(name)=>{
+            if(!map[name]) return null;
+            return map[name];
+        },
     },
     //get w3os agent definition
-    agent:(name)=>{
+    agent:{
+        get:(name)=>{
         
+        },
     },
 }
-export default Formate;
+export default Format;
