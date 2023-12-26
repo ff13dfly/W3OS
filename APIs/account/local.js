@@ -8,9 +8,24 @@
 *  2.account JSON file storage 
 */
 
-import Encry from "../lib/encry";
+import STORAGE from "../lib/storage";
 
 const Account={
+    /**********************************************************/
+    /******************** W3OS system hook ********************/
+    /**********************************************************/
+    init:()=>{
+
+    },
+
+    /***************************************************/
+    /******************** Functions ********************/
+    /***************************************************/
+    
+    get:(ck)=>{
+        const fa = STORAGE.getKey("account");
+        return ck && ck(fa);
+    },
     //load account from JSON file
     load:(file,ck)=>{
 

@@ -13,6 +13,34 @@
 node nodejs.loader.js anchor://imgc  
 ```
 
+## Principle
+
+### Payment Vertification
+
+- Server will get a random amount and a random token. Write to anchor the data like this.
+
+  ```JSON
+    {
+      "SS58":"md5(`${amount}${token}`)"
+    }
+  ```
+
+- Sent the amount to the client and waiting for the client to pay. Then the server leave the vertification on Anchor Network like this.
+
+  ```JSON
+    {
+      "SS58":{
+        "transaction":["BLOCK_NUMBER","INDEX"],
+        "token":["BLOCK_NUMBER","ANCHOR_NAME"],
+      }
+    }
+  ```
+
+- Share the Anchor to other server, the server can vertify the SS58 account.
+
+### Random data
+
+
 ## Technical Details
 
 - Basic functions are based on websocket.
