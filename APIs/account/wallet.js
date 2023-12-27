@@ -8,6 +8,9 @@
 *  2.get the related local account 
 */
 
+//# Metamask API document
+//https://docs.metamask.io/wallet/
+
 const Wallet={
     /**********************************************************/
     /******************** W3OS system hook ********************/

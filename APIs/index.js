@@ -34,7 +34,7 @@ import Price from "./exchange/price.js";
 import Buy from "./exchange/buy.js";
 import Sell from "./exchange/sell.js";
 
-const W3API={
+const W3={
     startup:Startup,//W3API init process
     account:{       //Account management
         local:Account,      //local account management
@@ -83,6 +83,11 @@ const W3API={
         sell:Sell,          //sell coins function
         market:Market,      //market APIs to exchange
     },
+
+    /**************************************************************/
+    /************************ W3 functions ************************/
+    /**************************************************************/
+    
     funs:{        //functions for W3API, such as added the SDK to "web3" key
         setSDK:(name,fun,alink)=>{    //set the target web3.0 SDK
             W3API.web3[name]=fun;
@@ -95,4 +100,4 @@ const W3API={
         },
     },
 }
-export default W3API;
+export default W3;

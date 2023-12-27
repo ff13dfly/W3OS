@@ -36,5 +36,10 @@ const Status={
     remove:(key)=>{
         
     },
+    
+    //switch the system status
+    flip:(code)=>{
+
+    },
 }
 export default Status;
