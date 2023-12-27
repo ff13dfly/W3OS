@@ -17,7 +17,7 @@ import { RiFingerprintLine } from "react-icons/ri";
 import { RiLinkUnlink } from "react-icons/ri";
 
 import IO from "./open/IO";
-import W3API from "w3api";
+import W3 from "w3api";
 
 const size = Device.grids();
 
@@ -164,7 +164,7 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(W3API);
+    console.log(W3);
     self.system(()=>{
       self.login();
       self.linkNetwork();
