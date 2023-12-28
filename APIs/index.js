@@ -19,6 +19,7 @@ import Userinterface from "./system/userinterface.js";
 import Error from "./system/error.js";
 import Status from "./system/status.js";
 import Format from "./system/format.js";
+import Information from "./system/information.js";
 
 import Network from "./service/network.js";
 import Link from "./service/link.js";
@@ -53,6 +54,7 @@ const W3={
         group:Group,        //Group functions
     },
     system:{       //W3OS system functions
+        information:Information,    //W3OS information
         setting:Setting,    //System setting functions
         node:Node,          //Anchor network management
         loader:Loader,      //Anchor loader, decode API from Anchor Network
@@ -89,15 +91,30 @@ const W3={
     /**************************************************************/
     
     funs:{        //functions for W3API, such as added the SDK to "web3" key
-        setSDK:(name,fun,alink)=>{    //set the target web3.0 SDK
-            W3API.web3[name]=fun;
-            if(alink) W3API.web3[name].anchor_link=alink;
-            return true;
+        SDK:{       //SDK management
+            load:(name,alink,ck)=>{
+                W3.web3[name]=fun;
+                if(alink) W3.web3[name].anchor_link=alink;
+                return true;
+            },
+            update:(alink,ck)=>{
+
+            },
+            remove:(name,ck)=>{
+                delete W3.web3[name];
+                return true;
+            },
         },
-        removeSDK:(name)=>{     //remove the target web3.0 SDK
-            delete W3API.web3[name];
-            return true;
+        IO:{        
+
         },
+    },
+
+    //start W3OS here.
+    start:(ck)=>{
+        //print the system information
+        W3.system.UI.log(JSON.stringify(W3.system.information));
+        
     },
 }
 export default W3;

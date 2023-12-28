@@ -33,6 +33,9 @@ function App() {
       "version",
     ]
     setPlugin(ps);
+    W3.start(()=>{
+      
+    });
   }, []);
   return (
     <div>

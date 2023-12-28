@@ -8,7 +8,26 @@
 *  2. manage input functions to call;
 */
 
-const Userinterface={
+const replacment={
+    log:null,
+};
 
+const Userinterface={
+    //reset the system functions
+    set:(key,fun)=>{
+
+    },
+
+    //reset to default functions
+    reset:(key)=>{
+        delete replacment[key];
+        replacment[key]=null;
+    },
+
+    //system log, default is the 
+    log:(str)=>{
+        if(replacment.log!==null) return replacment.log(str);
+        console.log(str);
+    },
 }
 export default Userinterface;
