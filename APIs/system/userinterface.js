@@ -9,7 +9,9 @@
 */
 
 const replacment={
-    log:null,
+    log:null,           //system log printer
+    toast:null,         //UI toast, to show the system inner informoation
+    dialog:null,        //UI dialog, to show more information
 };
 
 const Userinterface={
@@ -28,6 +30,11 @@ const Userinterface={
     log:(str)=>{
         if(replacment.log!==null) return replacment.log(str);
         console.log(str);
+    },
+
+    //browser default confirm dialog, can not be rewrite
+    confirm:(ck)=>{
+
     },
 }
 export default Userinterface;
