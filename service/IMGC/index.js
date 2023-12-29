@@ -26,6 +26,7 @@ const History = require("./common/history");
 const Recover = require("./service/recover");   //System backup and autosave function
 
 const Paytovertify = require("./service/paytovertify");   //System backup and autosave function
+const Evidence = require("./service/evidence");   //System backup and autosave function
 const Chain=require("./service/network");
 const {task}=require("./service/std");
 
@@ -96,8 +97,8 @@ const delegate={
             Paytovertify.subcribe(Chain.subcribe,Chain.convert);
 
             const amount=Paytovertify.add(from,false);
-            Paytovertify.writeCheck(from,amount,()=>{
-                
+            Evidence.save(from,Paytovertify.target(),amount,()=>{
+
             });
 
             output(`The pay amount is ${amount}, already to write check anchor.`);
@@ -156,7 +157,7 @@ Valid(process.argv.slice(2),(res)=>{
     const cfg=res.data;
     const port=cfg.server.port;
 
-    const ver_addres=cfg.server.vertification;
+    const ver_addres=cfg.vertification.target;
     output(`Set vertification account ${ver_addres}`, "primary", true);
 
     //Pay to vertify service basic setting.
