@@ -14,5 +14,9 @@
     "reg":{
         "max":20000,
         "level":"all"
+    },
+    "vertification":{
+        "check":"check_ancor",
+        "confirm":"confirm_anchor"
     }
 }

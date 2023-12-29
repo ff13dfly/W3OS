@@ -96,8 +96,11 @@ const delegate={
             Paytovertify.subcribe(Chain.subcribe,Chain.convert);
 
             const amount=Paytovertify.add(from,false);
+            Paytovertify.writeCheck(from,amount,()=>{
+                
+            });
 
-            output(`The pay amount is ${amount}`);
+            output(`The pay amount is ${amount}, already to write check anchor.`);
             const todo=task("notice");
             todo.params.msg={
                 amount:amount,

@@ -1,4 +1,5 @@
 const {output}=require("../common/output");
+const anchorJS=require("../lib/anchor.node")
 
 // Storage part 
 const map={};
@@ -10,11 +11,19 @@ const agent={
     failed:null,
 };
 
+//Vertification on chain part;
+const vdata=[];
+let vlocker=false;      //locker for vdata writing
+let password="";        //encried password string;
+let salt="";            //salt for encrying password;
+
+
 // Config part
 const config={
     expired:10*60000,       // 10 minutes to expire the vertification
     at:4000,                // checking interval
 };
+
 
 //Functions
 const self={
@@ -34,6 +43,10 @@ const self={
         return new Date().getTime();
     },
     rand:(m,n)=>{return Math.round(Math.random() * (m-n) + n);},
+
+    load:(write_addr,pass,()=>{
+
+    }),
 }
 
 module.exports={
@@ -46,6 +59,30 @@ module.exports={
     agent:(success,failed)=>{
         agent.success=success;
         agent.failed=failed;
+    },
+    writeCheck:(addr,amount,ck)=>{
+        const obj={
+            t:addr,     //vertify account
+            n:amount,   //amount to vertify
+            v:target,   //money reciever
+        }
+        if(vlocker){
+            vdata.push(obj);
+            return ck && ck({msg:"cached"});
+        }
+        vlocker=true;
+        console.log(`Ready to write, ${JSON.stringify(obj)}`);
+
+        //1.get the list to write and pop from vdata;
+
+        //2.
+        console.log(anchorJS);
+
+        setTimeout(()=>{
+            console.log(`Mock to write`);
+            vlocker=false;
+            return ck && ck({msg:"done"});
+        },1500);
     },
     subcribe:(fun,convert)=>{
         if(agent.success===null || agent.failed===null) return {error:"No agent to sent the result"};
