@@ -2,7 +2,7 @@
 // node index.js
 
 //########## BUILD ##########
-// yarn add esbuild
+// yarn add esbuild -W
 // ../../node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./chat_server.min.js --platform=node
 
 // ## server iptables, without set the permit, firewall will block the request

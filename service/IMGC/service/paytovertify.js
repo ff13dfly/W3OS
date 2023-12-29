@@ -17,13 +17,11 @@ let vlocker=false;      //locker for vdata writing
 let password="";        //encried password string;
 let salt="";            //salt for encrying password;
 
-
 // Config part
 const config={
     expired:10*60000,       // 10 minutes to expire the vertification
     at:4000,                // checking interval
 };
-
 
 //Functions
 const self={
