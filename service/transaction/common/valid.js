@@ -26,7 +26,7 @@ const file = {
 
 const self={
     auto:(args,ck)=>{
-        //console.log(args);
+        console.log(args);
         const result={
             "anchor":"",
             "file":"config.json",
@@ -48,7 +48,6 @@ const self={
 
                     return ck && ck(result);
                 },true);
-                
                 break;
 
             case 1:     //load target setting file

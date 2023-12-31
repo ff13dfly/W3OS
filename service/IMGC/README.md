@@ -38,9 +38,6 @@ node nodejs.loader.js anchor://imgc
 
 - Share the Anchor to other server, the server can vertify the SS58 account from the Anchor Network, not the data from another server.
 
-### Random data
-
-
 ## Technical Details
 
 - Basic functions are based on websocket.
