@@ -191,8 +191,9 @@ const self = {
     getTodo: (list, ck, backup) => {
         if (backup === undefined) backup = [];
         if (list.length === 0) return ck && ck(backup);
-
         const row = list.pop();
+        const to_json=false;
+        console.log(row);
         file.read(row.file, (res) => {
             switch (row.suffix) {
                 case 'css':
@@ -215,7 +216,41 @@ const self = {
                     break;
             }
             return self.getTodo(list, ck, backup);
-        }, false, (row.suffix !== 'js' && row.suffix !== 'css') ? true : false);
+        }, to_json, (row.suffix !== 'js' && row.suffix !== 'css') ? true : false);
+
+        // if(row.suffix==="zkey" || row.suffix==="wasm"){
+        //     file.read(row.file, (res) => {
+        //         cache.resource[row.replace] = res;
+        //         row.len = res.length;
+        //         backup.push(row);
+        //         return self.getTodo(list, ck, backup);
+        //     },false,false);
+        // }else{
+        //     file.read(row.file, (res) => {
+        //         switch (row.suffix) {
+        //             case 'css':
+        //                 cache.css.push(res);
+        //                 row.len = res.length;
+        //                 break;
+    
+        //             case 'js':
+    
+        //                 cache.js.push(res);
+        //                 row.len = res.length;
+        //                 break;
+    
+        //             default:
+        //                 //TODO, solve the WASM problem
+        //                 const type = self.getType(row.suffix);
+        //                 const bs64 = `data:${type};base64,${res}`;
+        //                 cache.resource[row.replace] = bs64;
+        //                 row.len = bs64.length;
+        //                 backup.push(row);
+        //                 break;
+        //         }
+        //         return self.getTodo(list, ck, backup);
+        //     }, false, (row.suffix !== 'js' && row.suffix !== 'css') ? true : false);
+        // }
     },
     getType: (suffix) => {
         const check = suffix.toLocaleLowerCase();
@@ -433,6 +468,15 @@ const self = {
         for (let i = 0; i < n; i++)pre += i % 2 ? String.fromCharCode(self.rand(65, 90)) : String.fromCharCode(self.rand(97, 122));
         return pre;
     },
+    divideMain:(code,max,prefix)=>{
+        const map={};
+        const div = Math.ceil(code.length / max);
+        prefix="fv_";
+        for(let i=0;i<div;i++){
+            map[`${prefix}${i}`]=code.substr(max * i, max);
+        }
+        return map;
+    },
 };
 
 //1.read xconfig.json to get setting
@@ -494,8 +538,8 @@ file.read(cfgFile, (xcfg) => {
                     }
                     output(`Resource task ready, ${amount_res} taskes, total ${list.length}`);
                 }
-
-                //return false;
+                // console.log(todo);
+                // return false;
 
                 //4.2.write resouce then get the anchor location.
                 self.auto(xcfg.server, (pair) => {
@@ -546,7 +590,6 @@ file.read(cfgFile, (xcfg) => {
                         let code_js = cache.js.join(";");
                         code_js = code_js.replaceAll("sourceMappingURL=", "")
 
-
                         //b.replace the global 
                         if (xcfg.globalVars) {
                             const g_list = xcfg.globalVars;
@@ -564,14 +607,29 @@ file.read(cfgFile, (xcfg) => {
                             const reg = new RegExp(`${row.replace}`, "g");
                             code_js = code_js.replace(reg, `anchor://${related.resource}|${row.hash}`);
                         }
-                        //file.save("hello.js", code_js);
 
-                        list.push({ name: xcfg.name, raw: code_js, protocol: protocol });
+                        // TODO, skip write
+                        console.log(`JS code length: ${code_js.length.toLocaleString()}, protocol: ${JSON.stringify(protocol)}`);
+                        const max=2*1024*1024;
+                        if(code_js.length>max){
+                            console.log(`Ready to divide code to libs`);
+                            const map=self.divideMain(code_js,max,xcfg.related.main);
+                            for(var k in map){
+                                protocol.lib.push(k);
+                                list.push({ name: k, raw: map[k], protocol: {"type": "lib","fmt": "js"} });
+                            }
+                            list.push({ name: xcfg.name, raw: "(function(){console.log('divided main js')})()", protocol: protocol });
+                        }else{
+                            list.push({ name: xcfg.name, raw: code_js, protocol: protocol }); 
+                        }
+                        
+                        //console.log(list);
                         output(`JS task ready, 1 task, total ${list.length}`);
 
                         self.multi(list, (bks) => {
                             output("\n---------------------------------------- Proccess done ----------------------------------------------\n", "", true);
                         }, pair);
+
                     }, pair);
                 });
             });

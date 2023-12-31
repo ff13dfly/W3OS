@@ -6,7 +6,8 @@
         "js":"fv_js",
         "css":"fv_css",
         "resource":"fv_data",
-        "resource_ref":"fv_map"
+        "resource_ref":"fv_map",
+        "main":"fv_"
     },
     "directory":"package/five",
     "asset":"asset-manifest.json",
