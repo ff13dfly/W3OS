@@ -32,7 +32,6 @@ module.exports={
         const salt=self.char(10);
         const hash=self.getHash(addr,target,amount,salt);
         
-
         const obj={
             t:addr,     //vertify account
             n:amount,   //amount to vertify
@@ -43,8 +42,6 @@ module.exports={
             return ck && ck({msg:"cached"});
         }
         vlocker=true;
-
-        
 
         console.log(`Ready to write, ${JSON.stringify(obj)}, string: ${salt}.${amount}.${target}, md5: ${hash}`);
 
