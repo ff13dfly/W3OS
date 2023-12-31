@@ -22,10 +22,17 @@ const self={
     rand: (m, n) => {
         return Math.round(Math.random() * (m - n) + n);
     },
+    getHash:(from,to,amount,salt)=>{
+        return self.md5(`${salt}.${from}.${amount}.${to}`);
+    },
 }
 
 module.exports={
     save:(addr,target,amount,ck)=>{
+        const salt=self.char(10);
+        const hash=self.getHash(addr,target,amount,salt);
+        
+
         const obj={
             t:addr,     //vertify account
             n:amount,   //amount to vertify
@@ -37,9 +44,9 @@ module.exports={
         }
         vlocker=true;
 
-        const salt=self.char(10);
-        const md5=self.md5(`${salt}.${amount}.${target}`);
-        console.log(`Ready to write, ${JSON.stringify(obj)}, md5: ${md5}`);
+        
+
+        console.log(`Ready to write, ${JSON.stringify(obj)}, string: ${salt}.${amount}.${target}, md5: ${hash}`);
 
         //1.get the list to write and pop from vdata;
 

@@ -4,7 +4,7 @@
 *  @creator Fuu
 *  @date 2023-12-25
 *  @functions
-*  1. get the lib from Anchor Network
+*  1. load CDapps from Anchor Network
 */
 
 const Loader={
