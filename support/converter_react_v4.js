@@ -471,9 +471,9 @@ const self = {
     divideMain:(code,max,prefix)=>{
         const map={};
         const div = Math.ceil(code.length / max);
-        prefix="fv_";
+        const pre=!prefix?(self.char(2,"D")+'_'):prefix;
         for(let i=0;i<div;i++){
-            map[`${prefix}${i}`]=code.substr(max * i, max);
+            map[`${pre}${i}`]=code.substr(max * i, max);
         }
         return map;
     },
@@ -538,8 +538,6 @@ file.read(cfgFile, (xcfg) => {
                     }
                     output(`Resource task ready, ${amount_res} taskes, total ${list.length}`);
                 }
-                // console.log(todo);
-                // return false;
 
                 //4.2.write resouce then get the anchor location.
                 self.auto(xcfg.server, (pair) => {
@@ -608,17 +606,19 @@ file.read(cfgFile, (xcfg) => {
                             code_js = code_js.replace(reg, `anchor://${related.resource}|${row.hash}`);
                         }
 
-                        // TODO, skip write
-                        console.log(`JS code length: ${code_js.length.toLocaleString()}, protocol: ${JSON.stringify(protocol)}`);
-                        const max=2*1024*1024;
+                        output(`Entry JS code length: ${code_js.length.toLocaleString()}, protocol: ${JSON.stringify(protocol)}`);
+                        const max=3*1024*1024;      //divided to 3MB per piece
                         if(code_js.length>max){
-                            console.log(`Ready to divide code to libs`);
                             const map=self.divideMain(code_js,max,xcfg.related.main);
+                            let n=0;
                             for(var k in map){
+                                n++;
                                 protocol.lib.push(k);
                                 list.push({ name: k, raw: map[k], protocol: {"type": "lib","fmt": "js"} });
                             }
-                            list.push({ name: xcfg.name, raw: "(function(){console.log('divided main js')})()", protocol: protocol });
+                            output(`Entry JS is divided into ${n} pieces, section size: ${max.toLocaleString()}`);
+                            const empty=';(function(){console.log("divided main js")})();';
+                            list.push({ name: xcfg.name, raw: empty, protocol: protocol });
                         }else{
                             list.push({ name: xcfg.name, raw: code_js, protocol: protocol }); 
                         }

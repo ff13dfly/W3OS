@@ -27,3 +27,9 @@
 
  ./node_modules/esbuild/bin/esbuild node_modules/@gear-js/api/index.js --bundle --minify --outfile=./gear.min.js --global-name=Gear
 ```
+
+## Notes
+
+- Vite project need to set the **asset-manifest.json** file and pickup the entry JS.
+
+- Converter did not work on too deep folder, need to pick the file to the level1 folder and modify the code to load properly.
