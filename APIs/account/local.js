@@ -15,14 +15,20 @@ const Account={
     /******************** W3OS system hook ********************/
     /**********************************************************/
     init:()=>{
-
+        console.log(`W3OS start,account_local running...`);
     },
-
     reg:()=>{
         return {
             get:["callback"],
             load:["string","callback"],
             download:["address","string","callback"]
+        }
+    },
+    permit:()=>{
+        return {
+            get:true,       //need to check permit
+            load:true,
+            download:true,
         }
     },
 

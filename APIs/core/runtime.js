@@ -109,21 +109,26 @@ const self={
     regModules:(ck)=>{
         if(debug) Userinterface.debug("Ready to run modules init hook.");
 
-        const reg=Format.hook.reg.name;
-        //const pkey=Format.hook.permisson.name;
+        const hooks=Format.hook;
+        const rkey=hooks.reg.name;
+        const pkey=hooks.permit.name;
+        const ikey=hooks.init.name;
 
         for(var cat in router){
             const funs=router[cat];
             for(var name in funs){
                 //1. run the reg hook
                 const mod=funs[name];
-                let param=null;
-                if(mod[reg]){   //Run the init function
-                    //1.1.get the param definition
-                    param=mod[reg]();
+                let param=null,permit=null
 
-                    //1.2.get the default permission
-                }       
+                //1.1.get the param definition
+                if(mod[rkey]) param=mod[rkey]();
+
+                //1.2.get the default permission
+                if(mod[pkey]) permit=mod[pkey]();
+
+                //1.3.autorun start
+                if(mod[ikey]) mod[ikey]();
 
                 //2. create the tree of functions
                 for(var fun in mod){

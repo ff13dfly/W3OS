@@ -45,7 +45,15 @@ const agent={
 const hooks={
     reg:{       //reg module functions and parameters
         name:"reg",
-        intro:"",
+        info:"Reg the parameters to W3OS, to check the input",
+    },
+    init:{
+        name:"init",
+        info:"Module autorun function, only one time."
+    },
+    permit:{
+        name:"permit",
+        info:"Module permission setting."
     },
 };
 

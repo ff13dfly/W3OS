@@ -16,7 +16,12 @@ const Wallet={
     /******************** W3OS system hook ********************/
     /**********************************************************/
     init:()=>{
-
+        console.log(`W3OS start,account_wallet running...`);
+    },
+    reg:()=>{
+        return {
+            launch:["string","callback"]
+        }
     },
 
     /***************************************************/
