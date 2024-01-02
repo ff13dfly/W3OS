@@ -18,5 +18,8 @@ const Checker={
     function:(param)=>{
 
     },
+    integer:(param)=>{
+
+    },
 }
 export default Checker;

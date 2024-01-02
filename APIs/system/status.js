@@ -15,8 +15,11 @@ const map={
     1:{
 
     },
+    6:{
+        msg:"W3OS is pending, ask for permission normally.",
+    },
     4:{
-
+        msg:"W3OS inner error, system done.",
     },
     9:{
 

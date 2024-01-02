@@ -14,11 +14,11 @@
     },
     "homepage": "http://w3os.net",
     "dependencies": {
-        "@polkadot/api": "^10.10.1"
+        "@polkadot/api": "^10.10.1",
+        "esbuild": "^0.19.11"
     },
     "devDependencies": {
         "@polkadot/api": "^10.10.1",
         "crypto-js": "^4.1.1"
     }
-   }
-   
+}

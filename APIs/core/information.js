@@ -10,9 +10,12 @@
 const Information={
     version:"0.1.0",
     nick:"",
-    licence:"MIT",
-    date:"2023-12",
-    release:"",
+    licence:{
+        type:"Apache2.0",
+        url:"",
+        anchor:"",
+    },
+    release:"2023-12",
     auth:["Fuu"],
 }
 export default Information;

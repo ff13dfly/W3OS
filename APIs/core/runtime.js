@@ -9,6 +9,7 @@
 *  2.basic information
 */
 
+//functions for router
 import Friend from "../contact/friend.js";
 import Stranger from "../contact/stranger.js";
 
@@ -44,8 +45,10 @@ import Price from "../exchange/price.js";
 import Buy from "../exchange/buy.js";
 import Sell from "../exchange/sell.js";
 
+//core functions here to import
 import Format from "./format.js";
 import Information from "./information.js";
+import Permit from "./permit.js";
 
 const router={
     account:{       //Account management
@@ -107,6 +110,7 @@ const self={
         if(debug) Userinterface.debug("Ready to run modules init hook.");
 
         const reg=Format.hook.reg.name;
+        //const pkey=Format.hook.permisson.name;
 
         for(var cat in router){
             const funs=router[cat];
@@ -115,7 +119,10 @@ const self={
                 const mod=funs[name];
                 let param=null;
                 if(mod[reg]){   //Run the init function
+                    //1.1.get the param definition
                     param=mod[reg]();
+
+                    //1.2.get the default permission
                 }       
 
                 //2. create the tree of functions
@@ -163,10 +170,9 @@ const RUNTIME={
     start:(ck)=>{
         //1.check system status to avoid reloading
         if(Status.code()!==0) return ck && ck(true);        //if system is not init status, return
-        if(debug) Userinterface.debug("Start...");
+        if(debug) Userinterface.debug("W3OS start...");
 
         //2.init process
-
         //2.1.reg the system modules
         self.regModules(()=>{
 
@@ -176,6 +182,23 @@ const RUNTIME={
             return ck && ck();
         });
     },
+
+    call:(path,params,alink)=>{
+        if(debug){
+            Userinterface.debug(`Call ** ${path.join("_")} **, from ** ${alink} **, parameters:`,"warn");
+            Userinterface.debug(params);
+        }
+        const [cat,mod,fun]=path;
+        // console.log(cat);
+        // console.log(mod);
+        // console.log(fun);
+
+        //Permit.
+
+        //1.check permission by path, set status to pending
+        
+    },
+
     def:(path,ck)=>{
         RUNTIME.start(()=>{
             if(!path) return ck && ck(params);

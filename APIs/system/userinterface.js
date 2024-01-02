@@ -40,10 +40,10 @@ const Userinterface = {
         const md = !mode ? "log" : mode;
         switch (md) {
             case "log":
-                console.log("W3OS[debug] log:", info);
+                console.log("W3OS[ debug mode ] log:", info);
                 break;
             case "warn":
-                console.warn("W3OS[debug] warning:", info);
+                console.warn("W3OS[ debug mode ] warning:", info);
                 break;
             default:
                 break;

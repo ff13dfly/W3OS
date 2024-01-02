@@ -12,6 +12,12 @@
 
 - It is better to add w3api as NPM package on line.
 
+- Build W3OS API as a single file, **Esbuild** needed.
+
+```BASH
+    ./node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./w3.min.js
+```
+
 ## Function Index
 
 - [System](./system/README.md), the core part of W3OS.

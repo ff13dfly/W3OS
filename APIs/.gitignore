@@ -9,3 +9,6 @@
 package-lock.json
 yarn.lock
 yarn-error.log
+
+# Build result
+w3.min.js

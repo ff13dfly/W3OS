@@ -40,11 +40,11 @@ function App() {
 
     //2. start W3OS
     W3.debug();   //set to the debug mode
-    W3.call("account_local_get",(res)=>{
+    W3.call("account_local_get","",(res)=>{
       console.log(res);
     });
 
-    W3.call(["account","local","get"],(res)=>{
+    W3.call(["account","local","get"],"moonbeam",(res)=>{
       console.log(res);
     });
 
