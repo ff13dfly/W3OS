@@ -33,3 +33,5 @@
 - Vite project need to set the **asset-manifest.json** file and pickup the entry JS.
 
 - Converter did not work on too deep folder, need to pick the file to the level1 folder and modify the code to load properly.
+
+- Vite overview [https://juejin.cn/post/6988704825450397709](https://juejin.cn/post/6988704825450397709)

@@ -31,7 +31,7 @@ const W3={
     //W3.call({method:"account_local_get"}, ... )
     //W3.call({method:"account_local_get",anchor:"w3os"}, ... )
 
-    //TODO, need to check wether call from CDapps
+    //TODO, need to check wether call from CDapps. Will regroup the parameters check
     call:function(method){ // need to function way, or can not get the arguments
         //1.check input type;
 
