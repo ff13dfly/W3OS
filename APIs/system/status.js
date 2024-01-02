@@ -48,7 +48,7 @@ const Status={
     
     //switch the system status
     flip:(code)=>{
-
+        SYSTEM_STATUS=parseInt(code);
     },
 }
 export default Status;

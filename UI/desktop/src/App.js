@@ -39,9 +39,19 @@ function App() {
     setPlugin(ps);
 
     //2. start W3OS
-    W3.start(()=>{
-      
-    },true);
+    W3.debug();   //set to the debug mode
+    W3.call("account_local_get",(res)=>{
+      console.log(res);
+    });
+
+    W3.call(["account","local","get"],(res)=>{
+      console.log(res);
+    });
+
+    W3.def("",(defs)=>{
+      console.log(defs);
+    });
+    console.log(W3)
     
   }, []);
   return (

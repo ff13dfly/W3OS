@@ -13,5 +13,6 @@ const Information={
     licence:"MIT",
     date:"2023-12",
     release:"",
+    auth:["Fuu"],
 }
 export default Information;

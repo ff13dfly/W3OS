@@ -1,143 +1,63 @@
-import Friend from "./contact/friend.js";
-import Stranger from "./contact/stranger.js";
-import Startup from "./system/startup.js";
-
-import Account from "./account/local.js";
-import Wallet from "./account/wallet.js";
-
-import Pay from "./payment/pay.js";
-import Vertify from "./payment/vertify.js";
-
-import Chat from "./message/chat.js";
-import Group from "./message/group.js";
-
-import Setting from "./system/setting.js";
-import Node from "./system/node.js";
-import Loader from "./system/loader.js";
-import Input from "./system/input.js";
-import Userinterface from "./system/userinterface.js";
-import Error from "./system/error.js";
-import Status from "./system/status.js";
-import Format from "./core/format.js";
-import Information from "./core/information.js";
-
-import Network from "./service/network.js";
-import Link from "./service/link.js";
-
-import Local from "./storage/local.js";
-import DB from "./storage/DB.js";
-import Anchor from "./storage/anchor.js";
-import IPFS from "./storage/IPFS.js";
-import Chain from "./storage/chain.js";
-
-import Market from "./exchange/market.js";
-import Price from "./exchange/price.js";
-import Buy from "./exchange/buy.js";
-import Sell from "./exchange/sell.js";
+/* 
+*  W3OS APIs entry
+*  @auth [ Fuu ]
+*  @creator Fuu
+*  @date 2024-01-02
+*  @version 1.0.0
+*  @functions
+*  1.modules register here, functions and parameters definition
+*  2.basic information
+*  3.debug mode
+*/
 
 import RUNTIME from "./core/runtime.js";
 
-//Functions router, to call the functions
-const router={
-    startup:Startup,//W3API init process
-    account:{       //Account management
-        local:Account,      //local account management
-        wallet:Wallet,      //normal web3.0 account way
-    },
-    payment:{       //Anchor Network payment
-        pay:Pay,            //transaction of Anchor Network 
-        vertify:Vertify,    //vertification on Anchor Network
-    },
-    contact:{       //W3OS contact management
-        friend:Friend,      //friend management
-        stranger:Stranger,  //stranger management
-    },
-    message:{       //W3OS basic message service
-        chat:Chat,          //IM functions
-        group:Group,        //Group functions
-    },
-    system:{       //W3OS system functions
-        information:Information,    //W3OS information
-        setting:Setting,    //System setting functions
-        node:Node,          //Anchor network management
-        loader:Loader,      //Anchor loader, decode API from Anchor Network
-        input:Input,        //Input from URL, can call the system function
-        UI:Userinterface,   //W3OS UI functions, need to be injected from outside
-        definition:{        //W3OS system difinitions
-            error:Error,        //Errors
-            status:Status,      //W3OS system status
-            format:Format.data, //data structure
-            agent:Format.agent, //W3OS agent definition
-        }
-    },
-    web3:{},        //On-chain API/SDK will be loaded here. The loader is "system.loader"
-    service:{       //service links management
-        network:Network,    //different blockchain network
-        link:Link,          //W3OS service management
-    },
-    storage:{       //W3OS storage functions
-        local:Local,        //frontend storage, encry storage
-        DB:DB,              //frontend database functions
-        anchor:Anchor,      //anchor storage
-        IPFS:IPFS,          //on-chain IPFS support
-        chain:Chain,        //other on-chain storage support
-    },
-    exchange:{     //Market functions
-        price:Price,        //the price of tokens
-        buy:Buy,            //buy coins function
-        sell:Sell,          //sell coins function
-        market:Market,      //market APIs to exchange
-    },
-
-    /**************************************************************/
-    /************************ W3 functions ************************/
-    /**************************************************************/
-    
-    funs:{        //functions for W3API, such as added the SDK to "web3" key
-        SDK:{       //SDK management
-            load:(name,alink,ck)=>{
-                W3.web3[name]=fun;
-                if(alink) W3.web3[name].anchor_link=alink;
-                return true;
-            },
-            update:(alink,ck)=>{
-
-            },
-            remove:(name,ck)=>{
-                delete W3.web3[name];
-                return true;
-            },
-        },
-        IO:{        
-
-        },
-    },
-
-    //start W3OS here.
-    start:(ck)=>{
-        //print the system information
-        W3.system.UI.log(JSON.stringify(W3.system.information));
-        
-    },
-}
-
+let debug=false;       //debug module
 const W3={
-    start:(ck,debug)=>{
-        RUNTIME.setDebug(debug);         //W3OS API debug module.
-        RUNTIME.start(ck);
+    /*
+    * W3 caller, only way to call the functions W3OS supported
+    * @param method string | array      //method name or call path
+    * @param ...                      //the left params follow the target functions
+    * return
+    * the result or standard error
+    */
+    call:function(method){ // need to function way, or can not get the arguments
+        RUNTIME.setDebug(debug);    //W3OS API debug module.
+        RUNTIME.start(()=>{         //Start W3OS, will not reload
+            //1.format the path
+            const rlist=[];
+            if(Array.isArray(method)){
+                console.log(`Array type.`);
+            }else{
+    
+            }
+            const type=typeof method;
+            console.log(`Path type: ${type}`);
+    
+            //2.get the params by map
+            console.log(arguments);
+    
+            //3.check permit here or ask for permission
+        });
     },
-    call:(path,param,ck)=>{
-        //1.format the path
-        const rlist=[];
-        if(Array.isArray(path)){
-            console.log(`Array type.`);
-        }else{
 
-        }
-        const type=typeof path;
-        console.log(`Path type: ${type}`);
-
-        //2.get the params by map
+    /*
+    * W3 method definition
+    * @param method string | array | undefined      //method name or call path
+    * return
+    * the details of the method, such as parameters and response result sample
+    */
+    def:function(method,ck){
+        RUNTIME.def(method,ck);
     },
+
+    //set W3OS to debug mode.
+    debug:()=>{
+        debug=true;
+    },
+
+    //W3OS version details
+    version:RUNTIME.version(),
 }
+
 export default W3;

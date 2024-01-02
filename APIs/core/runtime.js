@@ -11,7 +11,6 @@
 
 import Friend from "../contact/friend.js";
 import Stranger from "../contact/stranger.js";
-import Startup from "../system/startup.js";
 
 import Account from "../account/local.js";
 import Wallet from "../account/wallet.js";
@@ -100,12 +99,11 @@ const router={
 
 
 let debug=false;
-let SYSTEM_STATUS=0;
 const tree={};              //functions node
 const params={};            //params node
 
 const self={
-    initSystem:(ck)=>{
+    regModules:(ck)=>{
         if(debug) Userinterface.debug("Ready to run modules init hook.");
 
         const reg=Format.hook.reg.name;
@@ -132,7 +130,28 @@ const self={
         }
 
         if(debug) Userinterface.debug("Modules ready.");
+        Status.flip(1);
         return ck && ck();
+    },
+
+    funs:{        //functions for W3API, such as added the SDK to "web3" key
+        SDK:{       //SDK management
+            load:(name,alink,ck)=>{
+                W3.web3[name]=fun;
+                if(alink) W3.web3[name].anchor_link=alink;
+                return true;
+            },
+            update:(alink,ck)=>{
+
+            },
+            remove:(name,ck)=>{
+                delete W3.web3[name];
+                return true;
+            },
+        },
+        IO:{        
+
+        },
     },
 };
 
@@ -143,14 +162,27 @@ const RUNTIME={
     },
     start:(ck)=>{
         //1.check system status to avoid reloading
-        if(debug) Userinterface.debug("Start...");
         if(Status.code()!==0) return ck && ck(true);        //if system is not init status, return
+        if(debug) Userinterface.debug("Start...");
 
-        //2.init the system
-        self.initSystem(()=>{
-            console.log(tree);
-            console.log(params);
+        //2.init process
+
+        //2.1.reg the system modules
+        self.regModules(()=>{
+
+            //2.2.setup permissions
+
+            //2.3.check system login
+            return ck && ck();
         });
+    },
+    def:(path,ck)=>{
+        RUNTIME.start(()=>{
+            if(!path) return ck && ck(params);
+        });
+    },
+    version:()=>{
+        return Information;
     },
 }
 export default RUNTIME;

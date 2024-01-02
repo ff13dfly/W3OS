@@ -20,18 +20,9 @@ const Account={
 
     reg:()=>{
         return {
-            get:{
-                ck:"callback"
-            },
-            load:{
-                file:"string",
-                ck:"callback",
-            },
-            download:{
-                address:"address",
-                password:"string",
-                ck:"callback"
-            }
+            get:["callback"],
+            load:["string","callback"],
+            download:["address","string","callback"]
         }
     },
 
