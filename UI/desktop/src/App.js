@@ -7,14 +7,15 @@ import Tab from "./layout/tab";
 import Body from "./layout/body";
 
 import W3 from "w3api";
-//import { ProgramMetadata } from "./lib/gear.min"
 
 function App() {
-
-  console.log(window.Gear);
-
   //The UI actions all here.
   let [plugin,setPlugin]=useState([]);
+
+  //console.log(W3);
+  // W3.call("system_startup",{},()=>{
+
+  // });
 
   const UI={
     plugin:(list)=>{
@@ -29,15 +30,19 @@ function App() {
   }
 
   useEffect(() => {
+    //1. plugins added
     const ps=[
       "account",
       "document",
       "version",
     ]
     setPlugin(ps);
+
+    //2. start W3OS
     W3.start(()=>{
       
-    });
+    },true);
+    
   }, []);
   return (
     <div>

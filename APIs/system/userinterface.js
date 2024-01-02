@@ -8,33 +8,46 @@
 *  2. manage input functions to call;
 */
 
-const replacment={
-    log:null,           //system log printer
-    toast:null,         //UI toast, to show the system inner informoation
-    dialog:null,        //UI dialog, to show more information
+const replacment = {
+    log: null,           //system log printer
+    toast: null,         //UI toast, to show the system inner informoation
+    dialog: null,        //UI dialog, to show more information
 };
 
-const Userinterface={
+const Userinterface = {
     //reset the system functions
-    set:(key,fun)=>{
+    set: (key, fun) => {
 
     },
 
     //reset to default functions
-    reset:(key)=>{
+    reset: (key) => {
         delete replacment[key];
-        replacment[key]=null;
+        replacment[key] = null;
     },
 
     //system log, default is the 
-    log:(str)=>{
-        if(replacment.log!==null) return replacment.log(str);
+    log: (str) => {
+        if (replacment.log !== null) return replacment.log(str);
         console.log(str);
     },
 
     //browser default confirm dialog, can not be rewrite
-    confirm:(ck)=>{
+    confirm: (ck) => {
 
+    },
+    debug: (info, mode) => {
+        const md = !mode ? "log" : mode;
+        switch (md) {
+            case "log":
+                console.log("W3OS[debug] log:", info);
+                break;
+            case "warn":
+                console.warn("W3OS[debug] warning:", info);
+                break;
+            default:
+                break;
+        }
     },
 }
 export default Userinterface;

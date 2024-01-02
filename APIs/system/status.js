@@ -5,8 +5,14 @@
 *  @date 2023-12-25
 */
 
+//Basic system status
+let SYSTEM_STATUS=0;
+
 const map={
     0:{
+        
+    },
+    1:{
 
     },
     4:{
@@ -21,6 +27,9 @@ const map={
 const queue={}
 
 const Status={
+    code:()=>{
+        return SYSTEM_STATUS;
+    },
     get:(index)=>{
         if(!map[index]) return null;
         return map[index];

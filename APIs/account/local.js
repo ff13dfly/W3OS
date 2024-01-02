@@ -18,6 +18,23 @@ const Account={
 
     },
 
+    reg:()=>{
+        return {
+            get:{
+                ck:"callback"
+            },
+            load:{
+                file:"string",
+                ck:"callback",
+            },
+            download:{
+                address:"address",
+                password:"string",
+                ck:"callback"
+            }
+        }
+    },
+
     /***************************************************/
     /******************** Functions ********************/
     /***************************************************/

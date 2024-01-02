@@ -3,6 +3,7 @@
 *  @auth [ Fuu ]
 *  @creator Fuu
 *  @date 2023-12-25
+*  @version 1.0.0
 *  @functions
 */
 
@@ -41,7 +42,14 @@ const agent={
     }
 }
 
-const Format={
+const hooks={
+    reg:{       //reg module functions and parameters
+        name:"reg",
+        intro:"",
+    },
+};
+
+const FORMAT={
     //get w3os data structure definition
     data:{
         get:(name)=>{
@@ -55,5 +63,6 @@ const Format={
         
         },
     },
+    hook:hooks,
 }
-export default Format;
+export default FORMAT;

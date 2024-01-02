@@ -18,8 +18,8 @@ import Input from "./system/input.js";
 import Userinterface from "./system/userinterface.js";
 import Error from "./system/error.js";
 import Status from "./system/status.js";
-import Format from "./system/format.js";
-import Information from "./system/information.js";
+import Format from "./core/format.js";
+import Information from "./core/information.js";
 
 import Network from "./service/network.js";
 import Link from "./service/link.js";
@@ -35,7 +35,10 @@ import Price from "./exchange/price.js";
 import Buy from "./exchange/buy.js";
 import Sell from "./exchange/sell.js";
 
-const W3={
+import RUNTIME from "./core/runtime.js";
+
+//Functions router, to call the functions
+const router={
     startup:Startup,//W3API init process
     account:{       //Account management
         local:Account,      //local account management
@@ -115,6 +118,26 @@ const W3={
         //print the system information
         W3.system.UI.log(JSON.stringify(W3.system.information));
         
+    },
+}
+
+const W3={
+    start:(ck,debug)=>{
+        RUNTIME.setDebug(debug);         //W3OS API debug module.
+        RUNTIME.start(ck);
+    },
+    call:(path,param,ck)=>{
+        //1.format the path
+        const rlist=[];
+        if(Array.isArray(path)){
+            console.log(`Array type.`);
+        }else{
+
+        }
+        const type=typeof path;
+        console.log(`Path type: ${type}`);
+
+        //2.get the params by map
     },
 }
 export default W3;
