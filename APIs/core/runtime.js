@@ -197,9 +197,6 @@ const RUNTIME={
         // console.log(cat);
         // console.log(mod);
         // console.log(fun);
-
-        //Permit.
-
         //1.check permission by path, set status to pending
         
     },

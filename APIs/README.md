@@ -15,7 +15,11 @@
 - Build W3OS API as a single file, **Esbuild** needed.
 
 ```BASH
+    # Normal way to minify the SDK
     ./node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./w3.min.js
+
+    # Global Var way
+    ./node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./w3g.min.js  --global-name=W3
 ```
 
 ## Function Index

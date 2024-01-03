@@ -8,10 +8,30 @@
 *  2. decode different errors
 */
 
+import Userinterface from "./userinterface";
+
 const errs={
+    core:{
+        "NO_ERROR_DETAILS":{
+            code:40000,
+            msg:"The first W3.call parameter should be the type of Object, Array or String, and not null.",
+        },
+        "INVALID_CALL_PATH":{
+            code:40001,
+            msg:"The first W3.call parameter should be the type of Object, Array or String.",
+        },
+        "INVALID_CALL_OBJECT":{
+            code:40002,
+            msg:"The first W3.call parameter object is invalid, please check.",
+        },
+        "INVALID_CALL_ANCHOR_LINK":{
+            code:40003,
+            msg:"The first W3.call parameter invalid object anchor link .",
+        },
+    },
     system:{
-        "VALID_INPUT":{
-            code:40010,
+        "INVALID_INPUT":{
+            code:40110,
             msg:"",
         },
     },
@@ -25,27 +45,24 @@ const errs={
 const map={};
 
 const Error={
-    startup:()=>{       //system startup hook
-        //1.create the code map from errs
-        for(let origin in errs){
-            const list=errs[origin];
-            for(let key in list){
-                const row=list[key];
-                row.key=key;
-                row.origin=origin;
-                map[row.code]=row;
-                delete map[row.code].code;
-            }
-        }
-        return true;
+    init:()=>{
+        //console.log(`W3OS start,error running, need to create the code map...`);
     },
     get:(name,cat)=>{
         if(cat===undefined) cat="system";
-        if(!map[cat] || !map[cat][name]) return null;
-        return map[cat][name];
+        if(!errs[cat] || !errs[cat][name]) return null;
+        return errs[cat][name];
     },
+    
     decode:(code)=>{
 
+    },
+
+    //core error, thrown to console directly
+    throw:(name,cat)=>{
+        if(cat===undefined) cat="system";
+        if(!errs[cat] || !errs[cat][name]) return Userinterface.debug(errs.core.NO_ERROR_DETAILS,"error");;
+        Userinterface.debug(errs[cat][name],"error");
     },
 }
 export default Error;

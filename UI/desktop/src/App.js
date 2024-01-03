@@ -40,18 +40,16 @@ function App() {
 
     //2. start W3OS
     W3.debug();   //set to the debug mode
-    W3.call("account_local_get","",(res)=>{
+    //const input={method:"account_local_get",alink:"anchor://good/12345"};
+    //const input={method:["account","local","get"],alink:"anchor://good/12345"};
+    //const input={method:"account_local_get"};
+    //const input={method:["account","local","get"]};
+    //const input="account_local_get";
+    //const input=["account","local","get"];
+    const input=null;
+    W3.call(input,(res)=>{
       console.log(res);
     });
-
-    W3.call(["account","local","get"],"moonbeam",(res)=>{
-      console.log(res);
-    });
-
-    W3.def("",(defs)=>{
-      console.log(defs);
-    });
-    console.log(W3)
     
   }, []);
   return (

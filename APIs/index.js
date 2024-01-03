@@ -11,13 +11,14 @@
 */
 
 import RUNTIME from "./core/runtime.js";
+import Error from "./system/error.js";
 
-let debug=false;       //debug module
-const W3={
+let debug = false;       //debug module
+const W3 = {
     /*
     * W3 caller, only way to call the functions W3OS supported
     * @param method string | array | object     //method name or call path
-    * @param alink  string                      //anchor link, need this to set permission
+    * @param alink  string                      //anchor link ( anchor://name/block_number ), need this to set permission
     * @param ...                                //the left params follow the target functions
     * return
     * the result or standard error
@@ -32,29 +33,41 @@ const W3={
     //W3.call({method:"account_local_get",anchor:"w3os"}, ... )
 
     //TODO, need to check wether call from CDapps. Will regroup the parameters check
-    call:function(method){ // need to function way, or can not get the arguments
-        //1.check input type;
+    call: function (input) { // need to function way, or can not get the arguments
 
-        const obj={
-            method:"",
-            anchor:"",
-        }
-        const alink=""
-
-        //2.format input;
+        //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug module.
-        RUNTIME.start(()=>{         //Start W3OS, will not reload
-            //1.format the path
-            const path=!Array.isArray(method)?method.split("_"):method;
+        RUNTIME.start(() => {         //Start W3OS, will not reload. Even the call is failed.
+            //1.check input type;
+            const type = typeof input;
+            if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
+            if(input===null) return Error.throw("INVALID_CALL_PATH", "core");
+            //2.format input;  
+            let method, alink, path;
+            if (type === "object") {
+                if (!Array.isArray(input)){
+                    if (!input.method) return Error.throw("INVALID_CALL_OBJECT", "core");
+                    method = input.method;
+                    path=!Array.isArray(method)?method.split("_"):method;
+
+                    if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_CALL_ANCHOR_LINK", "core");
+                    alink = !input.alink ? "" : input.alink;
+                } else {
+                    path = input;
+                }
+            } else {
+                alink = "";
+                path = input.split("_");
+            }
 
             //2.format the parameters
-            const params=[];
-            if(arguments.length>2){
-                for(let i=1;i<arguments.length;i++){
+            const params = [];
+            if (arguments.length > 1) {
+                for (let i = 1; i < arguments.length; i++) {
                     params.push(arguments[i]);
                 }
             }
-            return RUNTIME.call(path,params,alink);
+            return RUNTIME.call(path, params, alink);
         });
     },
 
@@ -64,17 +77,17 @@ const W3={
     * return
     * the details of the method, such as parameters and response result sample
     */
-    def:function(method,ck){
-        RUNTIME.def(method,ck);
+    def: function (method, ck) {
+        RUNTIME.def(method, ck);
     },
 
     //set W3OS to debug mode.
-    debug:()=>{
-        debug=true;
+    debug: () => {
+        debug = true;
     },
 
     //W3OS version details
-    version:RUNTIME.version(),
+    version: RUNTIME.version(),
 }
 
 export default W3;

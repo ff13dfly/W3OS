@@ -45,6 +45,10 @@ const Userinterface = {
             case "warn":
                 console.warn("W3OS[ debug mode ] warning:", info);
                 break;
+
+            case "error":
+                console.error("W3OS[ debug mode ] error:", info);
+                break;
             default:
                 break;
         }
