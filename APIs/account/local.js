@@ -25,10 +25,12 @@ const Account={
         }
     },
     permit:()=>{
+        //if no record, default to allow
+        //[0,refused; 1. accepted; 2.not confirm yet; ]
         return {
-            get:true,       //need to check permit
-            load:true,
-            download:true,
+            get:2,       //need to check permit
+            load:2,         
+            download:2, 
         }
     },
 

@@ -41,15 +41,31 @@ function App() {
     //2. start W3OS
     W3.debug();   //set to the debug mode
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
-    //const input={method:["account","local","get"],alink:"anchor://good/12345"};
+    const input={method:["account","local","get"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
     //const input={method:["account","local","get"]};
     //const input="account_local_get";
     //const input=["account","local","get"];
-    const input=null;
+    //const input=null;
     W3.call(input,(res)=>{
       console.log(res);
     });
+
+    W3.call("account_local_get",(res)=>{
+      console.log(res);
+    });
+
+    // W3.task([],(res)=>{
+    //   console.log(res);
+    // });
+
+    W3.def("account_local_get",(res)=>{
+      console.log(res);
+    });
+
+    const url="ws://127.0.0.1:9944";
+    const ws=new WebSocket(url);
+    console.log(ws);
     
   }, []);
   return (

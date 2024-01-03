@@ -49,6 +49,7 @@ import Sell from "../exchange/sell.js";
 import Format from "./format.js";
 import Information from "./information.js";
 import Permit from "./permit.js";
+import Checker from "./checker.js";
 
 const router={
     account:{       //Account management
@@ -104,8 +105,13 @@ const router={
 let debug=false;
 const tree={};              //functions node
 const params={};            //params node
+const permits={};           //default permits setting
 
 const self={
+    checkDevice:(ck)=>{
+        if(debug) Userinterface.debug("Checking system ...");
+        return ck && ck();
+    },
     regModules:(ck)=>{
         if(debug) Userinterface.debug("Ready to run modules init hook.");
 
@@ -137,12 +143,17 @@ const self={
                     if(param!==null){
                         params[key]=param[fun];
                     }
+                    if(permit!=null && permit[fun]){
+                        permits[key]=permit[fun];
+                    }
                 }
             }
         }
 
+        console.log(permits);
+
         if(debug) Userinterface.debug("Modules ready.");
-        Status.flip(1);
+        
         return ck && ck();
     },
 
@@ -174,17 +185,27 @@ const RUNTIME={
     },
     start:(ck)=>{
         //1.check system status to avoid reloading
+        if(Status.code()===6){
+            if(debug) Userinterface.debug("W3OS is starting, wait ...");
+            return setTimeout(()=>{
+                RUNTIME.start(ck);
+            },200);
+        }
         if(Status.code()!==0) return ck && ck(true);        //if system is not init status, return
         if(debug) Userinterface.debug("W3OS start...");
+        Status.flip(6);
+        self.checkDevice((res)=>{
 
-        //2.init process
-        //2.1.reg the system modules
-        self.regModules(()=>{
+            //2.init process
+            //2.1.reg the system modules
+            self.regModules(()=>{
+                Status.flip(1);     //change the system status;
+                
+                //2.2.setup permissions
 
-            //2.2.setup permissions
-
-            //2.3.check system login
-            return ck && ck();
+                //2.3.check system login
+                return ck && ck();
+            });
         });
     },
 
@@ -193,18 +214,20 @@ const RUNTIME={
             Userinterface.debug(`Call ** ${path.join("_")} **, from ** ${alink} **, parameters:`,"warn");
             Userinterface.debug(params);
         }
+
+        if(alink){
+            if(!Checker(alink,"alink")) return Error.throw("INVALID_ANCHOR_LINK", "core");
+        } 
         const [cat,mod,fun]=path;
-        // console.log(cat);
-        // console.log(mod);
-        // console.log(fun);
-        //1.check permission by path, set status to pending
-        
+
+        //1.check permission by path, set status to pending     
     },
 
     def:(path,ck)=>{
-        RUNTIME.start(()=>{
-            if(!path) return ck && ck(params);
-        });
+        if(!path) return ck && ck(Error.get("INVALID_CALL_PATH","core"));
+        
+        //ck && ck(Error.get("INVALID_CALL_PATH","core","abc"));
+        //return ck && ck(Error.get("INVALID_CALL_PATH","core","More details"));
     },
     version:()=>{
         return Information;

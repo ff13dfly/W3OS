@@ -8,7 +8,7 @@
 *  1.check valid of parameters
 */
 
-const Checker={
+const router={
     callback:(param)=>{
 
     },
@@ -21,5 +21,16 @@ const Checker={
     integer:(param)=>{
 
     },
+    ss58:(param)=>{
+
+    },
+    alink:(param)=>{
+        return true;
+    },
+}
+
+const Checker=(input,type)=>{
+    if(!router[type]) return false;
+    return router[type](input);
 }
 export default Checker;

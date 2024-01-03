@@ -1,5 +1,11 @@
 # W3OS APIs
 
+## Overview
+
+- The W3OS APIs is an isolated part of W3OS, can be used both in frontend and backend.
+
+- Create the websocket link to Anchor link directly, by this way, the code should be small. Then load the **@polkadot/api** from Anchor Network.
+
 ## How to
 
 - You need to add add a symlink to NPM

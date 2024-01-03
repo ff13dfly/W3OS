@@ -32,22 +32,24 @@ const Userinterface = {
         console.log(str);
     },
 
-    //browser default confirm dialog, can not be rewrite
-    confirm: (ck) => {
-
+    //browser default confirm dialog, can not be overwrite
+    confirm: (info,ck) => {
+        window.confirm(info);
     },
-    debug: (info, mode) => {
+
+    //W3OS debug information output
+    debug: (info, mode, skip) => {
         const md = !mode ? "log" : mode;
         switch (md) {
             case "log":
-                console.log("W3OS[ debug mode ] log:", info);
+                console.log(`W3OS ${!skip?"[ debug mode ]":""}log:`, info);
                 break;
             case "warn":
-                console.warn("W3OS[ debug mode ] warning:", info);
+                console.warn(`W3OS ${!skip?"[ debug mode ]":""}warning:`, info);
                 break;
 
             case "error":
-                console.error("W3OS[ debug mode ] error:", info);
+                console.error(`W3OS ${!skip?"[ debug mode ]":""}error:`, info);
                 break;
             default:
                 break;

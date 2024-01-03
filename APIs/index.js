@@ -28,20 +28,21 @@ const W3 = {
     //W3.call("account_local_get", ... );
     //W3.call(["account","local","get"], ... )
     //W3.call({method:["account","local","get"]}, ... )
-    //W3.call({method:["account","local","get"],anchor:"w3os"}, ... )
+    //W3.call({method:["account","local","get"],alink:"w3os"}, ... )
     //W3.call({method:"account_local_get"}, ... )
-    //W3.call({method:"account_local_get",anchor:"w3os"}, ... )
+    //W3.call({method:"account_local_get",alink:"w3os"}, ... )
 
-    //TODO, need to check wether call from CDapps. Will regroup the parameters check
     call: function (input) { // need to function way, or can not get the arguments
 
         //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug module.
         RUNTIME.start(() => {         //Start W3OS, will not reload. Even the call is failed.
+            
             //1.check input type;
             const type = typeof input;
             if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
             if(input===null) return Error.throw("INVALID_CALL_PATH", "core");
+            
             //2.format input;  
             let method, alink, path;
             if (type === "object") {
@@ -50,7 +51,7 @@ const W3 = {
                     method = input.method;
                     path=!Array.isArray(method)?method.split("_"):method;
 
-                    if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_CALL_ANCHOR_LINK", "core");
+                    if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_ANCHOR_LINK", "core");
                     alink = !input.alink ? "" : input.alink;
                 } else {
                     path = input;
@@ -60,7 +61,7 @@ const W3 = {
                 path = input.split("_");
             }
 
-            //2.format the parameters
+            //3.format the parameters
             const params = [];
             if (arguments.length > 1) {
                 for (let i = 1; i < arguments.length; i++) {
@@ -78,7 +79,9 @@ const W3 = {
     * the details of the method, such as parameters and response result sample
     */
     def: function (method, ck) {
-        RUNTIME.def(method, ck);
+        RUNTIME.start(() => {
+            RUNTIME.def(method, ck);
+        });
     },
 
     //set W3OS to debug mode.
@@ -88,6 +91,15 @@ const W3 = {
 
     //W3OS version details
     version: RUNTIME.version(),
+
+    //TODO, following functions are scheduled.
+    task:(todo,ck)=>{
+        //Error.throw("UNDER_DEVELOPPING", "core", "Just a joke, :-)");
+        return ck && ck(Error.get("UNDER_DEVELOPPING", "core", "Just a joke, :-)"));
+    },
+    help:(search,ck)=>{
+
+    },
 }
 
 export default W3;

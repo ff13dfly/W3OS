@@ -18,15 +18,20 @@ const errs={
         },
         "INVALID_CALL_PATH":{
             code:40001,
-            msg:"The first W3.call parameter should be the type of Object, Array or String.",
+            msg:"This parameter should be the type of Object, Array or String.",
         },
         "INVALID_CALL_OBJECT":{
             code:40002,
             msg:"The first W3.call parameter object is invalid, please check.",
         },
-        "INVALID_CALL_ANCHOR_LINK":{
+        "INVALID_ANCHOR_LINK":{
             code:40003,
-            msg:"The first W3.call parameter invalid object anchor link .",
+            msg:"Invalid anchor link .",
+        },
+
+        "UNDER_DEVELOPPING":{
+            code:77777,
+            msg:"This function is under developping. Why do you know this? ",
         },
     },
     system:{
@@ -47,11 +52,22 @@ const map={};
 const Error={
     init:()=>{
         //console.log(`W3OS start,error running, need to create the code map...`);
+
+        //1.create the map of code -> ERROR_NAME
+        for(var cat in errs){
+            const rows=errs[cat];
+            for(var name in rows){
+                const row=rows[name];
+                map[row.code]=name;
+            }
+        }
     },
-    get:(name,cat)=>{
+    get:(name,cat,ext)=>{
         if(cat===undefined) cat="system";
         if(!errs[cat] || !errs[cat][name]) return null;
-        return errs[cat][name];
+        const err=JSON.parse(JSON.stringify(errs[cat][name]));
+        if(ext) err.ext=ext;    //extend the error message;
+        return  err;
     },
     
     decode:(code)=>{
@@ -59,10 +75,12 @@ const Error={
     },
 
     //core error, thrown to console directly
-    throw:(name,cat)=>{
+    throw:(name,cat,ext)=>{
         if(cat===undefined) cat="system";
-        if(!errs[cat] || !errs[cat][name]) return Userinterface.debug(errs.core.NO_ERROR_DETAILS,"error");;
-        Userinterface.debug(errs[cat][name],"error");
+        if(!errs[cat] || !errs[cat][name]){
+            return Userinterface.debug(Error.get("NO_ERROR_DETAILS","core"),"error",true); 
+        } 
+        return Userinterface.debug(Error.get(name,cat,ext),"error",true);
     },
 }
 export default Error;
