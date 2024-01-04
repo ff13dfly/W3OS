@@ -2,9 +2,11 @@
 
 ## Overview
 
-- The W3OS APIs is an isolated part of W3OS, can be used both in frontend and backend.
+- The W3OS APIs is an isolated part of W3OS, can be used both in frontend and backend. For short, it will be called **W3** in the following content.
 
-- Create the websocket link to Anchor link directly, by this way, the code should be small. Then load the **@polkadot/api** from Anchor Network.
+- Create the websocket link to Anchor link directly, by this way, the code should be small. Then load the **@polkadot/api** from Anchor Network. Will create the link to Anchor node, then get the SDKs, such as Polkadot, AnchorJS, Easy ...
+
+- The tools to deploy Dapps to Anchor Network will also be attatch to **W3**
 
 ## How to
 

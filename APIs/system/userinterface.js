@@ -12,6 +12,7 @@ const replacment = {
     log: null,           //system log printer
     toast: null,         //UI toast, to show the system inner informoation
     dialog: null,        //UI dialog, to show more information
+    confirm: null,
 };
 
 const Userinterface = {
