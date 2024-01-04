@@ -45,11 +45,15 @@ import Price from "../exchange/price.js";
 import Buy from "../exchange/buy.js";
 import Sell from "../exchange/sell.js";
 
+import Xloader from "../util/xloader.js";
+import Convertor from "../util/convertor.js";
+
 //core functions here to import
 import Format from "./format.js";
 import Information from "./information.js";
 import Permit from "./permit.js";
 import Checker from "./checker.js";
+import Default from "./default.js";
 
 const router={
     account:{       //Account management
@@ -81,7 +85,7 @@ const router={
         //format:Format.data, //data structure
         //agent:Format.agent, //W3OS agent definition
     },
-    web3:{},        //On-chain API/SDK will be loaded here. The loader is "system.loader"
+    SDK:{},        //On-chain API/SDK will be loaded here. The loader is "system.loader"
     service:{       //service links management
         network:Network,    //different blockchain network
         link:Link,          //W3OS service management
@@ -98,19 +102,63 @@ const router={
         buy:Buy,            //buy coins function
         sell:Sell,          //sell coins function
         market:Market,      //market APIs to exchange
+    },
+    util:{        //Tools support by W3
+        xloader:Xloader,    //Raw Dapps loader, different from W3 loader, no need W3 support
+        convertor:Convertor,//Convert application and deploy on chain. Only NodeJS support
     }
 }
 
-
+/************************************************************************/
+/*************************** Sysetem Variants ***************************/
+/************************************************************************/
 let debug=false;
 const tree={};              //functions node
 const params={};            //params node
 const permits={};           //default permits setting
 
+let ws=null;        //W3 system ws link, will close after get the basic libs.
+const state={               //runtime state, when system start, these state need to set automatically
+    env:"",             //["browser","nodejs"]
+    network:false,      //wether linked to active node
+    index:0,            //active index node
+    relink:500,         //the interval to retry network
+}
+
+/************************************************************************/
+/************************** Private Functions ***************************/
+/************************************************************************/
 const self={
     checkDevice:(ck)=>{
         if(debug) Userinterface.debug("Checking system ...");
+
+        //TODO, here to confirm the system, right now, it is frontend/nodeJS
+
         return ck && ck();
+    },
+    checkNode:(ck)=>{
+        if(debug) Userinterface.debug("Checking link to node ...");
+        const url=Default.node[state.index];     //get the default node
+        if(state.index===Default.node.length){
+            return ck && ck(false);
+        }
+        try {
+            ws=new WebSocket(url);
+            //console.log(ws);
+        } catch (error) {
+            Userinterface.debug(error,"error");
+            state.index++;
+            return self.checkNode(ck);
+        }
+        setTimeout(()=>{
+            if(ws.readyState!==1){
+                state.index++;
+                return self.checkNode(ck);
+            }else{
+                state.network=true;
+                return ck && ck(true);
+            }
+        },state.relink);
     },
     regModules:(ck)=>{
         if(debug) Userinterface.debug("Ready to run modules init hook.");
@@ -157,26 +205,30 @@ const self={
         return ck && ck();
     },
 
-    funs:{        //functions for W3API, such as added the SDK to "web3" key
-        SDK:{       //SDK management
-            load:(name,alink,ck)=>{
-                W3.web3[name]=fun;
-                if(alink) W3.web3[name].anchor_link=alink;
-                return true;
-            },
-            update:(alink,ck)=>{
+    // funs:{        //functions for W3API, such as added the SDK to "web3" key
+    //     SDK:{       //SDK management
+    //         load:(name,alink,ck)=>{
+    //             W3.web3[name]=fun;
+    //             if(alink) W3.web3[name].anchor_link=alink;
+    //             return true;
+    //         },
+    //         update:(alink,ck)=>{
 
-            },
-            remove:(name,ck)=>{
-                delete W3.web3[name];
-                return true;
-            },
-        },
-        IO:{        
+    //         },
+    //         remove:(name,ck)=>{
+    //             delete W3.web3[name];
+    //             return true;
+    //         },
+    //     },
+    //     IO:{        
 
-        },
-    },
+    //     },
+    // },
 };
+
+/************************************************************************/
+/************************** Public Functions ****************************/
+/************************************************************************/
 
 const RUNTIME={
     setDebug:(val)=>{
@@ -204,6 +256,13 @@ const RUNTIME={
                 //2.2.setup permissions
 
                 //2.3.check system login
+
+                //3. check the link state.
+
+                self.checkNode((res)=>{
+                    console.log(`Network status: ${res}`);
+                });
+
                 return ck && ck();
             });
         });

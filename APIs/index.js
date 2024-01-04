@@ -93,13 +93,20 @@ const W3 = {
     version: RUNTIME.version(),
 
     //TODO, following functions are scheduled.
+    //array of calls, to impl complex functions
     task:(todo,ck)=>{
         //Error.throw("UNDER_DEVELOPPING", "core", "Just a joke, :-)");
         return ck && ck(Error.get("UNDER_DEVELOPPING", "core", "Just a joke, :-)"));
     },
+    //get help details from Anchor Network
     help:(search,ck)=>{
 
     },
+
+    //Anchor toolbox here, such as loader, converter
+    util:{
+
+    }
 }
 
 export default W3;

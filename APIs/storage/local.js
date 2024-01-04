@@ -8,6 +8,14 @@
 *  2. get encried  data from localstorage
 */
 
+
+import Encry from "../lib/encry";
+
+
+const self={
+
+};
+
 const Anchor={
     set:(key,val,ck)=>{
 

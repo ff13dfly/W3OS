@@ -8,7 +8,10 @@
 */
 
 const Loader={
-    get:(anchor_link)=>{
+    get:(alink,ck)=>{
+
+    },
+    run:(alink,ck)=>{
 
     },
 }

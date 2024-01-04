@@ -36,9 +36,9 @@ function App() {
       const ws=new WebSocket(url);
 
       //work properly
-      //const req={"id":1, "jsonrpc":"2.0", "method": "rpc_methods"}
+      const req={"id":1, "jsonrpc":"2.0", "method": "rpc_methods"}
       //const req={"id":1, "jsonrpc":"2.0", "method": "system_name"}
-      const req={"id":1, "jsonrpc":"2.0", "method": "system_version"}
+      //const req={"id":1, "jsonrpc":"2.0", "method": "system_version"}
       //const req={"id":1,"jsonrpc":"2.0","method":"chain_getBlock",param:["123"]}
       //const req={"id":1, "jsonrpc":"2.0", "method": "subscribe_newHead"}
       
@@ -67,7 +67,7 @@ function App() {
     ]
     setPlugin(ps);
 
-    test.rpc();
+    //test.rpc();
 
     //2. start W3OS
     W3.debug();   //set to the debug mode
@@ -82,9 +82,9 @@ function App() {
     //   console.log(res);
     // });
 
-    // W3.call("account_local_get",(res)=>{
-    //   console.log(res);
-    // });
+    W3.call("account_local_get",(res)=>{
+      console.log(res);
+    });
 
     // W3.task([],(res)=>{
     //   console.log(res);
