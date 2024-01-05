@@ -23,7 +23,6 @@ const W3 = {
     * return
     * the result or standard error
     */
-
     //Usage of call function 
     //W3.call("account_local_get", ... );
     //W3.call(["account","local","get"], ... )
@@ -31,7 +30,6 @@ const W3 = {
     //W3.call({method:["account","local","get"],alink:"w3os"}, ... )
     //W3.call({method:"account_local_get"}, ... )
     //W3.call({method:"account_local_get",alink:"w3os"}, ... )
-
     call: function (input) { // need to function way, or can not get the arguments
 
         //0.start the W3 API anyway.

@@ -21,7 +21,19 @@ const limits={
 };
 const self={
     decode:(alink,ck)=>{
+        //console.log(alink);
+        const prefix="anchor://";
+        if(alink.length<=prefix.length) return ck && ck(false);
+        const str=alink.toLocaleLowerCase();
+        const head=str.substring(0,prefix.length);
 
+        if(head!==prefix)  return ck && ck(false);
+        const body=str.substring(prefix.length,str.length);
+        const arr=body.split("/");
+
+        if(arr.length===1) return ck && ck(arr[0],0);
+        if(arr.length===2) return ck && ck(arr[0],parseInt(arr[1]));
+        return ck && ck(false);
     },
     owner:(anchor,ck)=>{
 		let unsub = null;
@@ -164,15 +176,25 @@ const self={
     },
 };
 
-const Launch=(url,libs,ck)=>{
-    ApiPromise.create({ provider: new WsProvider(url) }).then((api) => {
-        //console.log(api);
-        wsAPI=api;
-        self.owner("easy",(owner,block)=>{
-            console.log(owner,block);
-            self.target("easy",block,(res)=>{
-                console.log(res);
-            })
+const Launch=(url,libs,ck,map)=>{
+    if(!map) map=[];
+    if(libs.length===0) return ck && ck(map);
+    if(wsAPI===null){
+        return ApiPromise.create({ provider: new WsProvider(url) }).then((api) => {
+            wsAPI=api;
+            return Launch(url,libs,ck,map);
+        });
+    }
+
+    const row=libs.pop();
+    self.decode(row,(anchor,block)=>{
+        if(!anchor){
+            map.push({alink:row,empty:true});
+            return Launch(url,libs,ck,map);
+        }
+        self.target(anchor,block,(res)=>{
+            map.push({alink:row,empty:false,data:res});
+            return Launch(url,libs,ck,map);
         });
     });
 }

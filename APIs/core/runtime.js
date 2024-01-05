@@ -77,7 +77,7 @@ const router = {
         node: Node,          //Anchor network management
         loader: Loader,      //Anchor loader, decode API from Anchor Network
         input: Input,        //Input from URL, can call the system function
-        UI: Userinterface,   //W3OS UI functions, need to be injected from outside
+        UI: Userinterface,   //W3OS UI functions, need to be injected from outside      
     },
     definition: {        //W3OS system difinitions
         error: Error,        //Errors
@@ -125,7 +125,6 @@ const state = {       //runtime state, when system start, these state need to se
     relink: 500,         //the interval to retry network
 }
 
-
 /************************************************************************/
 /************************** Private Functions ***************************/
 /************************************************************************/
@@ -165,9 +164,6 @@ const self = {
             return false;
         }
     },
-    launch: () => {
-
-    },
     regModules: (ck) => {
         if (debug) Userinterface.debug("Ready to run modules init hook.");
 
@@ -205,8 +201,7 @@ const self = {
                 }
             }
         }
-
-        console.log(permits);
+        //console.log(permits);
         if (debug) Userinterface.debug("Modules ready.");
 
         return ck && ck();
@@ -216,8 +211,7 @@ const self = {
 /************************************************************************/
 /************************** Public Functions ****************************/
 /************************************************************************/
-const isNodeJS = self.envNodeJS();
-console.log(isNodeJS);
+const isNodeJS = self.envNodeJS();     //check wether the NodeJS env
 const RUNTIME = {
     setDebug: (val) => {
         debug = !!val;
@@ -251,8 +245,18 @@ const RUNTIME = {
 
                 //4. ready to get basic libs.
                 const libs=Default.libs[isNodeJS?"backend":"frontend"];
-                Launch(Default.node[state.index],libs,()=>{
+                Launch(Default.node[state.index],libs,(data)=>{
+                    console.log(data);
+                    //4.1. save the data details
 
+                    //4.2. create the instance of basic libs
+
+                    //4.3. set the default permission
+
+                    //4.4. dock the basic decoder to SDK, use Easy as the default decoder of Anchor Network
+                    router.SDK.decoder=(alink,ck)=>{
+                        console.log(alink);
+                    };
                 });
             });
 
