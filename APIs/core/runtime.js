@@ -53,6 +53,7 @@ import Information from "./information.js";
 import Permit from "./permit.js";
 import Checker from "./checker.js";
 import Default from "./default.js";
+import Launch from "./launch.js";
 
 const router = {
     account: {       //Account management
@@ -129,6 +130,11 @@ const state = {       //runtime state, when system start, these state need to se
 /************************** Private Functions ***************************/
 /************************************************************************/
 const self = {
+    getWebsocket:(url)=>{
+        if(!isNodeJS) return new WebSocket(url);
+        //TODO, here to return the nodeJS websocket client;
+
+    },
     checkServers: (ck) => {
         if (debug) Userinterface.debug("Try linking to Anchor Network node ...");
         const url = Default.node[state.index];     //get the default node
@@ -136,7 +142,7 @@ const self = {
             return ck && ck(false);     //failed to link to node when all nodes tried
         }
         try {
-            ws = new WebSocket(url);
+            ws = self.getWebsocket(url);
             ws.onerror = (res) => {
                 state.index++;
                 return self.checkServers(ck);  //faild to link, retry
@@ -153,11 +159,7 @@ const self = {
     },
     envNodeJS: () => {
         if (typeof process !== 'undefined' && typeof process.env === 'object') {
-            if ('NODE_ENV' in process.env) {
-                return true;
-            } else {
-                return false;
-            }
+            return true;
         } else {
             return false;
         }
@@ -247,6 +249,10 @@ const RUNTIME = {
                 if (debug) Userinterface.debug(res ? `Linked to Anchor Network node: ${Default.node[state.index]}` : `Failed to link to Anchor Network node`);
 
                 //4. ready to get basic libs.
+                const libs=Default.libs[isNodeJS?"backend":"frontend"];
+                Launch(ws,libs,()=>{
+
+                });
             });
 
             return ck && ck();
