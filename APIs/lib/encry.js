@@ -8,14 +8,16 @@
 *  2.md5
 */
 
-const CryptoJS = require("crypto-js");
+import CryptoJS from "crypto-js"
+//const CryptoJS = require("crypto-js");
+
 let key = null;
 let iv = null;
 
-const self = {
+const Encry = {
   auto: (md5) => {
-    self.setKey(md5.substring(0, 16));
-    self.setIV(md5.substring(16, 32));
+    Encry.setKey(md5.substring(0, 16));
+    Encry.setIV(md5.substring(16, 32));
     return true;
   },
   setKey: (salt) => {
@@ -55,4 +57,4 @@ const self = {
   },
 };
 
-module.exports = self;
+export default Encry;

@@ -5,6 +5,7 @@
     "description": "APIs for W3OS",
     "author": "Fuu",
     "license": "MIT",
+    "type":"module",
     "repository": {
         "type": "git",
         "url": ""

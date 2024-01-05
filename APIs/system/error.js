@@ -8,7 +8,7 @@
 *  2. decode different errors
 */
 
-import Userinterface from "./userinterface";
+import Userinterface from "./userinterface.js";
 
 const errs={
     core:{

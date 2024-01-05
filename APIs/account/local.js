@@ -8,7 +8,7 @@
 *  2.account JSON file storage 
 */
 
-import STORAGE from "../lib/storage";
+import STORAGE from "../lib/storage.js";
 
 const Account={
     /**********************************************************/

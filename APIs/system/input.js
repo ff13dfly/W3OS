@@ -8,7 +8,7 @@
 *  2. manage input functions to call;
 */
 
-import Error from "./error";
+import Error from "./error.js";
 
 const map={}
 

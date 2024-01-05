@@ -15,6 +15,21 @@ const replacment = {
     confirm: null,
 };
 
+const self={
+    envNodeJS: () => {
+        if (typeof process !== 'undefined' && typeof process.env === 'object') {
+            if ('NODE_ENV' in process.env) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    },
+}
+const isNodeJS = self.envNodeJS();        //check wether backend
+
 const Userinterface = {
     //reset the system functions
     set: (key, fun) => {

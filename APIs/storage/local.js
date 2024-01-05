@@ -9,7 +9,7 @@
 */
 
 
-import Encry from "../lib/encry";
+import Encry from "../lib/encry.js";
 
 
 const self={

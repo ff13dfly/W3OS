@@ -9,7 +9,7 @@
 */
 
 
-import Encry from "./encry";
+import Encry from "./encry.js";
 
 const map = {};
 const persist = {};  //通过支付串化，进行数据保存

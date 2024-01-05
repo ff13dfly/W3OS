@@ -10,10 +10,13 @@ let SYSTEM_STATUS=0;
 
 const map={
     0:{
-        
+        msg:"W3OS init status.",
     },
     1:{
-
+        msg:"W3OS system start and work perfect.",
+    },
+    2:{
+        msg:"W3OS system start but do not get the basic SDK yet.",
     },
     6:{
         msg:"W3OS is pending, ask for permission normally.",
