@@ -149,6 +149,7 @@ const self = {
             };
             ws.onopen = (res) => {
                 state.network = true;
+                ws.close();                 //confirm the url then close
                 return ck && ck(true);      //link successful, ready to get basic libs
             };
         } catch (error) {
@@ -250,7 +251,7 @@ const RUNTIME = {
 
                 //4. ready to get basic libs.
                 const libs=Default.libs[isNodeJS?"backend":"frontend"];
-                Launch(ws,libs,()=>{
+                Launch(Default.node[state.index],libs,()=>{
 
                 });
             });
