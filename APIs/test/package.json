@@ -1,0 +1,25 @@
+{
+    "name": "w3api_test",
+    "version": "1.0.0",
+    "main": "index.js",
+    "description": "APIs Test for W3OS",
+    "author": "Fuu",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": ""
+    },
+    "bugs": {
+        "url": ""
+    },
+    "homepage": "http://w3os.net",
+    "dependencies": {
+        "@polkadot/api": "^10.10.1",
+        "esbuild": "^0.19.11",
+        "websocket": "^1.0.34"
+    },
+    "devDependencies": {
+        "@polkadot/api": "^10.10.1",
+        "crypto-js": "^4.1.1"
+    }
+}
