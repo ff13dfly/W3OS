@@ -28,7 +28,10 @@ const errs={
             code:40003,
             msg:"Invalid anchor link .",
         },
-
+        "UNKOWN_CALL":{
+            code:40010,
+            msg:"Unrecongnized call module.",
+        },
         "UNDER_DEVELOPPING":{
             code:77777,
             msg:"This function is under developping. Why do you know this? ",

@@ -44,6 +44,7 @@ const Loader={
     
     get:(name,ck)=>{    //get the target SDK, system will check wether support
         console.log(`name: ${name}`);
+        return ck && ck();
     },
     run:(name,ck)=>{
 

@@ -132,9 +132,7 @@ const state = {       //runtime state, when system start, these state need to se
 /************************************************************************/
 const self = {
     getWebsocket:(url)=>{
-        if(state.env==="frontend") return new WebSocket(url);
-        //TODO, here to return the nodeJS websocket client;
-        return new NodeWS.client(url);
+        return state.env==="frontend"?new WebSocket(url):new NodeWS.client(url);
     },
     checkServers: (ck) => {
         if (debug) Userinterface.debug("Try linking to Anchor Network node ...");
@@ -228,8 +226,12 @@ const self = {
                 }
             }
         }
-        //console.log(permits);
-        if (debug) Userinterface.debug("Modules ready.");
+
+        if (debug){
+            //Userinterface.debug("Modules ready.");
+            Userinterface.debug("Modules ready.");
+        }
+         
 
         return ck && ck();
     },
@@ -264,12 +266,7 @@ const RUNTIME = {
         self.regModules(() => {
             Status.flip(1);     //change the system status;
 
-            //2.2.setup permissions
-
-            //2.3.check system login
-
-            //3. check the link state.
-
+            //3. check the nodes status, confirm the network.
             self.checkServers((res) => {
                 if (debug) Userinterface.debug(res ? `Linked to Anchor Network node: ${Default.node[state.index]}` : `Failed to link to Anchor Network node`);
 
@@ -326,28 +323,42 @@ const RUNTIME = {
                     router.system.decoder(Default.support,(res)=>{
                         const adata=res.data[`${res.location[0]}_${res.location[1]}`];
                         const slist=JSON.parse(adata.raw);      //get the support SDK list.
-                        Loader.map(slist,()=>{
-
+                        Loader.map(slist,()=>{      //set the SDK maps for permission control.
+                            return ck && ck();
                         });
                     });
                 });
             });
-            return ck && ck();
+            
         });
     },
 
-    call: (path, params, alink) => {
+    call: (path, input, alink) => {
         if (debug) {
             Userinterface.debug(`Call ** ${path.join("_")} **, from ** ${alink} **, parameters:`, "warn");
-            Userinterface.debug(params);
+            Userinterface.debug(input);
         }
 
-        if (alink) {
+        if (alink!=="SYSTEM") {
             if (!Checker(alink, "alink")) return Error.throw("INVALID_ANCHOR_LINK", "core");
         }
-        const [cat, mod, fun] = path;
 
-        //1.check permission by path, set status to pending     
+        const [cat, mod, fun] = path;
+        if(!router[cat] || !router[cat][mod] || !router[cat][mod][fun]){
+            return Error.throw("UNKOWN_CALL", "core",`Call path: ${path.join("_")}` );
+        }
+        //Status.flip(6);
+
+        //1.check permission by path, set status to pending    
+        console.log(cat,mod,fun,`From ${alink}`); 
+        const key=path.join("_");
+        if(!params[key]){
+
+        }
+
+        //console.log(params[key]);
+
+        router[cat][mod][fun].apply(null,input);
     },
 
     def: (path, ck) => {

@@ -50,12 +50,12 @@ const W3 = {
                     path=!Array.isArray(method)?method.split("_"):method;
 
                     if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_ANCHOR_LINK", "core");
-                    alink = !input.alink ? "" : input.alink;
+                    alink = !input.alink ? "SYSTEM" : input.alink;
                 } else {
                     path = input;
                 }
             } else {
-                alink = "";
+                alink = "SYSTEM";
                 path = input.split("_");
             }
 

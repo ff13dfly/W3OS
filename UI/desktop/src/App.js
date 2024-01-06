@@ -90,6 +90,8 @@ function App() {
       });
     });
 
+    console.log(W3);
+
     // W3.call("account_local_get",(res)=>{
     //   console.log(res);
     // });
