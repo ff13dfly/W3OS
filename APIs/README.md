@@ -30,6 +30,44 @@
     ./node_modules/esbuild/bin/esbuild index.js --bundle --minify --outfile=./w3g.min.js  --global-name=W3
 ```
 
+## Load SDK from Anchor Network
+
+- The magic function **eval** can not be used in "strict mode", so W3OS API laod the SDK as follow. The SDK code should be packaged such way.
+
+```Javascript
+    const SDK_code=`"use strict";return (()=>{return (str)=>{console.log(str)};})()`;
+
+    const fun=new Function(SDK_code);       
+    const SDK=fun();
+    SDK("abc");
+
+    //The new function "fun" as follow
+    (function anonymous(){
+        "use strict";return (()=>{return (str)=>{console.log(str)};})()
+    })
+```
+
+- When try `esbuild` to package the code, need to modify the result to fit onchain requirement. Take **@polkadot/api** for example
+
+```BASH
+    # API install, if not exsist
+    yarn add esbuild
+    yarn add @polkadot/api
+
+    # Polkadot API package
+    ./node_modules/esbuild/bin/esbuild node_modules/@polkadot/api/index.js --bundle --minify --outfile=./polkadot.min.js --global-name=Polkadot
+```
+
+You will find the header of the packaged file like this, you need to modify it.
+
+```Javascript
+    //The packaged file start as follow
+    var Polkadot= ...code...
+
+    //Modify it like this
+    return ...code...
+```
+
 ## Function Index
 
 - [System](./system/README.md), the core part of W3OS.

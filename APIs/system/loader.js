@@ -7,6 +7,12 @@
 *  1. load SDK from Anchor Network
 */
 
+const code={};      //cache the Anchor SDK code here
+
+const self={
+
+};
+
 const Loader={
     /**********************************************************/
     /******************** W3OS system hook ********************/
@@ -17,8 +23,9 @@ const Loader={
     reg:()=>{
         return {
             get:["string","callback"],
-            run:["string","callback"]
-        }
+            run:["string","callback"],
+            map:["[string]"],
+        };
     },
     permit:()=>{
         //if no record, default to allow
@@ -37,6 +44,9 @@ const Loader={
         console.log(`name: ${name}`);
     },
     run:(name,ck)=>{
+
+    },
+    map:(list,ck)=>{
 
     },
 }

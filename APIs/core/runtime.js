@@ -55,7 +55,7 @@ import Checker from "./checker.js";
 import Default from "./default.js";
 import Launch from "./launch.js";
 
-import NodeWS from 'websocket';
+import NodeWS from 'websocket';     //nodeJS websocket client
 
 const router = {
     account: {       //Account management
@@ -79,7 +79,8 @@ const router = {
         node: Node,          //Anchor network management
         loader: Loader,      //Anchor loader, decode API from Anchor Network
         input: Input,        //Input from URL, can call the system function
-        UI: Userinterface,   //W3OS UI functions, need to be injected from outside      
+        UI: Userinterface,   //W3OS UI functions, need to be injected from outside    
+        decoder:null,        //Default Anchor decoder ( Easy Protocol )
     },
     definition: {        //W3OS system difinitions
         error: Error,        //Errors
@@ -144,6 +145,7 @@ const self = {
 
         ws = self.getWebsocket(url);
         if(state.env==="frontend"){
+            //1. frontend side to confirm Anchor Network status
             try {
                 ws.onerror = (res) => {
                     state.index++;
@@ -160,6 +162,7 @@ const self = {
                 return self.checkServers(ck);
             }
         }else{
+            //1. backend ( NodeJS ) side to confirm Anchor Network status
             ws.on('connectFailed', function(error) {
                 Userinterface.debug(error, "error");     //unknown error, retry
                 state.index++;
@@ -201,6 +204,7 @@ const self = {
                 //1. run the reg hook
                 const mod = funs[name];
                 let param = null, permit = null
+                if(mod===null) continue;
 
                 //1.1.get the param definition
                 if (mod[rkey]) param = mod[rkey]();
@@ -234,7 +238,7 @@ const self = {
 /************************************************************************/
 /************************** Public Functions ****************************/
 /************************************************************************/
-const isNodeJS = self.envNodeJS();     //check wether the NodeJS env
+
 const RUNTIME = {
     setDebug: (val) => {
         debug = !!val;
@@ -272,22 +276,38 @@ const RUNTIME = {
                 //4. ready to get basic libs.
                 const libs=Default.libs[state.env];
                 Launch(Default.node[state.index],libs,(data)=>{
-                    //console.log(data);
+                    //4.1. combine the code
+                    const funs={};
                     for(let i=0;i<data.length;i++){
                         const row=data[i];
                         //const Polkadot=eval(`((${row.data.raw};rerturn Polkadot;)=>{})()`);
                         console.log(row);
+                        // const fun=new Function(code);
+                        // const res=fun();
+                        // console.log(res);
+                        //code+=row.data.raw;
+                        const fun=new Function(row.data.raw)
+                        funs[row.data.name]=fun();
                     }
-                    //4.1. save the data details
 
-                    //4.2. create the instance of basic libs
+                    console.log(funs);
+                    //4.2. dock the basic decoder to system, use Easy as the default decoder of Anchor Network
+                    router.system.decoder=((code)=>{
+                        return (alink,ck)=>{
+                            console.log(alink);
+                            return ck && ck(alink);
+                        };
+                    })("test");
 
-                    //4.3. set the default permission
+                    const fun=new Function(`"use strict";return (()=>{return (str)=>{console.log(str)};})()`);
+                    console.log(fun);
+                    const mine=fun();
+                    mine("abc");
+                    //4.5. get the support SDK list from Anchor Network
+                    router.system.decoder(Default.support,(res)=>{
 
-                    //4.4. dock the basic decoder to SDK, use Easy as the default decoder of Anchor Network
-                    router.SDK.decoder=(alink,ck)=>{
-                        console.log(alink);
-                    };
+                        console.log(res);
+                    });
                 });
             });
 

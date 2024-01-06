@@ -36,6 +36,10 @@ const self={
         if(arr.length===2) return ck && ck(arr[0],parseInt(arr[1]));
         return ck && ck(false);
     },
+
+	/**********************************************************/
+    /******************** Anchor Functions ********************/
+    /**********************************************************/
     owner:(anchor,ck)=>{
 		let unsub = null;
 		wsAPI.query.anchor.anchorOwner(anchor, (res) => {
