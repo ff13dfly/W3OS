@@ -5,7 +5,7 @@
     "description": "APIs for W3OS",
     "author": "Fuu",
     "license": "MIT",
-    "type":"module",
+    "type": "module",
     "repository": {
         "type": "git",
         "url": ""
@@ -16,7 +16,8 @@
     "homepage": "http://w3os.net",
     "dependencies": {
         "@polkadot/api": "^10.10.1",
-        "esbuild": "^0.19.11"
+        "esbuild": "^0.19.11",
+        "websocket": "^1.0.34"
     },
     "devDependencies": {
         "@polkadot/api": "^10.10.1",

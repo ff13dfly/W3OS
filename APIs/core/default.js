@@ -13,7 +13,7 @@ const Default={
     server:"anchor://active",           //anchor of more node and server list, used to update the node list
     libs:{                              //basice libs which are loaded from the startup, will added to `W3.SDK`
         frontend:["anchor://polkadot","anchor://anchorjs","anchor://easy"],
-        nodejs:["","",""],
+        backend:["anchor://polkadot","anchor://anchorjs","anchor://easy"],
     },
     dev:{                               //not stable SDKs
         frontend:["anchor://devpok","anchor://devanchor","anchor://deveasy"],

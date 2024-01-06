@@ -55,6 +55,8 @@ import Checker from "./checker.js";
 import Default from "./default.js";
 import Launch from "./launch.js";
 
+import NodeWS from 'websocket';
+
 const router = {
     account: {       //Account management
         local: Account,      //local account management
@@ -119,7 +121,7 @@ const permits = {};           //default permits setting
 
 let ws = null;        //W3 system ws link, will close after get the basic libs.
 const state = {       //runtime state, when system start, these state need to set automatically
-    env: "",             //["browser","nodejs"]
+    env: "",             //["frontend","backend"]
     network: false,      //wether linked to active node
     index: 0,            //active index node
 }
@@ -129,9 +131,9 @@ const state = {       //runtime state, when system start, these state need to se
 /************************************************************************/
 const self = {
     getWebsocket:(url)=>{
-        if(!isNodeJS) return new WebSocket(url);
+        if(state.env==="frontend") return new WebSocket(url);
         //TODO, here to return the nodeJS websocket client;
-
+        return new NodeWS.client(url);
     },
     checkServers: (ck) => {
         if (debug) Userinterface.debug("Try linking to Anchor Network node ...");
@@ -139,21 +141,43 @@ const self = {
         if (state.index === Default.node.length) {
             return ck && ck(false);     //failed to link to node when all nodes tried
         }
-        try {
-            ws = self.getWebsocket(url);
-            ws.onerror = (res) => {
+
+        ws = self.getWebsocket(url);
+        if(state.env==="frontend"){
+            try {
+                ws.onerror = (res) => {
+                    state.index++;
+                    return self.checkServers(ck);  //faild to link, retry
+                };
+                ws.onopen = (res) => {
+                    state.network = true;
+                    ws.close();                 //confirm the url then close
+                    return ck && ck(true);      //link successful, ready to get basic libs
+                };
+            } catch (error) {
+                Userinterface.debug(error, "error");     //unknown error, retry
                 state.index++;
-                return self.checkServers(ck);  //faild to link, retry
-            };
-            ws.onopen = (res) => {
+                return self.checkServers(ck);
+            }
+        }else{
+            ws.on('connectFailed', function(error) {
+                Userinterface.debug(error, "error");     //unknown error, retry
+                state.index++;
+                return self.checkServers(ck);
+            });
+
+            ws.on('connect', function(connection) {
+                connection.on('error', function(error) {
+                    Userinterface.debug(error, "error");     //unknown error, retry
+                    state.index++;
+                    return self.checkServers(ck);
+                });
+
                 state.network = true;
-                ws.close();                 //confirm the url then close
+                connection.close();                 //confirm the url then close
                 return ck && ck(true);      //link successful, ready to get basic libs
-            };
-        } catch (error) {
-            Userinterface.debug(error, "error");     //unknown error, retry
-            state.index++;
-            return self.checkServers(ck);
+            });
+            ws.connect(url);
         }
     },
     envNodeJS: () => {
@@ -217,6 +241,9 @@ const RUNTIME = {
         return true;
     },
     start: (ck) => {
+        //0. check env, frontend or nodejs
+        state.env=!self.envNodeJS()?"frontend":"backend";
+
         //1.check system status to avoid reloading
         if (Status.code() === 6) {
             if (debug) Userinterface.debug("W3OS is starting, wait ...");
@@ -243,7 +270,7 @@ const RUNTIME = {
                 if (debug) Userinterface.debug(res ? `Linked to Anchor Network node: ${Default.node[state.index]}` : `Failed to link to Anchor Network node`);
 
                 //4. ready to get basic libs.
-                const libs=Default.libs[isNodeJS?"backend":"frontend"];
+                const libs=Default.libs[state.env];
                 Launch(Default.node[state.index],libs,(data)=>{
                     //console.log(data);
                     for(let i=0;i<data.length;i++){
