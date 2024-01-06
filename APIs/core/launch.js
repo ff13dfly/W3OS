@@ -5,6 +5,7 @@
 *  @date 2024-01-05
 *  @functions
 *  1. load default SDKs from Anchor Network, such as @polkadot/api, anchorjs, easy
+*  2. may launch basic SDK from different network, such as IPFS
 */
 
 import {ApiPromise,WsProvider} from "@polkadot/api";
@@ -81,10 +82,7 @@ const self={
 			"pre":(obj && obj.pre)?obj.pre:0,
 			"signer":(obj && obj.signer)?obj.signer:"",
 			"empty":(obj && obj.empty===false)?obj.empty:true,
-			"owner":(obj && obj.owner)?obj.owner:"",
-			"sell":(obj && obj.sell)?obj.sell:false,
-			"cost":(obj && obj.cost)?obj.cost:0,
-			"target":(obj && obj.target)?obj.target:"",
+			"owner":(obj && obj.owner)?obj.owner:""
 		};
 	},
     status:(list)=>{
@@ -178,7 +176,10 @@ const self={
 
 const Launch=(url,libs,ck,map)=>{
     if(!map) map=[];
-    if(libs.length===0) return ck && ck(map);
+    if(libs.length===0){
+        wsAPI=null;             //close the linker to node
+        return ck && ck(map);
+    } 
     if(wsAPI===null){
         return ApiPromise.create({ provider: new WsProvider(url) }).then((api) => {
             wsAPI=api;
@@ -192,10 +193,20 @@ const Launch=(url,libs,ck,map)=>{
             map.push({alink:row,empty:true});
             return Launch(url,libs,ck,map);
         }
-        self.target(anchor,block,(res)=>{
-            map.push({alink:row,empty:false,data:res});
-            return Launch(url,libs,ck,map);
-        });
+        if(block===0){
+            self.owner(anchor,(owner,bk)=>{
+                self.target(anchor,bk,(res)=>{
+                    map.push({alink:row,empty:false,data:res});
+                    return Launch(url,libs,ck,map);
+                });
+            });
+        }else{
+            self.target(anchor,block,(res)=>{
+                map.push({alink:row,empty:false,data:res});
+                return Launch(url,libs,ck,map);
+            });
+        }
+        
     });
 }
 export default Launch;

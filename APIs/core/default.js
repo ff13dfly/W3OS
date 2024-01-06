@@ -19,6 +19,7 @@ const Default={
         frontend:["anchor://devpok","anchor://devanchor","anchor://deveasy"],
         nodejs:["","",""],
     },
+    support:"sdks",         //the SDKs supportted by W3OS, anchor data, get the latest
 }
 
 export default Default;

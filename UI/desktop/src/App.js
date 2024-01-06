@@ -82,9 +82,14 @@ function App() {
     //   console.log(res);
     // });
 
-    W3.call("account_local_get",(res)=>{
+
+    W3.call("system_loader_get","vara",(res)=>{
       console.log(res);
     });
+
+    // W3.call("account_local_get",(res)=>{
+    //   console.log(res);
+    // });
 
     // W3.task([],(res)=>{
     //   console.log(res);

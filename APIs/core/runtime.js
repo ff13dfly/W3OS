@@ -122,7 +122,6 @@ const state = {       //runtime state, when system start, these state need to se
     env: "",             //["browser","nodejs"]
     network: false,      //wether linked to active node
     index: 0,            //active index node
-    relink: 500,         //the interval to retry network
 }
 
 /************************************************************************/
@@ -246,7 +245,12 @@ const RUNTIME = {
                 //4. ready to get basic libs.
                 const libs=Default.libs[isNodeJS?"backend":"frontend"];
                 Launch(Default.node[state.index],libs,(data)=>{
-                    console.log(data);
+                    //console.log(data);
+                    for(let i=0;i<data.length;i++){
+                        const row=data[i];
+                        //const Polkadot=eval(`((${row.data.raw};rerturn Polkadot;)=>{})()`);
+                        console.log(row);
+                    }
                     //4.1. save the data details
 
                     //4.2. create the instance of basic libs
@@ -286,6 +290,9 @@ const RUNTIME = {
     },
     version: () => {
         return Information;
+    },
+    env:()=>{
+        return state;
     },
 }
 export default RUNTIME;

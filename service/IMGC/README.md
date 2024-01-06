@@ -13,6 +13,11 @@
 node nodejs.loader.js anchor://imgc  
 ```
 
+- Problems need to solve
+  1. Encry the message on server when the user is not active;
+  2. Encry the chat messages between users.
+  3. Encry the group chat messages.
+
 ## Principle
 
 ### Payment Vertification
