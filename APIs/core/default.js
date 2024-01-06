@@ -9,7 +9,7 @@
 */
 
 const Default={
-    node:["ws://127.0.0.1:9922","ws://127.0.0.1:9944","ws://127.0.0.1:6666"],       //entry nodes, will try one by one
+    node:["ws://127.0.0.1:9922","ws://127.0.0.1:9914","ws://127.0.0.1:6666"],       //entry nodes, will try one by one
     server:"anchor://active",           //anchor of more node and server list, used to update the node list
     libs:{                              //basice libs which are loaded from the startup, will added to `W3.SDK`
         frontend:["anchor://polkadot","anchor://anchorjs","anchor://easy"],

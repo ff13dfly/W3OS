@@ -34,8 +34,7 @@ const W3 = {
 
         //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug module.
-        RUNTIME.start(() => {         //Start W3OS, will not reload. Even the call is failed.
-            
+        RUNTIME.start((res) => {         //Start W3OS, will not reload. Even the call is failed.
             //1.check input type;
             const type = typeof input;
             if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
@@ -77,7 +76,7 @@ const W3 = {
     * the details of the method, such as parameters and response result sample
     */
     def: function (method, ck) {
-        RUNTIME.start(() => {
+        RUNTIME.start((res) => {
             RUNTIME.def(method, ck);
         });
     },

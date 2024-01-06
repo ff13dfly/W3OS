@@ -269,6 +269,9 @@ const RUNTIME = {
             //3. check the nodes status, confirm the network.
             self.checkServers((res) => {
                 if (debug) Userinterface.debug(res ? `Linked to Anchor Network node: ${Default.node[state.index]}` : `Failed to link to Anchor Network node`);
+                if(!res){
+                    return ck && ck(Error.get("NO_ACTIVE_NODE","core"));
+                }
 
                 //4. ready to get basic libs.
                 const libs=Default.libs[state.env];
@@ -318,6 +321,7 @@ const RUNTIME = {
                             }
                         };
                     })(funs);
+                    Loader.setDecoder(router.system.decoder);
 
                     //4.3. get the support SDK list from Anchor Network
                     router.system.decoder(Default.support,(res)=>{
@@ -339,6 +343,7 @@ const RUNTIME = {
             Userinterface.debug(input);
         }
 
+        //0. check the alink format, requirement of permission setting.
         if (alink!=="SYSTEM") {
             if (!Checker(alink, "alink")) return Error.throw("INVALID_ANCHOR_LINK", "core");
         }
@@ -347,7 +352,6 @@ const RUNTIME = {
         if(!router[cat] || !router[cat][mod] || !router[cat][mod][fun]){
             return Error.throw("UNKOWN_CALL", "core",`Call path: ${path.join("_")}` );
         }
-        //Status.flip(6);
 
         //1.check permission by path, set status to pending    
         console.log(cat,mod,fun,`From ${alink}`); 
@@ -356,8 +360,7 @@ const RUNTIME = {
 
         }
 
-        //console.log(params[key]);
-
+        //2.call the real function to finish the job.
         router[cat][mod][fun].apply(null,input);
     },
 

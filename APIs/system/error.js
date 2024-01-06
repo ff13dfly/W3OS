@@ -28,6 +28,10 @@ const errs={
             code:40003,
             msg:"Invalid anchor link .",
         },
+        "NO_ACTIVE_NODE":{
+            code:40003,
+            msg:"Failed to link to Anchor Network nodes, please try later.",
+        },
         "UNKOWN_CALL":{
             code:40010,
             msg:"Unrecongnized call module.",
@@ -38,9 +42,14 @@ const errs={
         },
     },
     system:{
+        
         "INVALID_INPUT":{
             code:40110,
             msg:"",
+        },
+        "DECODER_IS_NOT_READY":{
+            code:40120,
+            msg:"System decoder of Anchor Network is not ready yet.",
         },
     },
     message:{
@@ -65,6 +74,7 @@ const Error={
             }
         }
     },
+
     get:(name,cat,ext)=>{
         if(cat===undefined) cat="system";
         if(!errs[cat] || !errs[cat][name]) return null;

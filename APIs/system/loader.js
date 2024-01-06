@@ -8,12 +8,15 @@
 */
 
 import tools from "../lib/tools.js";
+import Error from "./error.js";
 
 const code={};      //cache the Anchor SDK code here
 
 const self={
 
 };
+
+let decoder=null;
 
 const Loader={
     /**********************************************************/
@@ -38,13 +41,30 @@ const Loader={
         }
     },
 
+    setDecoder:(fun)=>{
+        decoder=fun;
+        return true;
+    },
     /***************************************************/
-    /******************** Functions ********************/
+    /**************** Exposed Functions ****************/
     /***************************************************/
     
     get:(name,ck)=>{    //get the target SDK, system will check wether support
-        console.log(`name: ${name}`);
-        return ck && ck();
+        //console.log(`name: ${name}`);
+        if(decoder===null){
+
+            return ck && ck(Error.get("DECODER_IS_NOT_READY","system"));
+        };
+        if(!code[name]){
+            //TODO, not support by W3OS, need to warn user.
+            code[name]={support:false,create:tools.stamp()}
+
+            const alink=`anchor://${name}`;
+            decoder(alink,(res)=>{
+                const adata=res.data[`${res.location[0]}_${res.location[1]}`]
+                return ck && ck(adata);
+            });
+        }
     },
     run:(name,ck)=>{
 
