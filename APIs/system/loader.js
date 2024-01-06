@@ -7,6 +7,8 @@
 *  1. load SDK from Anchor Network
 */
 
+import tools from "../lib/tools.js";
+
 const code={};      //cache the Anchor SDK code here
 
 const self={
@@ -47,7 +49,11 @@ const Loader={
 
     },
     map:(list,ck)=>{
-
+        for(let i=0;i<list.length;i++){
+            const name=list[i];
+            code[name]={support:true,create:tools.stamp()}
+        }
+        return ck && ck(true);
     },
 }
 export default Loader;

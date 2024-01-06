@@ -133,3 +133,11 @@ node nodejs.loader.js anchor://imgc
 # nodejs.loader.js is the NodeJS loader
 node nodejs.loader.js anchor://imgc
 ```
+
+## Problems
+
+- The message should be encried, can not expose on server side.
+
+- When user active on one server, it need to broadcast to all servers, then the message can sent properly.
+
+- Group details need to cache when there is new one.

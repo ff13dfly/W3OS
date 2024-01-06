@@ -70,7 +70,7 @@ function App() {
     //test.rpc();
 
     //2. start W3OS
-    //W3.debug();   //set to the debug mode
+    W3.debug();   //set to the debug mode
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
     const input={method:["account","local","get"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
@@ -83,8 +83,11 @@ function App() {
     // });
 
 
-    W3.call("system_loader_get","vara",(res)=>{
+    W3.call("system_loader_get","sdk_a",(res)=>{
       console.log(res);
+      W3.call("system_loader_get","sdk_b",(res)=>{
+        console.log(res);
+      });
     });
 
     // W3.call("account_local_get",(res)=>{

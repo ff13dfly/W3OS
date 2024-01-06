@@ -280,37 +280,58 @@ const RUNTIME = {
                     const funs={};
                     for(let i=0;i<data.length;i++){
                         const row=data[i];
-                        //const Polkadot=eval(`((${row.data.raw};rerturn Polkadot;)=>{})()`);
-                        console.log(row);
-                        // const fun=new Function(code);
-                        // const res=fun();
-                        // console.log(res);
-                        //code+=row.data.raw;
                         const fun=new Function(row.data.raw)
                         funs[row.data.name]=fun();
                     }
 
-                    console.log(funs);
                     //4.2. dock the basic decoder to system, use Easy as the default decoder of Anchor Network
-                    router.system.decoder=((code)=>{
-                        return (alink,ck)=>{
-                            console.log(alink);
-                            return ck && ck(alink);
+                    router.system.decoder=((funs)=>{
+                        const {easy,anchorjs,polkadot}=funs;
+                        const {ApiPromise,WsProvider}=polkadot;
+                        const url=Default.node[state.index];
+                        //console.log(anchorjs);
+                        let ready=false;
+                        const startAPI = {
+                            common: {
+                                "latest": anchorjs.latest,
+                                "target": anchorjs.target,
+                                "history": anchorjs.history,
+                                "owner": anchorjs.owner,
+                                "subcribe": anchorjs.subcribe,
+                                "block": anchorjs.block,
+                            }
                         };
-                    })("test");
+                        ApiPromise.create({ provider: new WsProvider(url) }).then((api) => {
+                            anchorjs.set(api);
+                            ready=true;
+                        });
 
-                    const fun=new Function(`"use strict";return (()=>{return (str)=>{console.log(str)};})()`);
-                    console.log(fun);
-                    const mine=fun();
-                    mine("abc");
-                    //4.5. get the support SDK list from Anchor Network
+                        return (alink,ck)=>{
+                            //TODO, the logical need to improve.
+                            if(!ready){
+                                setTimeout(()=>{
+                                    easy.easyRun(alink, startAPI, (res) => {
+                                        return ck && ck(res);
+                                    });
+                                },300)
+                            }else{
+                                easy.easyRun(alink, startAPI, (res) => {
+                                    return ck && ck(res);
+                                });
+                            }
+                        };
+                    })(funs);
+
+                    //4.3. get the support SDK list from Anchor Network
                     router.system.decoder(Default.support,(res)=>{
+                        const adata=res.data[`${res.location[0]}_${res.location[1]}`];
+                        const slist=JSON.parse(adata.raw);      //get the support SDK list.
+                        Loader.map(slist,()=>{
 
-                        console.log(res);
+                        });
                     });
                 });
             });
-
             return ck && ck();
         });
     },
