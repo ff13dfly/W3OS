@@ -350,14 +350,20 @@ const RUNTIME = {
 
         const [cat, mod, fun] = path;
         if(!router[cat] || !router[cat][mod] || !router[cat][mod][fun]){
-            return Error.throw("UNKOWN_CALL", "core",`Call path: ${path.join("_")}` );
+            return Error.throw("UNKNOWN_CALL", "core",`Call path: ${path.join("_")}` );
         }
 
         //1.check permission by path, set status to pending    
         console.log(cat,mod,fun,`From ${alink}`); 
         const key=path.join("_");
         if(!params[key]){
+            return Error.throw("UNKNOWN_CAINVALID_INPUTLL", "system",`No parameters types record` );
+        }
 
+        const types=params[key];
+        const cresult=Checker(input,types);
+        if(cresult!==true){
+            return Userinterface.log(cresult);
         }
 
         //2.call the real function to finish the job.

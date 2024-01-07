@@ -85,7 +85,7 @@ function App() {
 
     W3.call("system_loader_get","sdk_a",(res)=>{
       console.log(res);
-      W3.call("system_loader_get","sdk_b",(res)=>{
+      W3.call("system_loader_get",123,(res)=>{
         console.log(res);
       });
     });

@@ -32,7 +32,7 @@ const errs={
             code:40003,
             msg:"Failed to link to Anchor Network nodes, please try later.",
         },
-        "UNKOWN_CALL":{
+        "UNKNOWN_CALL":{
             code:40010,
             msg:"Unrecongnized call module.",
         },
