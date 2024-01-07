@@ -85,6 +85,9 @@ const W3 = {
     debug: () => {
         debug = true;
     },
+    dapp:(alink)=>{
+        return RUNTIME.setDapp(alink);
+    },
 
     //W3OS version details
     version: RUNTIME.version(),

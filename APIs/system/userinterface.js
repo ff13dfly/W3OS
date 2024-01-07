@@ -8,6 +8,8 @@
 *  2. manage input functions to call;
 */
 
+import tools from "../lib/tools.js";
+
 const replacment = {
     log: null,           //system log printer
     toast: null,         //UI toast, to show the system inner informoation
@@ -16,19 +18,10 @@ const replacment = {
 };
 
 const self={
-    envNodeJS: () => {
-        if (typeof process !== 'undefined' && typeof process.env === 'object') {
-            if ('NODE_ENV' in process.env) {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    },
+
 }
-const isNodeJS = self.envNodeJS();        //check wether backend
+
+const isNodeJS = tools.isNodeJS();        //check wether backend
 
 const Userinterface = {
     //reset the system functions
@@ -50,7 +43,12 @@ const Userinterface = {
 
     //browser default confirm dialog, can not be overwrite
     confirm: (info,ck) => {
-        window.confirm(info);
+        if(isNodeJS){
+            //TODO, here need to call the NodeJS confirm interface
+            
+        }else{
+            return ck && ck(window.confirm(info));
+        }
     },
 
     //W3OS debug information output

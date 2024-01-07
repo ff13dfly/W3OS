@@ -45,12 +45,17 @@ const errs={
         
         "INVALID_INPUT":{
             code:40110,
-            msg:"",
+            msg:"Please check the input vallues.",
+        },
+        "USER_REJECT_ACTION":{
+            code:40111,
+            msg:"User reject the action.",
         },
         "DECODER_IS_NOT_READY":{
             code:40120,
             msg:"System decoder of Anchor Network is not ready yet.",
         },
+        
     },
     message:{
         

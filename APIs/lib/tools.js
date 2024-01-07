@@ -8,25 +8,13 @@
 */
 
 const self = {
-  // checkEncryFile: (fa, ck) => {
-  //   const reader = new FileReader();
-  //   reader.onload = (e) => {
-  //     try {
-  //       const sign = JSON.parse(e.target.result);
-  //       if (!sign.address || !sign.encoded)
-  //         return ck && ck({ error: "Error encry JSON file" });
-  //       if (sign.address.length !== 48)
-  //         return ck && ck({ error: "Error SS58 address" });
-  //       if (sign.encoded.length !== 268)
-  //         return ck && ck({ error: "Error encoded verification" });
-  //       return ck && ck(sign);
-  //     } catch (error) {
-  //       return ck && ck({ error: "Not encry JSON file" });
-  //     }
-  //   };
-  //   reader.readAsText(fa);
-  // },
-
+  isNodeJS: () => {
+    if (typeof process !== 'undefined' && typeof process.env === 'object') {
+      return true;
+    } else {
+      return false;
+    }
+  },
   stamp: () => {
     return new Date().getTime();
   },
@@ -47,13 +35,13 @@ const self = {
     if (n === undefined) n = 10;
     return addr.substr(0, n) + "..." + addr.substr(addr.length - n, n);
   },
-  copy:(arr_obj)=>{
+  copy: (arr_obj) => {
     return JSON.parse(JSON.stringify(arr_obj));
   },
-  clean:(arr)=>{
+  clean: (arr) => {
     return Array.from(new Set(arr));
   },
-  tail:(str,n)=>{
+  tail: (str, n) => {
     return str.substr(0, n) + "...";
   },
   empty: (obj) => {

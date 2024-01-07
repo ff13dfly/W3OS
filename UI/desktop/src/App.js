@@ -78,19 +78,18 @@ function App() {
     //const input="account_local_get";
     //const input=["account","local","get"];
     //const input=null;
-    // W3.call(input,(res)=>{
-    //   console.log(res);
-    // });
-
-
-    W3.call("system_loader_get","sdk_a",(res)=>{
+    W3.call(input,(res)=>{
       console.log(res);
-      W3.call("system_loader_get",123,(res)=>{
-        console.log(res);
-      });
     });
 
-    console.log(W3);
+  
+    // W3.call("system_loader_get","sdk_a",(res)=>{
+    //   console.log(res);
+    //   W3.call("system_loader_get","sdk_b",(res)=>{
+    //     console.log(res);
+    //   });
+    // });
+
 
     // W3.call("account_local_get",(res)=>{
     //   console.log(res);

@@ -39,7 +39,9 @@ const Account={
     /***************************************************/
     
     get:(ck)=>{
-        const fa = STORAGE.getKey("account");
+        // const fa = STORAGE.getKey("account");
+        // return ck && ck(fa);
+        const fa={address:"aaa",metadata:{}};
         return ck && ck(fa);
     },
     //load account from JSON file

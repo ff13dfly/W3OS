@@ -126,6 +126,8 @@ const state = {       //runtime state, when system start, these state need to se
     network: false,      //wether linked to active node
     index: 0,            //active index node
 }
+//set call dapp alink here. When this is set to special anchor link. All call need to use this one to get permission.
+let call_dapp="";       
 
 /************************************************************************/
 /************************** Private Functions ***************************/
@@ -235,6 +237,12 @@ const self = {
 
         return ck && ck();
     },
+    filterCallback:(input,type)=>{
+        for(let i=0;i<type.length;i++){
+            if(type[i]==="callback" && input[i]) return i;
+        }
+        return false;
+    },
 };
 
 /************************************************************************/
@@ -246,6 +254,12 @@ const RUNTIME = {
         debug = !!val;
         return true;
     },
+    setDapp:(alink)=>{
+        if(!Checker(alink,"alink")) return false;
+        call_dapp=alink;
+        return true;
+    },
+
     start: (ck) => {
         //0. check env, frontend or nodejs
         state.env=!self.envNodeJS()?"frontend":"backend";
@@ -353,21 +367,48 @@ const RUNTIME = {
             return Error.throw("UNKNOWN_CALL", "core",`Call path: ${path.join("_")}` );
         }
 
-        //1.check permission by path, set status to pending    
-        console.log(cat,mod,fun,`From ${alink}`); 
+        //1.check parameters.
         const key=path.join("_");
         if(!params[key]){
             return Error.throw("UNKNOWN_CAINVALID_INPUTLL", "system",`No parameters types record` );
         }
-
+        
         const types=params[key];
-        const cresult=Checker(input,types);
+        const cresult=Checker(input,types);     //the result may be Error object
+        const index=self.filterCallback(input,types);   //get the callback input index, for the next progress
         if(cresult!==true){
-            return Userinterface.log(cresult);
+            if(index!==false){
+                return input[index](cresult);
+            }else{
+                return Userinterface.log(cresult);
+            }
         }
 
-        //2.call the real function to finish the job.
-        router[cat][mod][fun].apply(null,input);
+        //2.check permission
+        if(alink!=="SYSTEM"){
+            Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
+            //2.1.create the search by "alink";
+            Userinterface.confirm(`Call "${path.join("_")}" is asking permission.\n From "${alink}"`,(confirmed)=>{
+                if(!confirmed){
+                    if(index!==false){
+                        return input[index](Error.get("USER_REJECT_ACTION", "system"));
+                    }else{
+                        return Error.throw("USER_REJECT_ACTION", "system");
+                    }
+                }
+
+                //2.2 save the permission for the next call;
+
+                //3.call the real function to finish the job.
+                Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission checked`);
+                router[cat][mod][fun].apply(null,input);
+            });
+
+        }else{
+            //3.call the real function to finish the job.
+            Userinterface.debug(`System call ( ${path.join("_")} ), ignore permission checking`);
+            router[cat][mod][fun].apply(null,input);
+        }
     },
 
     def: (path, ck) => {
