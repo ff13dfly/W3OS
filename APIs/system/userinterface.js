@@ -11,10 +11,11 @@
 import tools from "../lib/tools.js";
 
 const replacment = {
-    log: null,           //system log printer
-    toast: null,         //UI toast, to show the system inner informoation
-    dialog: null,        //UI dialog, to show more information
-    confirm: null,
+    log: null,          //system log printer
+    toast: null,        //UI toast, to show the system inner informoation
+    dialog: null,       //UI dialog, to show more information
+    password:null,      //password input
+    confirm: null,      //System confirm, can not be overwrite
 };
 
 const self={
@@ -33,6 +34,12 @@ const Userinterface = {
     reset: (key) => {
         delete replacment[key];
         replacment[key] = null;
+    },
+
+    //password input, can be overwrite by APPs
+    password:(info,ck)=>{
+        if (replacment.password !== null) return replacment.password(info,ck);
+
     },
 
     //system log, default is the 

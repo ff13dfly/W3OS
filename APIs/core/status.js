@@ -24,6 +24,9 @@ const map={
     4:{
         msg:"W3OS inner error, system done.",
     },
+    8:{
+        msg:"W3OS start, but not login as root",
+    },
     9:{
         msg:"",
     },

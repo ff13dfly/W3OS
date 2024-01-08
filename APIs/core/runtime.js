@@ -23,6 +23,7 @@ import Vertify from "../payment/vertify.js";
 import Chat from "../message/chat.js";
 import Group from "../message/group.js";
 
+import Root from "../system/root.js";
 import Setting from "../system/setting.js";
 import Node from "../system/node.js";
 import Loader from "../system/loader.js";
@@ -76,6 +77,7 @@ const router = {
         group: Group,        //Group functions
     },
     system: {       //W3OS system functions
+        root:Root,           //W3OS root login functions
         setting: Setting,    //System setting functions
         node: Node,          //Anchor network management
         loader: Loader,      //Anchor loader, decode API from Anchor Network
@@ -294,6 +296,12 @@ const RUNTIME = {
         //2.1.reg the system modules
         self.regModules(() => {
             Status.flip(1);     //change the system status;
+
+            //2.2. login to W3OS system by root.
+            if(debug) Userinterface.debug("W3OS is ready, please login as root.");
+            Root.login((logged)=>{
+
+            });
 
             //3. check the nodes status, confirm the network.
             self.checkServers((res) => {

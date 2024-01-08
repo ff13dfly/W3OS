@@ -5,10 +5,23 @@
 *  @date 2023-12-25
 *  @functions
 *  1.new account by mnemonic
-*  2.account JSON file storage 
+*  2.account JSON file storage
+*  3.account management, more than one JSON file manangement
 */
 
 import STORAGE from "../lib/storage.js";
+
+const prefix="w3api";
+const keys = {
+    account: `${prefix}_account_file`,
+    stranger: `${prefix}_stranger_list`,
+    apps: `${prefix}_apps_list`,
+    salt: `${prefix}_salt`,
+    vertify: `${prefix}_check`,
+};
+STORAGE.setMap(keys);
+
+let active_address="";          //active account.
 
 const Account={
     /**********************************************************/
@@ -20,6 +33,8 @@ const Account={
     reg:()=>{
         return {
             get:["callback"],
+            set:["object","callback"],
+            remove:["callback"],
             load:["string","callback"],
             download:["address","string","callback"]
         }
@@ -41,8 +56,13 @@ const Account={
     get:(ck)=>{
         // const fa = STORAGE.getKey("account");
         // return ck && ck(fa);
-        const fa={address:"aaa",metadata:{}};
+        //const fa={address:"aaa",metadata:{}};
+
+        const fa = STORAGE.getKey("account");
         return ck && ck(fa);
+    },
+    set:(obj,ck)=>{
+        STORAGE.setKey("account", obj);
     },
     //load account from JSON file
     load:(file,ck)=>{
@@ -52,8 +72,9 @@ const Account={
     download:(addr,password,ck)=>{
 
     },
-    remove:(addr,ck)=>{
-
+    remove:(ck)=>{
+        STORAGE.removeKey("account");
+        return true;
     },
     password:(addr,pass,ck)=>{
 

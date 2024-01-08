@@ -8,22 +8,23 @@
 *  2.localstorage read/write
 */
 
-
 import Encry from "./encry.js";
+import tools from "./tools.js";
+
+const prefix="w3api";  //prefix for localstorage;
 
 const map = {};
-const persist = {};  //通过支付串化，进行数据保存
-
-const ignore = {};
+const ignore = {};     //write directly without checking the hash ( which confirm root login )
 let hash = "";
 
 const STORAGE = {
   dump: () => {
-    return {
-      storage: map,
-      persist: persist,
-    };
+    return map;
   },
+
+  /**********************************************************/
+  /******************* Encry storage part *******************/
+  /**********************************************************/
   getEncry: () => {
     return hash;
   },
@@ -39,8 +40,22 @@ const STORAGE = {
     for (let i = 0; i < list.length; i++) ignore[list[i]] = true;
     return true;
   },
+
+  /**********************************************************/
+  /********************* Name transfrom *********************/
+  /**********************************************************/
+
   setMap: (obj) => {
-    for (var k in obj) map[k] = obj[k];
+    if(Array.isArray(obj)){
+      if(!hash) return false;   //Need hash to create the storage key, can not ignore.
+
+      // for(let i=0;i<obj.length;i++){
+      //   const key=obj[i];
+      //   map[key] = `${prefix}_${tools.char[12]}`;
+      // }
+    }else{
+      for (var k in obj) map[k] = `${prefix}_${obj[k]}`;
+    }
     return true;
   },
   checkMap:(key)=>{
@@ -48,22 +63,14 @@ const STORAGE = {
     return false;
   },
 
+  /**********************************************************/
+  /******************* Key-value Storage ********************/
+  /**********************************************************/
+
   removeKey: (name) => {
     if (!map[name]) return false;
     const key = map[name];
     localStorage.removeItem(key);
-    return true;
-  },
-
-  setPersist: (name, obj) => {
-    persist[name] = JSON.stringify(obj);
-  },
-  getPersist: (name) => {
-    if (!persist[name]) return null;
-    return JSON.parse(persist[name]);
-  },
-  removePersist: (name) => {
-    delete persist[name];
     return true;
   },
 
@@ -102,19 +109,6 @@ const STORAGE = {
     Encry.auto(hash);
     const res = Encry.encrypt(JSON.stringify(obj));
     localStorage.setItem(key, res);
-  },
-
-  getNode: (name, node) => {
-    const data = STORAGE.getKey(name);
-    if (data === null) return false;
-    if (!data[node]) return null;
-    return data[node];
-  },
-  setNode: (name, node, val) => {
-    const data = STORAGE.getKey(name);
-    if (data === null) return false;
-    data[node] = val;
-    STORAGE.setKey(name, data);
   },
 
   //key-queue

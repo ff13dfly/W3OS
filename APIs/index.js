@@ -33,8 +33,11 @@ const W3 = {
     call: function (input) { // need to function way, or can not get the arguments
 
         //0.start the W3 API anyway.
-        RUNTIME.setDebug(debug);    //W3OS API debug module.
+        RUNTIME.setDebug(debug);    //W3OS API debug mode.
         RUNTIME.start((res) => {         //Start W3OS, will not reload. Even the call is failed.
+            //0.check wether login ( first time to run the W3OS API )
+            //TODO, here to login to the root then 
+
             //1.check input type;
             const type = typeof input;
             if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
