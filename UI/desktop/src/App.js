@@ -81,7 +81,10 @@ function App() {
     W3.call(input,(res)=>{
       console.log(res);
     });
+    console.log(W3);
 
+    //const bbb=new W3();
+    //console.log(bbb);
   
     // W3.call("system_loader_get","sdk_a",(res)=>{
     //   console.log(res);

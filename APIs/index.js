@@ -81,16 +81,24 @@ const W3 = {
         });
     },
 
+    //Anchor toolbox here, such as loader, converter
+    util:{
+
+    },
+
     //set W3OS to debug mode.
     debug: () => {
         debug = true;
     },
+
     dapp:(alink)=>{
         return RUNTIME.setDapp(alink);
     },
 
     //W3OS version details
     version: RUNTIME.version(),
+
+
 
     //TODO, following functions are scheduled.
     //array of calls, to impl complex functions
@@ -102,11 +110,6 @@ const W3 = {
     help:(search,ck)=>{
 
     },
-
-    //Anchor toolbox here, such as loader, converter
-    util:{
-
-    }
 }
 
 export default W3;

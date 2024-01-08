@@ -9,7 +9,6 @@
 */
 
 const self={
-    //set the 
     set:(acc,anchor,value,ck)=>{
 
     },

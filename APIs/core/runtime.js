@@ -7,6 +7,7 @@
 *  @functions
 *  1.modules register here, functions and parameters definition
 *  2.basic information
+*  3.call permission control
 */
 
 //functions for router
@@ -243,6 +244,20 @@ const self = {
         }
         return false;
     },
+    checkPermit:(ck)=>{
+        //1.get the account; if not, record as "SYSTEM"
+
+        return ck && ck(false);
+    },
+    savePermit:(alink,ck)=>{
+        //TODO,here to save the permission.
+
+        //1.get the account; if not, record as "SYSTEM"
+
+        //2.check the record of target permission
+
+        return ck && ck(false);
+    },
 };
 
 /************************************************************************/
@@ -387,25 +402,38 @@ const RUNTIME = {
         //2.check permission
         if(alink!=="SYSTEM"){
             Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
-            //2.1.create the search by "alink";
-            Userinterface.confirm(`Call "${path.join("_")}" is asking permission.\n From "${alink}"`,(confirmed)=>{
-                if(!confirmed){
-                    if(index!==false){
-                        return input[index](Error.get("USER_REJECT_ACTION", "system"));
-                    }else{
-                        return Error.throw("USER_REJECT_ACTION", "system");
-                    }
+            //2.1. check wether permission setting;
+            self.checkPermit((allowed)=>{
+                if(!allowed){
+                    //2.2. user action to confirm the permission;
+                    Userinterface.confirm(`Calling "${path.join("_")}" needs permission.\n From "${alink}"`,(confirmed)=>{
+                        if(!confirmed){
+                            if(index!==false){
+                                return input[index](Error.get("USER_REJECT_ACTION", "system"));
+                            }else{
+                                return Error.throw("USER_REJECT_ACTION", "system");
+                            }
+                        }
+                        //2.2 save the permission for the next call;
+                        self.savePermit(alink,(saved)=>{
+                            //2.3. if failed to save setting, call the callback or warning in console. 
+                            if(!saved){
+                                Error.throw("FAILED_SAVE_SETTING", "system", `Permission is not saved for ${alink}`);
+                            }
+
+                            //3.0.call the real function, when get confirm from user action
+                            Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission checked`);
+                            router[cat][mod][fun].apply(null,input);
+                        });
+                    });
+                }else{
+                   //3.1.call the real function, when the alink is recorded "allowed"
+                   Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission allowed.`);
+                   router[cat][mod][fun].apply(null,input); 
                 }
-
-                //2.2 save the permission for the next call;
-
-                //3.call the real function to finish the job.
-                Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission checked`);
-                router[cat][mod][fun].apply(null,input);
             });
-
         }else{
-            //3.call the real function to finish the job.
+            //3.2.call the real function, when it is called by system
             Userinterface.debug(`System call ( ${path.join("_")} ), ignore permission checking`);
             router[cat][mod][fun].apply(null,input);
         }

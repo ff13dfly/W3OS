@@ -18,7 +18,6 @@ const router={
         return false;
     },
     string:(param)=>{
-        //console.log(`Checking ${param}`)
         if(typeof param !== 'string') return false;
         return true;
     },
@@ -47,6 +46,7 @@ const router={
     },
 }
 
+//support array to check, call as follow
 //Checker(value,type)
 //Checker(value[],type[])
 

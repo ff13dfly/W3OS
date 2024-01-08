@@ -51,6 +51,10 @@ const errs={
             code:40111,
             msg:"User reject the action.",
         },
+        "FAILED_SAVE_SETTING":{
+            code:40114,
+            msg:"Failed to save the setting, please check the env.",
+        },
         "DECODER_IS_NOT_READY":{
             code:40120,
             msg:"System decoder of Anchor Network is not ready yet.",

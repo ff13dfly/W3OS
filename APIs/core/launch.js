@@ -10,7 +10,7 @@
 
 import {ApiPromise,WsProvider} from "@polkadot/api";
 
-//TODO, important improvement
+//TODO, important improvement, need time to finish such part
 //TODO, decode the anchor data from substrate node directly, can help to reduce the APIs size.
 
 let wsAPI=null;
