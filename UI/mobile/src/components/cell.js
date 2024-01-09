@@ -71,12 +71,17 @@ function Cell(props) {
       UI.page(map[data.name]);
     },
     click: () => {
+      console.log(data);
       if (data.base) {
         self.clickBase();
       } else {
         switch (data.type) {
           case "data":
-            self.clickData();
+            if(data.tpl==="link"){
+              self.clickLink();
+            }else{
+              self.clickData();
+            }
             break;
           case "lib":
             self.clickData();

@@ -23,21 +23,24 @@ function Link(props) {
   let [animation, setAnimation] = useState("ani_scale_in");
   let [account, setAccount] = useState("");
   let [show, setShow] = useState(false);
+  let [block, setBlock]=useState(0);
 
   const UI=RUNTIME.getUI();
 
   useEffect(() => {
     const alink = `anchor://${anchor}`;
-    console.log(alink);
+    //console.log(alink);
     RUNTIME.getAPIs((APIs) => {
       APIs.Easy(alink, (res) => {
         if (res.type === "unknow") return setLink("Invalid data");
         setShow(true);
         const data = res.data[`${res.location[0]}_${res.location[1]}`];
         setAccount(tools.shorten(data.signer));
+        setBlock(res.location[1].toLocaleString());
         try {
           const json = JSON.parse(data.raw);
-          const src = json.src;
+          //console.log(json);
+          const src = json.url;
           setLink(
             <iframe
               id="link_container"
@@ -125,11 +128,14 @@ function Link(props) {
           xl={size.row[0]}
           xxl={size.row[0]}
         >
-          <h4>{link}</h4>
         </Col>
       </Row>
       <Container hidden={!show}>
         <Row className="pt-2">
+          <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
+            lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}
+          >{link}
+          </Col>
           <Col
             xs={size.row[0]}
             sm={size.row[0]}
@@ -148,7 +154,7 @@ function Link(props) {
             xl={size.row[0]}
             xxl={size.row[0]}
           >
-            Supplied by {account}
+            Supplied by {tools.shorten(account)} on {block}
           </Col>
         </Row>
       </Container>

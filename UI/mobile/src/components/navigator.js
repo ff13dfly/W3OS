@@ -15,6 +15,7 @@ function Navigator(props) {
     onClick: (ev) => {
       RUNTIME.getAPIs((APIs) => {
         APIs.AnchorJS.search(name, (res) => {
+          console.log(res);
           if (res === false || res.empty) {
             return setMap({ background: "#d7a3a3" });
           }
@@ -26,6 +27,10 @@ function Navigator(props) {
           napp.type = type;
           napp.src = `anchor://${res.name}/${res.block}`;
           napp.icon=RUNTIME.getRandomICON();
+
+          //FIXME, here to save the anchor template ( for http link )
+          if(res.protocol&&res.protocol.tpl) napp.tpl=res.protocol.tpl
+          
           const page = 0;
           RUNTIME.installApp(napp, page, (done) => {
             if (done) {

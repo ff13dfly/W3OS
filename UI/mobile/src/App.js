@@ -17,7 +17,7 @@ import { RiFingerprintLine } from "react-icons/ri";
 import { RiLinkUnlink } from "react-icons/ri";
 
 import IO from "./open/IO";
-import W3 from "w3api";
+//import W3 from "w3api";
 
 const size = Device.grids();
 
@@ -94,7 +94,7 @@ function App() {
       if (!todo[page]) todo[page] = {};
       todo[page][id] = !todo[page][id];
     },
-    login: () => {
+    login: (ck) => {
       if(RUNTIME.checkPass("")){
         return self.fresh();
       }
@@ -128,7 +128,6 @@ function App() {
         );
       };
       RUNTIME.init(setPass, ()=>{
-        IO.decoder();     //decode the IO to run proper
         self.fresh();
       });
     },
@@ -164,10 +163,11 @@ function App() {
   };
 
   useEffect(() => {
-    console.log(W3);
+    //console.log(W3);
     self.system(()=>{
       self.login();
       self.linkNetwork();
+      IO.decoder();     //decode the IO to run proper
     });
   }, []);
 

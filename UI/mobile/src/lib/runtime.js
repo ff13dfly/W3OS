@@ -113,7 +113,9 @@ const RUNTIME = {
     //2.check wether no password
     salt = STORAGE.getKey("salt");
     const login = STORAGE.getEncry(); //check storage md5 password hash
+    //console.log(`RUNTIME.init`);
     if (!login) {
+      //console.log(`RUNTIME.init here ?`);
       setPass((pass,fresh) => {
         const md5 = Encry.md5(`${salt}${pass}`);
         const check = STORAGE.getKey("vertify");
@@ -132,6 +134,8 @@ const RUNTIME = {
           return ck && ck(true);
         }
       });
+    }else{
+      //console.log(`RUNTIME.init here ???`);
     }
   },
   checkPass:(pass)=>{
