@@ -15,7 +15,7 @@ const replacment = {
     toast: null,        //UI toast, to show the system inner informoation
     dialog: null,       //UI dialog, to show more information
     password:null,      //password input
-    confirm: null,      //System confirm, can not be overwrite
+    //confirm: null,      //System confirm, can not be overwrite
 };
 
 const self={
@@ -40,6 +40,11 @@ const Userinterface = {
     password:(info,ck)=>{
         if (replacment.password !== null) return replacment.password(info,ck);
 
+        if(isNodeJS){
+
+        }else{
+            return ck && ck(window.prompt(info));
+        }
     },
 
     //system log, default is the 

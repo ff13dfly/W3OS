@@ -300,7 +300,10 @@ const RUNTIME = {
             //2.2. login to W3OS system by root.
             if(debug) Userinterface.debug("W3OS is ready, please login as root.");
             Root.login((logged)=>{
-
+                if(debug) Userinterface.debug(logged?"Root login successful.":"Failed to login.");
+                if(!logged){
+                    Status.flip(8);     //set system status
+                }
             });
 
             //3. check the nodes status, confirm the network.

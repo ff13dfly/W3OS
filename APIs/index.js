@@ -68,7 +68,9 @@ const W3 = {
                     params.push(arguments[i]);
                 }
             }
+
             return RUNTIME.call(path, params, alink);
+            
         });
     },
 

@@ -9,6 +9,8 @@
 
 import STORAGE from "../lib/storage.js";
 import tools from "../lib/tools.js";
+import Encry from "../lib/encry.js";
+import Userinterface from "./userinterface.js";
 
 const keys ={
     "salt":"root_salt",
@@ -41,8 +43,7 @@ const Root={
     },
     reg:()=>{
         return {
-            set:["string","callback"],
-            reset:[],
+            reset:["callback"],
             login:["callback"],
         }
     },
@@ -55,18 +56,37 @@ const Root={
     /***************************************************/
 
     login:(ck)=>{       //login to W3OS system
-        
-        if (STORAGE.getKey("vertify") !== null){
+        //console.log(`Here?`,STORAGE.getKey("vertify"));
+        const salt=STORAGE.getKey("salt");
+        console.log("Here:",salt);
 
-        }
+        const check=STORAGE.getKey("vertify");
+        const info= check === null?"Please set the W3OS password at the first time.":"Please login by password.";
+        Userinterface.password(info,(pass)=>{
+            const md5 = Encry.md5(`${salt}${pass}`);
+            if(check === null){
+                STORAGE.setEncry(md5);
+                STORAGE.setKey("vertify", md5);
+                return ck && ck(true);
+            }else{
+                if(md5===check){
+                    STORAGE.setEncry(md5);
+                    return ck && ck(true);
+                }else{
+                    return ck && ck(false);
+                }
+            }
+        });
     },
-    set:(pass,ck)=>{
-        
-    },
-    reset:()=>{
+    reset:(ck)=>{
         STORAGE.removeKey("salt");
         STORAGE.removeKey("vertify");
-        return true;
+        return ck && ck(true);
+    },
+
+    //TODO, need to reset all data by new. A bit complex.
+    set:(pass,pre_pass,ck)=>{
+        
     },
 }
 export default Root;
