@@ -3,6 +3,7 @@
 import STORAGE from "../lib/storage";
 import RUNTIME from "../lib/runtime";
 import Page from "../layout/page";
+import Link from "../layout/link";
 
 //sample: ##IMGC_group_333445##
 const obj={
@@ -22,15 +23,21 @@ const IO={
     const first=input.shift();
     const action=first.substring(1,first.length);
     window.location.hash="";
-    
+    const UI = RUNTIME.getUI();
     switch (action) {
       case "dapp":
-        const UI = RUNTIME.getUI();
+        
         setTimeout(()=>{
           UI.page(<Page anchor={input[0]} />);
         },1000);
         break;
     
+      case "link":
+        setTimeout(()=>{
+          UI.page(<Link anchor={input[0]} />);
+        },1000);
+        break;
+
       default:
         break;
     }
