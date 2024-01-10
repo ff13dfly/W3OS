@@ -26,6 +26,7 @@ const router={
         return true;
     },
     integer:(param)=>{
+        //console.log(param);
         if(!Number.isInteger(param)) return false;
         return true;
     },
@@ -51,6 +52,7 @@ const router={
 //Checker(value[],type[])
 
 const Checker=(input,type)=>{
+    console.log(input,type);
     if(Array.isArray(type)){
         if(!Array.isArray(input)) return Error.get("INVALID_INPUT","system",`Wrong input to check.`);
         for(let i=0;i<input.length;i++){

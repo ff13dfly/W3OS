@@ -11,28 +11,24 @@
 
 import STORAGE from "../lib/storage.js";
 
-const prefix="w3api";
 const keys = {
-    account: `${prefix}_account_file`,
-    stranger: `${prefix}_stranger_list`,
-    apps: `${prefix}_apps_list`,
-    salt: `${prefix}_salt`,
-    vertify: `${prefix}_check`,
+    "account": `account_list`,
 };
-STORAGE.setMap(keys);
 
-let active_address="";          //active account.
+STORAGE.setMap(keys);
 
 const Account={
     /**********************************************************/
     /******************** W3OS system hook ********************/
     /**********************************************************/
     init:()=>{
-        console.log(`W3OS start,account_local running...`);
+        //console.log(`W3OS start,account_local running...`);
+        STORAGE.setMap(keys);
+        //STORAGE.setKey("account",[]);
     },
     reg:()=>{
         return {
-            get:["callback"],
+            get:["integer","callback"],
             set:["object","callback"],
             remove:["callback"],
             load:["string","callback"],
@@ -53,11 +49,7 @@ const Account={
     /******************** Functions ********************/
     /***************************************************/
     
-    get:(ck)=>{
-        // const fa = STORAGE.getKey("account");
-        // return ck && ck(fa);
-        //const fa={address:"aaa",metadata:{}};
-
+    get:(index,ck)=>{
         const fa = STORAGE.getKey("account");
         return ck && ck(fa);
     },

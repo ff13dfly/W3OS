@@ -78,7 +78,7 @@ function App() {
     //const input="account_local_get";
     //const input=["account","local","get"];
     //const input=null;
-    W3.call(input,(res)=>{
+    W3.call(input,0,(res)=>{
       console.log(res);
     });
     console.log(W3);

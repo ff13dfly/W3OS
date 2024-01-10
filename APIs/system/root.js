@@ -9,7 +9,6 @@
 
 import STORAGE from "../lib/storage.js";
 import tools from "../lib/tools.js";
-import Encry from "../lib/encry.js";
 import Userinterface from "./userinterface.js";
 
 const keys ={
@@ -63,7 +62,7 @@ const Root={
         const check=STORAGE.getKey("vertify");
         const info= check === null?"Please set the W3OS password at the first time.":"Please login by password.";
         Userinterface.password(info,(pass)=>{
-            const md5 = Encry.md5(`${salt}${pass}`);
+            const md5 = STORAGE.encoder(`${salt}${pass}`);
             if(check === null){
                 STORAGE.setEncry(md5);
                 STORAGE.setKey("vertify", md5);

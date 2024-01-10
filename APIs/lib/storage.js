@@ -9,8 +9,6 @@
 */
 
 import Encry from "./encry.js";
-import tools from "./tools.js";
-
 const prefix="w3api";  //prefix for localstorage;
 
 const map = {};
@@ -40,6 +38,9 @@ const STORAGE = {
     for (let i = 0; i < list.length; i++) ignore[list[i]] = true;
     return true;
   },
+  encoder:(str)=>{
+    return Encry.md5(str);
+  },
 
   /**********************************************************/
   /********************* Name transfrom *********************/
@@ -68,24 +69,29 @@ const STORAGE = {
   /**********************************************************/
 
   removeKey: (name) => {
+    if(!hash) return false;
     if (!map[name]) return false;
-    const key = map[name];
+    const key = self.encoder(`${hash}${map[name]}`);
     localStorage.removeItem(key);
     return true;
   },
 
   //key-value
   exsistKey: (name) => {
+    if(!hash) return false;
     if (!map[name]) return null;
-    const key = map[name];
+    const key = self.encoder(`${hash}${map[name]}`);
     const str = localStorage.getItem(key);
     if (str === null) return false;
     return true;
   },
 
   getKey: (name) => {
+    if(!hash) return false;
     if (!map[name]) return null;
-    const key = map[name];
+
+    const key = self.encoder(`${hash}${map[name]}`);
+
     const str = localStorage.getItem(key);
     if (str === null) return null;
     if (!hash || ignore[name] === true) {
@@ -101,8 +107,9 @@ const STORAGE = {
     return JSON.parse(res);
   },
   setKey: (name, obj) => {
+    if(!hash) return false;
     if (!map[name]) return false;
-    const key = map[name];
+    const key = self.encoder(`${hash}${map[name]}`);
     if (!hash || ignore[name] === true){
       return localStorage.setItem(key, JSON.stringify(obj));
     }
@@ -112,29 +119,29 @@ const STORAGE = {
   },
 
   //key-queue
-  getQueue: (name) => {
-    if (!map[name]) return [];
-    const key = map[name];
-    const str = localStorage.getItem(key);
-    if (str === null) return [];
-    return JSON.parse(str);
-  },
-  footQueue: (name, atom) => {
-    if (!map[name]) return [];
-    const key = map[name];
-    const qu = STORAGE.getQueue(name);
-    qu.push(atom);
-    localStorage.setItem(key, JSON.stringify(qu));
-    return true;
-  },
-  headQueue: (name, atom) => {
-    if (!map[name]) return [];
-    const key = map[name];
-    const qu = STORAGE.getQueue(name);
-    qu.unshift(atom);
-    localStorage.setItem(key, JSON.stringify(qu));
-    return true;
-  },
+  // getQueue: (name) => {
+  //   if (!map[name]) return [];
+  //   const key = map[name];
+  //   const str = localStorage.getItem(key);
+  //   if (str === null) return [];
+  //   return JSON.parse(str);
+  // },
+  // footQueue: (name, atom) => {
+  //   if (!map[name]) return [];
+  //   const key = map[name];
+  //   const qu = STORAGE.getQueue(name);
+  //   qu.push(atom);
+  //   localStorage.setItem(key, JSON.stringify(qu));
+  //   return true;
+  // },
+  // headQueue: (name, atom) => {
+  //   if (!map[name]) return [];
+  //   const key = map[name];
+  //   const qu = STORAGE.getQueue(name);
+  //   qu.unshift(atom);
+  //   localStorage.setItem(key, JSON.stringify(qu));
+  //   return true;
+  // },
 };
 
 export default STORAGE;
