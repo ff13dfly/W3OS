@@ -21,12 +21,16 @@ const router={
         if(typeof param !== 'string') return false;
         return true;
     },
+    password:(param)=>{
+        if(typeof param !== 'string') return false;
+        if(param.length>64) return false;
+        return true;
+    },
     function:(param)=>{
         if(typeof param !== 'function') return false;
         return true;
     },
     integer:(param)=>{
-        //console.log(param);
         if(!Number.isInteger(param)) return false;
         return true;
     },
@@ -56,7 +60,7 @@ const Checker=(input,type)=>{
     if(Array.isArray(type)){
         if(!Array.isArray(input)) return Error.get("INVALID_INPUT","system",`Wrong input to check.`);
         for(let i=0;i<input.length;i++){
-            const param=!input[i]?undefined:input[i],tp=type[i];
+            const param=input[i]!==undefined?input[i]:undefined,tp=type[i];
             if(!router[tp]) return Error.get("INVALID_INPUT","system",`No such type: ${tp}, index: ${i}`);
             if(!router[tp](param)){
                 return Error.get("INVALID_INPUT","system",`Param is not such type: ${tp}, index: ${i}`);

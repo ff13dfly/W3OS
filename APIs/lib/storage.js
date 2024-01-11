@@ -38,8 +38,13 @@ const STORAGE = {
     for (let i = 0; i < list.length; i++) ignore[list[i]] = true;
     return true;
   },
+  //FIXME, this is not safe for root check, need to update to a better one.
   encoder:(str)=>{
     return Encry.md5(str);
+  },
+
+  encryKey:(str)=>{
+    return `${prefix}_${Encry.md5(str)}`;
   },
 
   /**********************************************************/
@@ -71,77 +76,58 @@ const STORAGE = {
   removeKey: (name) => {
     if(!hash) return false;
     if (!map[name]) return false;
-    const key = self.encoder(`${hash}${map[name]}`);
+    const key = STORAGE.getKey(`${hash}${map[name]}`);
     localStorage.removeItem(key);
     return true;
   },
 
   //key-value
+
+  //check key exsist, ignore not supported.
   exsistKey: (name) => {
     if(!hash) return false;
     if (!map[name]) return null;
-    const key = self.encoder(`${hash}${map[name]}`);
+    const key = STORAGE.encryKey(`${hash}${map[name]}`);
     const str = localStorage.getItem(key);
     if (str === null) return false;
     return true;
   },
 
   getKey: (name) => {
-    if(!hash) return false;
-    if (!map[name]) return null;
-
-    const key = self.encoder(`${hash}${map[name]}`);
-
-    const str = localStorage.getItem(key);
-    if (str === null) return null;
-    if (!hash || ignore[name] === true) {
-      try {
-        return JSON.parse(str);
-      } catch (error) {
-        return false;
-      }
+    let str="";
+    if(ignore[name] === true){
+      if (!map[name]) return null;
+      const key = map[name];
+      str = localStorage.getItem(key);
+    }else{
+      if(!hash) return false;
+      if (!map[name]) return null;
+      const key = STORAGE.encryKey(`${hash}${map[name]}`);
+      str = localStorage.getItem(key);
     }
-
-    const res = Encry.decrypt(str);
-    if (!res) return false;
-    return JSON.parse(res);
+    
+    try {
+      return JSON.parse(str);
+    } catch (error) {
+      return false;
+    }
   },
   setKey: (name, obj) => {
-    if(!hash) return false;
-    if (!map[name]) return false;
-    const key = self.encoder(`${hash}${map[name]}`);
-    if (!hash || ignore[name] === true){
-      return localStorage.setItem(key, JSON.stringify(obj));
+    //console.log(name,obj);
+    if(ignore[name] === true){
+      if (!map[name]) return false;
+      const key = map[name];
+      const val=JSON.stringify(obj);
+      return localStorage.setItem(key, val);
+    }else{
+      if(!hash) return false;
+      if (!map[name]) return false;
+      Encry.auto(hash);
+      const key =STORAGE.encryKey(`${hash}${map[name]}`);
+      const val = Encry.encrypt(JSON.stringify(obj));
+      return localStorage.setItem(key, val);
     }
-    Encry.auto(hash);
-    const res = Encry.encrypt(JSON.stringify(obj));
-    localStorage.setItem(key, res);
   },
-
-  //key-queue
-  // getQueue: (name) => {
-  //   if (!map[name]) return [];
-  //   const key = map[name];
-  //   const str = localStorage.getItem(key);
-  //   if (str === null) return [];
-  //   return JSON.parse(str);
-  // },
-  // footQueue: (name, atom) => {
-  //   if (!map[name]) return [];
-  //   const key = map[name];
-  //   const qu = STORAGE.getQueue(name);
-  //   qu.push(atom);
-  //   localStorage.setItem(key, JSON.stringify(qu));
-  //   return true;
-  // },
-  // headQueue: (name, atom) => {
-  //   if (!map[name]) return [];
-  //   const key = map[name];
-  //   const qu = STORAGE.getQueue(name);
-  //   qu.unshift(atom);
-  //   localStorage.setItem(key, JSON.stringify(qu));
-  //   return true;
-  // },
 };
 
 export default STORAGE;

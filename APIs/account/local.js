@@ -28,11 +28,11 @@ const Account={
     },
     reg:()=>{
         return {
-            get:["integer","callback"],
+            get:["callback","integer"],
             set:["object","callback"],
-            remove:["callback"],
+            remove:["integer","callback"],
             load:["string","callback"],
-            download:["address","string","callback"]
+            download:["password","callback","integer"]
         }
     },
     permit:()=>{
@@ -48,23 +48,36 @@ const Account={
     /***************************************************/
     /******************** Functions ********************/
     /***************************************************/
-    
-    get:(index,ck)=>{
+
+    get:(ck,order)=>{
+        const index=order===undefined?0:order;
         const fa = STORAGE.getKey("account");
-        return ck && ck(fa);
+        if(fa===null){
+            STORAGE.setKey("account",[]);       //init the account storage
+            return ck && ck(null);
+        }else{
+            return ck && ck(!fa[index]?null:fa[index]);
+        }
     },
-    set:(obj,ck)=>{
-        STORAGE.setKey("account", obj);
+
+    set:(obj,ck,index)=>{
+        //STORAGE.setKey("account", obj);
+
     },
+
+
     //load account from JSON file
     load:(file,ck)=>{
 
     },
-    //download target JSON file
-    download:(addr,password,ck)=>{
+    download:(password,ck,order)=>{
+        const index=order===undefined?0:order;
+        Account.get(()=>{
+            //1.confirm the password the allow to download the json file
 
+        },order);
     },
-    remove:(ck)=>{
+    remove:(order,ck)=>{
         STORAGE.removeKey("account");
         return true;
     },
