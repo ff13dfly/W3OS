@@ -22,37 +22,50 @@ function Link(props) {
   let [link, setLink] = useState("");
   let [animation, setAnimation] = useState("ani_scale_in");
   let [account, setAccount] = useState("");
-  let [show, setShow] = useState(false);
+  //let [show, setShow] = useState(false);
   let [block, setBlock]=useState(0);
 
   const UI=RUNTIME.getUI();
 
+  const self={
+    fresh:(alink)=>{
+      RUNTIME.getAPIs((APIs) => {
+        //console.log(APIs);
+        if(!APIs.AnchorJS.ready()){
+          setLink("Loading, not linked to server yet.");
+          return setTimeout(()=>{
+            self.fresh(alink);
+          },1000);
+        }
+        
+        APIs.Easy(alink, (res) => {
+          if (res.type === "unknow") return setLink("Invalid data");
+          const data = res.data[`${res.location[0]}_${res.location[1]}`];
+          setAccount(tools.shorten(data.signer));
+          setBlock(res.location[1].toLocaleString());
+          try {
+            const json = JSON.parse(data.raw);
+            //console.log(json);
+            const src = json.url;
+            setLink(
+              <iframe
+                id="link_container"
+                title="link_container"
+                src={src}
+              ></iframe>,
+            );
+          } catch (error) {
+            setLink("Invalid link format");
+          }
+        });
+      });
+    }
+  }
+
   useEffect(() => {
     const alink = `anchor://${anchor}`;
     //console.log(alink);
-    RUNTIME.getAPIs((APIs) => {
-      APIs.Easy(alink, (res) => {
-        if (res.type === "unknow") return setLink("Invalid data");
-        setShow(true);
-        const data = res.data[`${res.location[0]}_${res.location[1]}`];
-        setAccount(tools.shorten(data.signer));
-        setBlock(res.location[1].toLocaleString());
-        try {
-          const json = JSON.parse(data.raw);
-          //console.log(json);
-          const src = json.url;
-          setLink(
-            <iframe
-              id="link_container"
-              title="link_container"
-              src={src}
-            ></iframe>,
-          );
-        } catch (error) {
-          setLink("Invalid link format");
-        }
-      });
-    });
+    self.fresh(alink);
   }, []);
 
   return (
@@ -130,7 +143,7 @@ function Link(props) {
         >
         </Col>
       </Row>
-      <Container hidden={!show}>
+      <Container>
         <Row className="pt-2">
           <Col xs={size.row[0]} sm={size.row[0]} md={size.row[0]}
             lg={size.row[0]} xl={size.row[0]} xxl={size.row[0]}
