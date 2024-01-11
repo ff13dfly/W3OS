@@ -38,7 +38,6 @@ import Local from "../storage/local.js";
 import DB from "../storage/DB.js";
 import Anchor from "../storage/anchor.js";
 import IPFS from "../storage/IPFS.js";
-import Chain from "../storage/chain.js";
 
 import Market from "../exchange/market.js";
 import Price from "../exchange/price.js";
@@ -105,7 +104,6 @@ const router = {
         DB: DB,              //frontend database functions
         anchor: Anchor,      //anchor storage
         IPFS: IPFS,          //on-chain IPFS support
-        chain: Chain,        //other on-chain storage support
     },
     exchange: {     //Market functions
         price: Price,        //the price of tokens
@@ -396,7 +394,7 @@ const RUNTIME = {
                     Loader.setDecoder(router.system.decoder);
 
                     //4.3. get the support SDK list from Anchor Network
-                    router.system.decoder(Default.support,(res)=>{
+                    router.system.decoder(Default.support.SDK,(res)=>{
                         const adata=res.data[`${res.location[0]}_${res.location[1]}`];
                         const slist=JSON.parse(adata.raw);      //get the support SDK list.
                         Loader.map(slist,()=>{      //set the SDK maps for permission control.
@@ -444,7 +442,7 @@ const RUNTIME = {
 
         //2.check permission
         if(alink!=="SYSTEM"){
-            Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
+            if(debug) Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
             //2.1. check wether permission setting;
             self.checkPermit(alink,path,(allowed)=>{
                 if(!allowed){
@@ -471,13 +469,13 @@ const RUNTIME = {
                     });
                 }else{
                    //3.1.call the real function, when the alink is recorded "allowed"
-                   Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission allowed.`);
+                   if(debug) Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission allowed.`);
                    router[cat][mod][fun].apply(null,input); 
                 }
             });
         }else{
             //3.2.call the real function, when it is called by system
-            Userinterface.debug(`System call ( ${path.join("_")} ), ignore permission checking`);
+            if(debug) Userinterface.debug(`System call ( ${path.join("_")} ), ignore permission checking`);
             router[cat][mod][fun].apply(null,input);
         }
     },

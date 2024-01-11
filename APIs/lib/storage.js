@@ -109,7 +109,7 @@ const STORAGE = {
     }
     if(!ignore[name]) str=Encry.decrypt(str);
 
-    console.log(`From storage:`,str);
+    //console.log(`From storage:`,str);
     
     try {
       return JSON.parse(str);

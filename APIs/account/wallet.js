@@ -11,6 +11,11 @@
 //# Metamask API document
 //https://docs.metamask.io/wallet/
 
+const support={     //data need to update on chain
+    metamask:"anchor://",
+
+};
+
 const Wallet={
     /**********************************************************/
     /******************** W3OS system hook ********************/

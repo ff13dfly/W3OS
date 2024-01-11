@@ -8,8 +8,9 @@
 *  2.md5
 */
 
-import CryptoJS from "crypto-js"
-//const CryptoJS = require("crypto-js");
+import CryptoJS from "crypto-js";
+
+//const debug=true;
 
 let key = null;
 let iv = null;
@@ -27,6 +28,7 @@ const Encry = {
     iv = CryptoJS.enc.Utf8.parse(salt);
   },
   decrypt: (word) => {
+    //if(debug) return word;
     try {
       const encryptedHexStr = CryptoJS.enc.Hex.parse(word);
       const srcs = CryptoJS.enc.Base64.stringify(encryptedHexStr);
@@ -36,13 +38,13 @@ const Encry = {
         padding: CryptoJS.pad.Pkcs7,
       });
       const decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
-      //let decryptedStr = decrypt.toString(CryptoJS.enc.Base64);
       return decryptedStr.toString();
     } catch (error) {
       return false;
     }
   },
   encrypt: (word) => {
+    //if(debug) return word;
     const srcs = CryptoJS.enc.Utf8.parse(word);
     const encrypted = CryptoJS.AES.encrypt(srcs, key, {
       iv: iv,

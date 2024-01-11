@@ -57,7 +57,7 @@ const Root={
     login:(ck)=>{       //login to W3OS system
         //console.log(`Here?`,STORAGE.getKey("vertify"));
         const salt=STORAGE.getKey("salt");
-        console.log("Here:",salt);
+        //console.log("Here:",salt);
 
         const check=STORAGE.getKey("vertify");
         const info= check === null?"Please set the W3OS password at the first time.":"Please login by password.";

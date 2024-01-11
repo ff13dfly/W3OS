@@ -36,7 +36,7 @@ const Permit={
     },
 
     //check customer permission of dapps ( by anchor name ) 
-    check:(alink,ck,acc)=>{
+    check:(alink,ck)=>{
 
     },
     get:(ck,acc)=>{

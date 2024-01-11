@@ -70,7 +70,7 @@ function App() {
     //test.rpc();
 
     //2. start W3OS
-    W3.debug();   //set to the debug mode
+    //W3.debug();   //set to the debug mode
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
     const input={method:["account","local","get"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
@@ -81,7 +81,7 @@ function App() {
     W3.call(input,(res)=>{
       console.log(res);
     });
-    console.log(W3);
+    //console.log(W3);
 
     //const bbb=new W3();
     //console.log(bbb);
