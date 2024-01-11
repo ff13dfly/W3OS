@@ -48,14 +48,17 @@ import Sell from "../exchange/sell.js";
 import Xloader from "../util/xloader.js";
 import Convertor from "../util/convertor.js";
 
+import Permit from "../system/permit.js";
+
 //core functions here to import
 import Status from "./status.js";
 import Format from "./format.js";
 import Information from "./information.js";
-import Permit from "./permit.js";
+
 import Checker from "./checker.js";
 import Default from "./default.js";
 import Launch from "./launch.js";
+import STORAGE from "../lib/storage.js";
 
 import NodeWS from 'websocket';     //nodeJS websocket client
 
@@ -84,6 +87,7 @@ const router = {
         input: Input,        //Input from URL, can call the system function
         UI: Userinterface,   //W3OS UI functions, need to be injected from outside    
         decoder:null,        //Default Anchor decoder ( Easy Protocol )
+        permit:Permit,       //Alink permit record
     },
     definition: {        //W3OS system difinitions
         error: Error,        //Errors
@@ -246,19 +250,47 @@ const self = {
         }
         return false;
     },
-    checkPermit:(ck)=>{
+    checkPermit:(alink,path,ck)=>{
         //1.get the account; if not, record as "SYSTEM"
+        Account.get((res)=>{
+            const addr=res.error?"SYSTEM":res.address;
+            const key=`permit_${addr}`;
 
-        return ck && ck(false);
+            const nmap={};
+            nmap[key]=`pmt_${addr}`;
+            STORAGE.setMap(nmap);
+            if(!STORAGE.exsistKey(key))return ck && ck(false);
+            
+            const pmap=STORAGE.getKey(key);
+            if(!pmap[`${alink}_${path.join("_")}`]) return ck && ck(false);
+            return ck && ck(true);
+        
+        });
     },
-    savePermit:(alink,ck)=>{
+    savePermit:(alink,path,ck)=>{
         //TODO,here to save the permission.
-
+        //console.log("Saving...",alink);
         //1.get the account; if not, record as "SYSTEM"
+        Account.get((res)=>{
+            const addr=res.error?"SYSTEM":res.address;
+            const key=`permit_${addr}`;
 
-        //2.check the record of target permission
+            const nmap={};
+            nmap[key]=`pmt_${addr}`;
+            STORAGE.setMap(nmap);
 
-        return ck && ck(false);
+            //1.1.check the permit data;
+            if(!STORAGE.exsistKey(key)){
+                const ps={}
+                ps[`${alink}_${path.join("_")}`]=true;         //permission setting
+                STORAGE.setKey(key,ps);
+            }else{
+                const pmap=STORAGE.getKey(key);
+                pmap[`${alink}_${path.join("_")}`]=true;
+                STORAGE.setKey(key,pmap);
+            }
+            return ck && ck(true);
+        });
     },
 };
 
@@ -414,7 +446,7 @@ const RUNTIME = {
         if(alink!=="SYSTEM"){
             Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
             //2.1. check wether permission setting;
-            self.checkPermit((allowed)=>{
+            self.checkPermit(alink,path,(allowed)=>{
                 if(!allowed){
                     //2.2. user action to confirm the permission;
                     Userinterface.confirm(`Calling "${path.join("_")}" needs permission.\n From "${alink}"`,(confirmed)=>{
@@ -426,7 +458,7 @@ const RUNTIME = {
                             }
                         }
                         //2.2 save the permission for the next call;
-                        self.savePermit(alink,(saved)=>{
+                        self.savePermit(alink,path,(saved)=>{
                             //2.3. if failed to save setting, call the callback or warning in console. 
                             if(!saved){
                                 Error.throw("FAILED_SAVE_SETTING", "system", `Permission is not saved for ${alink}`);

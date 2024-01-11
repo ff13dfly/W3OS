@@ -10,21 +10,17 @@
 */
 
 import STORAGE from "../lib/storage.js";
-
-const keys = {
-    "account": `account_list`,
-};
-
-STORAGE.setMap(keys);
+import Error from "../system/error.js";
 
 const Account={
     /**********************************************************/
     /******************** W3OS system hook ********************/
     /**********************************************************/
     init:()=>{
-        //console.log(`W3OS start,account_local running...`);
-        STORAGE.setMap(keys);
-        //STORAGE.setKey("account",[]);
+        const keys = {
+            "account": `account_list`,
+        };
+        STORAGE.setMap(keys);   //set the storage map, avoid to write without control
     },
     reg:()=>{
         return {
@@ -52,8 +48,10 @@ const Account={
     get:(ck,order)=>{
         const index=order===undefined?0:order;
         const fa = STORAGE.getKey("account");
+        if(fa===false) return  ck && ck(Error.get("FAILED_TO_GET_STORAGE","system","Not account data."));
         if(fa===null){
-            STORAGE.setKey("account",[]);       //init the account storage
+            const saved=STORAGE.setKey("account",[]);       //init the account storage
+            if(saved===false) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system"));
             return ck && ck(null);
         }else{
             return ck && ck(!fa[index]?null:fa[index]);

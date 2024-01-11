@@ -9,6 +9,8 @@
 */
 
 import Encry from "./encry.js";
+//import Error from "../system/error.js";
+
 const prefix="w3api";  //prefix for localstorage;
 
 const map = {};
@@ -86,7 +88,7 @@ const STORAGE = {
   //check key exsist, ignore not supported.
   exsistKey: (name) => {
     if(!hash) return false;
-    if (!map[name]) return null;
+    if (!map[name]) return false;
     const key = STORAGE.encryKey(`${hash}${map[name]}`);
     const str = localStorage.getItem(key);
     if (str === null) return false;
@@ -105,6 +107,9 @@ const STORAGE = {
       const key = STORAGE.encryKey(`${hash}${map[name]}`);
       str = localStorage.getItem(key);
     }
+    if(!ignore[name]) str=Encry.decrypt(str);
+
+    console.log(`From storage:`,str);
     
     try {
       return JSON.parse(str);
@@ -113,7 +118,6 @@ const STORAGE = {
     }
   },
   setKey: (name, obj) => {
-    //console.log(name,obj);
     if(ignore[name] === true){
       if (!map[name]) return false;
       const key = map[name];

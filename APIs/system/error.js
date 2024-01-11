@@ -13,51 +13,60 @@ import Userinterface from "./userinterface.js";
 const errs={
     core:{
         "NO_ERROR_DETAILS":{
-            code:40000,
+            error:40000,
             msg:"The first W3.call parameter should be the type of Object, Array or String, and not null.",
         },
         "INVALID_CALL_PATH":{
-            code:40001,
+            error:40001,
             msg:"This parameter should be the type of Object, Array or String.",
         },
         "INVALID_CALL_OBJECT":{
-            code:40002,
+            error:40002,
             msg:"The first W3.call parameter object is invalid, please check.",
         },
         "INVALID_ANCHOR_LINK":{
-            code:40003,
+            error:40003,
             msg:"Invalid anchor link .",
         },
         "NO_ACTIVE_NODE":{
-            code:40003,
+            error:40003,
             msg:"Failed to link to Anchor Network nodes, please try later.",
         },
         "UNKNOWN_CALL":{
-            code:40010,
+            error:40010,
             msg:"Unrecongnized call module.",
         },
         "UNDER_DEVELOPPING":{
-            code:77777,
+            error:77777,
             msg:"This function is under developping. Why do you know this? ",
         },
     },
     system:{
         
         "INVALID_INPUT":{
-            code:40110,
+            error:40110,
             msg:"Please check the input vallues.",
         },
         "USER_REJECT_ACTION":{
-            code:40111,
+            error:40111,
             msg:"User reject the action.",
         },
         "FAILED_SAVE_SETTING":{
-            code:40114,
+            error:40114,
             msg:"Failed to save the setting, please check the env.",
         },
         "DECODER_IS_NOT_READY":{
-            code:40120,
+            error:40120,
             msg:"System decoder of Anchor Network is not ready yet.",
+        },
+
+        "FAILED_TO_GET_STORAGE":{
+            error:40130,
+            msg:"Can not get the target storage.",
+        },
+        "FAILED_TO_SET_STORAGE":{
+            error:40131,
+            msg:"Failed to set storage, please confirm the login status.",
         },
         
     },
@@ -79,7 +88,7 @@ const Error={
             const rows=errs[cat];
             for(var name in rows){
                 const row=rows[name];
-                map[row.code]=name;
+                map[row.error]=name;
             }
         }
     },
