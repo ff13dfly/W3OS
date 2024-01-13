@@ -70,7 +70,7 @@ function App() {
     //test.rpc();
 
     //2. start W3OS
-    //W3.debug();   //set to the debug mode
+    W3.debug();   //set to the debug mode
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
     const input={method:["account","local","get"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
