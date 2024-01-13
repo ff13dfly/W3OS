@@ -72,40 +72,17 @@ function App() {
     //2. start W3OS
     W3.debug();   //set to the debug mode
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
-    const input={method:["account","local","get"],alink:"anchor://good/12345"};
+    //const input={method:["account","local","get"],alink:"anchor://good/12345"};
+    const input={method:["contact","friend","list"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
     //const input={method:["account","local","get"]};
     //const input="account_local_get";
     //const input=["account","local","get"];
     //const input=null;
-    W3.call(input,(res)=>{
+    const addr="5CSTSUDaBdmET2n6ju9mmpEKwFVqaFtmB8YdB23GMYCJSgmw";
+    W3.call(input,addr,(res)=>{
       console.log(res);
-    });
-    //console.log(W3);
-
-    //const bbb=new W3();
-    //console.log(bbb);
-  
-    // W3.call("system_loader_get","sdk_a",(res)=>{
-    //   console.log(res);
-    //   W3.call("system_loader_get","sdk_b",(res)=>{
-    //     console.log(res);
-    //   });
-    // });
-
-
-    // W3.call("account_local_get",(res)=>{
-    //   console.log(res);
-    // });
-
-    // W3.task([],(res)=>{
-    //   console.log(res);
-    // });
-
-    // W3.def("account_local_get",(res)=>{
-    //   console.log(res);
-    // });
-    
+    });    
     
   }, []);
   return (

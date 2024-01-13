@@ -108,8 +108,6 @@ const STORAGE = {
       str = localStorage.getItem(key);
     }
     if(!ignore[name]) str=Encry.decrypt(str);
-
-    //console.log(`From storage:`,str);
     
     try {
       return JSON.parse(str);

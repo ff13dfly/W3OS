@@ -8,6 +8,10 @@
 *  2.storaged on localstorage and encried. 
 */
 
+import STORAGE from "../lib/storage.js";
+import Error from "../system/error.js";
+import FORMAT from "../core/format.js";
+
 //TODO, need to define very well
 //data structure of friend
 const format={
@@ -23,17 +27,57 @@ const Friend={
     /******************** W3OS system hook ********************/
     /**********************************************************/
     init:()=>{
-        console.log(`W3OS start,contact_friend running...`);
+        // const keys = {
+        //     "friend": `friend_list`,
+        // };
+        // STORAGE.setMap(keys);   //set the storage map, avoid to write without control
+    },
+
+    reg:()=>{
+        return {
+            list:["ss58","callback","integer","integer"],
+            add:["ss58","ss58","callback"],
+            update:["callback"],
+        }
+    },
+    permit:()=>{
+        //if no record, default to allow
+        //[0,refused; 1. accepted; 2.not confirm yet; ]
+        return {
+            get:2,       //need to check permit
+            load:2,         
+            download:2, 
+        }
     },
 
     /***************************************************/
     /******************** Functions ********************/
     /***************************************************/
-    list:(ming,page)=>{
+    list:(mine,ck,page,step)=>{
+        const key=`friend_${mine}`;
 
+        const keys = {};
+        keys[key]=`friend_list_${mine}`;
+        STORAGE.setMap(keys);
+
+        //const index=order===undefined?0:order;
+        const list = STORAGE.getKey(key);
+        //if(list===false) return  ck && ck(Error.get("FAILED_TO_GET_STORAGE","system",`Not friend list of ${mine}`));
+        if(list===null || list===false){
+            const saved=STORAGE.setKey(key,[]);       //init the friend list
+            if(saved===false) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","Try to set storage but failed"));
+            return ck && ck(null);
+        }else{
+            if(page===undefined) return ck && ck(list);
+            const p=parseInt(page);
+
+            //TODO,page the friend list 
+            return ck && ck(list);
+        }
     },
-    add:(mine,address)=>{
-    
+    add:(mine,address,ck)=>{
+        const data=FORMAT.data.get("friend");
+        console.log(data);
     },
     remove:(mine,addr)=>{
 

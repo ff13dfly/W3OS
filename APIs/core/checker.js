@@ -35,6 +35,7 @@ const router={
         return true;
     },
     ss58:(param)=>{
+        //return true;
         if(param.length!==48) return false;
         //TODO, need to check the SS58 account by Polkadot suggestion
 

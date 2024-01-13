@@ -8,7 +8,7 @@
 */
 
 const map={
-    contact:{
+    friend:{
         short: "",
         intro: "",
         status: 1,          //account status [1.normal, 0.removed, 3.pending ]
@@ -62,7 +62,7 @@ const FORMAT={
     data:{
         get:(name)=>{
             if(!map[name]) return null;
-            return map[name];
+            return JSON.parse(JSON.stringify(map[name]));
         },
     },
     //get w3os agent definition
