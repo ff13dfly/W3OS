@@ -184,6 +184,8 @@ const Launch=(url,libs,ck,map)=>{
         wsAPI=null;             //close the linker to node
         return ck && ck(map);
     } 
+
+	//if no link to node, create one.
     if(wsAPI===null){
         return ApiPromise.create({ provider: new WsProvider(url) }).then((api) => {
             wsAPI=api;

@@ -122,6 +122,12 @@
   
 - IMGC service: [https://github.com/ff13dfly/W3OS/tree/main/service](https://github.com/ff13dfly/W3OS/tree/main/service)
 
+## Versions
+
+- 2024, the first release version of W3OS, nickname "Flamingo" ( 火烈鸟 ).
+
+- 2023, the first version of W3OS, nickname "Nobirdy" ( 不是个鸟 ).
+
 ## Resources
 
 - Polkadot/Substrate  

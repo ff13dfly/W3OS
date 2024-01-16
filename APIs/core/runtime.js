@@ -306,6 +306,9 @@ const RUNTIME = {
         call_dapp=alink;
         return true;
     },
+    getDapp:()=>{
+        return call_dapp;
+    },
 
     start: (ck) => {
         //0. check env, frontend or nodejs

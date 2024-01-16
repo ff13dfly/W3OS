@@ -12,7 +12,7 @@
 
 const Information={
     version:"0.0.2",            //version of W3OS APIs
-    nick:"Hongkong",            //nick name for this version, a place everytime
+    nick:"Flamingo",            //nick name for this version, a place everytime
     description:[               //description for this version
         "Isolate APIs of W3OS, command line support",
     ],             

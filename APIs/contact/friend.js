@@ -70,6 +70,8 @@ const Friend={
         }else{
             if(page===undefined) return ck && ck(list);
             const p=parseInt(page);
+            const s=step===undefined?16:parseInt(step);
+            if(list.length<p*step) return ck && ck(null);
 
             //TODO,page the friend list 
             return ck && ck(list);

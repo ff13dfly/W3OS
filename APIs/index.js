@@ -105,7 +105,10 @@ const W3 = {
         debug = true;
     },
 
+    //set W3 to dapp mode. When this is set to special anchor link. All call need to use this one to get permission.
+    //return a W3 instance to the Dapp
     dapp:(alink)=>{
+        
         return RUNTIME.setDapp(alink);
     },
 
@@ -123,6 +126,13 @@ const W3 = {
     //get help details from Anchor Network
     help:(search,ck)=>{
 
+    },
+
+    //Just for debug, test
+    ext:{
+        getDapp:()=>{
+            return RUNTIME.getDapp();
+        }
     },
 }
 
