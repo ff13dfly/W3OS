@@ -68,7 +68,10 @@ const errs={
             error:40131,
             msg:"Failed to set storage, please confirm the login status.",
         },
-        
+        "NETWORK_NOT_SUPPORT":{
+            error:40140,
+            msg:"Network is not support by W3OS right now.",
+        },  
     },
     message:{
         
