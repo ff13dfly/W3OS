@@ -27,9 +27,16 @@ const self={
         const checker={}
         for(let i=0;i<list.length;i++){
             const row=list[i];
-            checker[row.address]=true;
+            checker[row.address]=i;
         }
-        return !checker[addr]?false:true;
+        return checker[addr]===undefined?false:checker[addr];
+    },
+    setKeys:(mine)=>{
+        const key=`friend_${mine}`;
+        const keys = {};
+        keys[key]=`friend_list_${mine}`;
+        STORAGE.setMap(keys);
+        return key;
     },
 }
 
@@ -48,7 +55,8 @@ const Friend={
         return {
             list:["ss58","callback","integer","integer"],
             add:["ss58","ss58","callback"],
-            update:["callback"],
+            remove:["ss58","ss58","callback"],
+            update:["ss58","ss58","kv","callback"],
         }
     },
     permit:()=>{
@@ -57,6 +65,7 @@ const Friend={
         return {
             list:2,       //need to check permit
             add:2,
+            remove:2,   
             load:2,         
             download:2, 
         }
@@ -66,11 +75,7 @@ const Friend={
     /******************** Functions ********************/
     /***************************************************/
     list:(mine,ck,page,step)=>{
-        const key=`friend_${mine}`;
-
-        const keys = {};
-        keys[key]=`friend_list_${mine}`;
-        STORAGE.setMap(keys);
+        const key=self.setKeys(mine);
 
         //const index=order===undefined?0:order;
         const list = STORAGE.getKey(key);
@@ -89,35 +94,46 @@ const Friend={
             return ck && ck(list);
         }
     },
-    add:(mine,address,ck)=>{
-        console.log(mine,address);
-        
-
-        const key=`friend_${mine}`;
-        const keys = {};
-        keys[key]=`friend_list_${mine}`;
-        STORAGE.setMap(keys);
+    add:(mine,addr,ck)=>{
+        const key=self.setKeys(mine);
 
         const data=FORMAT.data.get("friend");
-        data.address=address;
-        console.log(data);
+        data.address=addr;
+        //console.log(data);
 
         const list = STORAGE.getKey(key);
-        if(self.isAdded(address,list)) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","Already exsist"));
+        const index=self.isAdded(addr,list);
+        if(index!==false) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","Already exsist"));
         list.unshift(data);
         STORAGE.setKey(key,list);
+        return ck && ck(data);
+    },
+    remove:(mine,addr,ck)=>{
+        const key=self.setKeys(mine);
+        const list = STORAGE.getKey(key);
+        //console.log(list);
+        const index=self.isAdded(addr,list);
+        //console.log(index);
+        if(index===false) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","No such account"));
+
+        const nlist=[];
+        for(let i=0;i<list.length;i++){
+            if(i!==index) nlist.push(list[i]);
+        }
+        STORAGE.setKey(key,nlist);
         return ck && ck(true);
     },
-    remove:(mine,addr)=>{
+    update:(mine,addr,data,ck)=>{
+        const key=self.setKeys(mine);
+        const list = STORAGE.getKey(key);
+        const index=self.isAdded(addr,list);
+        if(index===false) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","No such account"));
 
-    },
-    update:(mine,addr,data)=>{
-
-    },
-
-    //The basic data structure of friend
-    format:()=>{
-        return JSON.parse(JSON.stringify(format));
+        for(let k in list[index]){
+            if(data[k]!==undefined) list[index][k]=data[k];
+        }
+        STORAGE.setKey(key,list);
+        return ck && ck(list[index]);
     },
 }
 export default Friend;

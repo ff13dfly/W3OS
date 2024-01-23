@@ -40,6 +40,7 @@ function App() {
     //const input={method:["account","local","get"],alink:"anchor://good/12345"};
     const input={method:["contact","friend","list"],alink:"anchor://good/12345"};
     //const input={method:["contact","friend","add"],alink:"anchor://good/12345"};
+    //const input={method:["contact","friend","remove"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
     //const input={method:["account","local","get"]};
     //const input="account_local_get";
@@ -47,9 +48,33 @@ function App() {
     //const input=null;
     const mine="5CSTSUDaBdmET2n6ju9mmpEKwFVqaFtmB8YdB23GMYCJSgmw";
     const addr="5D5K7bHqrjqEMd9sgNeb28w9TsR8hFTTHYs6KTGSAZBhcePg";
+
     W3.call(input,mine,(res)=>{
       console.log(res);
-    });    
+    });
+    // W3.call(input,mine,addr,(res)=>{
+    //   console.log(res);
+    //   W3.call(
+    //     {method:["contact","friend","update"],alink:"anchor://good/12345"},
+    //     mine,
+    //     addr,
+    //     {short:"Billy"},
+    //     (res)=>{
+    //         console.log(res);
+    //     });
+    // }); 
+    // W3.call({method:["contact","friend","add"],alink:"anchor://good/12345"},mine,addr,(res)=>{
+    //   console.log(res);
+    //   W3.call({method:["contact","friend","list"],alink:"anchor://good/12345"},mine,(res)=>{
+    //     console.log(res);
+    //     W3.call({method:["contact","friend","remove"],alink:"anchor://good/12345"},mine,addr,(res)=>{
+    //       console.log(res);
+    //       W3.call({method:["contact","friend","list"],alink:"anchor://good/12345"},mine,(res)=>{
+    //         console.log(res);
+    //       });
+    //     });
+    //   });
+    // });
     
   }, []);
   return (

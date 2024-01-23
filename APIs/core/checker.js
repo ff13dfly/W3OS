@@ -41,6 +41,9 @@ const router={
 
         return true;
     },
+    kv:(param)=>{   //one levev key-value object
+        return true;
+    },
     alink:(param)=>{
         const prefix="anchor://";
         if(param.length<=prefix.length) return false;
