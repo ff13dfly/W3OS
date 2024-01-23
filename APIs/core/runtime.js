@@ -383,6 +383,7 @@ const RUNTIME = {
                             //TODO, the logical need to improve.
                             if(!ready){
                                 setTimeout(()=>{
+                                    //FIXME, easyRun need to check the alink, if there is not such anchor, throw the error.
                                     easy.easyRun(alink, startAPI, (res) => {
                                         return ck && ck(res);
                                     });

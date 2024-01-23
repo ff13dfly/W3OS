@@ -22,6 +22,17 @@ const format={
     network: "anchor"   //network name
 };
 
+const self={
+    isAdded:(addr,list)=>{
+        const checker={}
+        for(let i=0;i<list.length;i++){
+            const row=list[i];
+            checker[row.address]=true;
+        }
+        return !checker[addr]?false:true;
+    },
+}
+
 const Friend={
     /**********************************************************/
     /******************** W3OS system hook ********************/
@@ -44,7 +55,8 @@ const Friend={
         //if no record, default to allow
         //[0,refused; 1. accepted; 2.not confirm yet; ]
         return {
-            get:2,       //need to check permit
+            list:2,       //need to check permit
+            add:2,
             load:2,         
             download:2, 
         }
@@ -78,8 +90,23 @@ const Friend={
         }
     },
     add:(mine,address,ck)=>{
+        console.log(mine,address);
+        
+
+        const key=`friend_${mine}`;
+        const keys = {};
+        keys[key]=`friend_list_${mine}`;
+        STORAGE.setMap(keys);
+
         const data=FORMAT.data.get("friend");
+        data.address=address;
         console.log(data);
+
+        const list = STORAGE.getKey(key);
+        if(self.isAdded(address,list)) return ck && ck(Error.get("FAILED_TO_SET_STORAGE","system","Already exsist"));
+        list.unshift(data);
+        STORAGE.setKey(key,list);
+        return ck && ck(true);
     },
     remove:(mine,addr)=>{
 
