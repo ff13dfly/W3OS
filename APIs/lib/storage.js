@@ -56,11 +56,6 @@ const STORAGE = {
   setMap: (obj) => {
     if(Array.isArray(obj)){
       if(!hash) return false;   //Need hash to create the storage key, can not ignore.
-
-      // for(let i=0;i<obj.length;i++){
-      //   const key=obj[i];
-      //   map[key] = `${prefix}_${tools.char[12]}`;
-      // }
     }else{
       for (var k in obj) map[k] = `${prefix}_${obj[k]}`;
     }

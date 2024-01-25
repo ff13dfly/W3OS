@@ -8,15 +8,16 @@
 *  2. get encried  data from localstorage
 */
 
-
-import Encry from "../lib/encry.js";
-import tools from "../lib/tools.js";
+import STORAGE from "../lib/storage.js";
+import Error from "../system/error.js";
 
 const self={
 
 };
 
-const Anchor={
+
+
+const LocalKV={
     /**********************************************************/
     /******************** W3OS system hook ********************/
     /**********************************************************/
@@ -44,4 +45,4 @@ const Anchor={
 
     },
 }
-export default Anchor;
+export default LocalKV;

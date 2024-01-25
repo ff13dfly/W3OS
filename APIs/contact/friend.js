@@ -14,13 +14,17 @@ import FORMAT from "../core/format.js";
 
 //TODO, need to define very well
 //data structure of friend
-const format={
-    short: "",
-    intro: "",
-    status: 1,          //account status [1.normal, 0.removed, 3.pending ]
-    type: "friend",
-    network: "anchor"   //network name
-};
+// const format={
+//     short: "",
+//     intro: "",
+//     status: 1,          //account status [1.normal, 0.removed, 3.pending ]
+//     type: "friend",
+//     network: "anchor"   //network name
+// };
+
+const fcfg={
+    prefix:"friend",
+}
 
 const self={
     isAdded:(addr,list)=>{
@@ -32,9 +36,9 @@ const self={
         return checker[addr]===undefined?false:checker[addr];
     },
     setKeys:(mine)=>{
-        const key=`friend_${mine}`;
+        const key=`${fcfg.prefix}_${mine}`;
         const keys = {};
-        keys[key]=`friend_list_${mine}`;
+        keys[key]=`${fcfg.prefix}_list_${mine}`;
         STORAGE.setMap(keys);
         return key;
     },
@@ -44,13 +48,7 @@ const Friend={
     /**********************************************************/
     /******************** W3OS system hook ********************/
     /**********************************************************/
-    init:()=>{
-        // const keys = {
-        //     "friend": `friend_list`,
-        // };
-        // STORAGE.setMap(keys);   //set the storage map, avoid to write without control
-    },
-
+    init:()=>{},
     reg:()=>{
         return {
             list:["ss58","callback","integer","integer"],
