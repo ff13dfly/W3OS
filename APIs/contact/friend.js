@@ -12,16 +12,6 @@ import STORAGE from "../lib/storage.js";
 import Error from "../system/error.js";
 import FORMAT from "../core/format.js";
 
-//TODO, need to define very well
-//data structure of friend
-// const format={
-//     short: "",
-//     intro: "",
-//     status: 1,          //account status [1.normal, 0.removed, 3.pending ]
-//     type: "friend",
-//     network: "anchor"   //network name
-// };
-
 const fcfg={
     prefix:"friend",
 }

@@ -81,7 +81,7 @@ const Stranger = {
     add:(mine,addr,ck)=>{
         const key=self.setKeys(mine);
 
-        const data=FORMAT.data.get("friend");
+        const data=FORMAT.data.get("stranger");
         data.address=addr;
         //console.log(data);
 
