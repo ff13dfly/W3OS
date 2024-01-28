@@ -40,7 +40,7 @@ const W3 = {
     //W3.call({method:"account_local_get",alink:"w3os"}, ... )
 
     call: function (input) { // need to function way, or can not get the arguments
-
+        
         //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug mode.
         RUNTIME.start((state) => {         //Start W3OS, will not reload. Even the call is failed.

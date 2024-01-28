@@ -43,6 +43,9 @@ const Node={
     reg:()=>{
         return {
             get:["string","callback","string","string"],
+            subcribe:["string","function","string[]"],
+            remove:["string","callback"],
+            status:["callback"]
         }
     },
     permit:()=>{
@@ -59,15 +62,23 @@ const Node={
     /******************** Functions ********************/
     /***************************************************/
 
-    //create the websocket for url
+    //create wsAPI of different nodes.
+    //TODO, need to try to link to different nodes
     get:(url,ck,type,network)=>{
-        if(map[url]) return ck && ck(map[url]);
 
-        console.log(url,type,network);
+        console.log(url);
+        //if(map[url]) return ck && ck(map[url]);
+
+        //console.log(url,type,network);
 
         // const way=network===undefined?"polkadot":network;
         // if(!router[way]) return ck && ck(Error.get("NETWORK_NOT_SUPPORT","system",`${network} is not support yet.`));
         // router[way](url,ck);
+    },
+
+    //subcribe different type data from Anchor network
+    subcribe:(name,fun,types)=>{
+
     },
     remove:(url,ck)=>{
 

@@ -21,7 +21,8 @@ const Default={
     },
     support:{
         SDK:"anchor://sdks",         //the SDKs supportted by W3OS, anchor data, get the latest
-        wallet:"anchor://wallets",   //the wallets supportted by W3OS, anchor data, get the latest
+        wallet:"anchor://wallets",   //the wallets supported by W3OS, anchor data, get the latest
+        service:"anchor://w3ss",     //the service supported by W3OS
     }
 }
 

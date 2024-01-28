@@ -8,8 +8,52 @@
 *  2. set the links
 */
 
+const router={
+    IM:{        //instance message
+
+    },
+    GC:{        //group chat
+
+    },
+    RTC:{       //WebRTC service
+
+    },
+    TS:{        //transaction service
+
+    },
+    VS:{        //vertification service
+
+    },
+}
+
 const Link={
-    link:()=>{
+        /**********************************************************/
+    /******************** W3OS system hook ********************/
+    /**********************************************************/
+    init:()=>{
+
+    },
+    reg:()=>{
+        return {
+            get:["string","string","callback"],
+            remove:["string","callback"],
+            status:["callback"]
+        }
+    },
+    permit:()=>{
+        //if no record, default to allow
+        //[0,refused; 1. accepted; 2.not confirm yet; ]
+        return {
+            get:2,       //need to check permit
+        }
+    },
+
+    /***************************************************/
+    /******************** Functions ********************/
+    /***************************************************/
+
+    //type: ["IM","GC","RTC","TS","VS"]
+    get:(url,type,ck)=>{
 
     },
 }

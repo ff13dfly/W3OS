@@ -34,6 +34,11 @@ const map={
         start:0,                //timestamp of 
         creator:"",             //alink as creator
     },
+    service:{       //service definition
+        name:"",                //short name of service, ["IM","GC","VS", ... ]
+        desc:"",                //description of service
+        node:[],
+    }
 }
 
 const agent={
