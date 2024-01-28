@@ -261,8 +261,7 @@ const self = {
             
             const pmap=STORAGE.getKey(key);
             if(!pmap[`${alink}_${path.join("_")}`]) return ck && ck(false);
-            return ck && ck(true);
-        
+            return ck && ck(true);        
         });
     },
     savePermit:(alink,path,ck)=>{
@@ -310,6 +309,12 @@ const RUNTIME = {
         return call_dapp;
     },
 
+    /* This function run once and set up all details for W3API
+    * all system feather need to finish their job here
+    * @param	ck		callback		//when all done, callback
+    * return 
+    * ck && ck (state)	 //callback the login state
+    */
     start: (ck) => {
         //0. check env, frontend or nodejs
         state.env=!self.envNodeJS()?"frontend":"backend";
@@ -402,7 +407,7 @@ const RUNTIME = {
                         const adata=res.data[`${res.location[0]}_${res.location[1]}`];
                         const slist=JSON.parse(adata.raw);      //get the support SDK list.
                         Loader.map(slist,()=>{      //set the SDK maps for permission control.
-                            return ck && ck();
+                            return ck && ck(Status.code());     //callback the system status
                         });
                     });
                 });
@@ -411,13 +416,21 @@ const RUNTIME = {
         });
     },
 
+    /* The entry of W3API calls, check permission here
+    * @param	path	[string,string,string]		//the call path
+    * @param	input	[any,...]		            //call parameters
+    * @param    alink   string                      //callee alink
+    * return 
+    * depends on the target function
+    */
     call: (path, input, alink) => {
         if (debug) {
             Userinterface.debug(`Call ** ${path.join("_")} **, from ** ${alink} **, parameters:`, "warn");
             Userinterface.debug(input);
         }
+        //0. check wether support unlogin calling
 
-        //0. check the alink format, requirement of permission setting.
+        //1. check the alink format, requirement of permission setting.
         if (alink!=="SYSTEM") {
             if (!Checker(alink, "alink")) return Error.throw("INVALID_ANCHOR_LINK", "core");
         }
@@ -427,7 +440,7 @@ const RUNTIME = {
             return Error.throw("UNKNOWN_CALL", "core",`Call path: ${path.join("_")}` );
         }
 
-        //1.check parameters.
+        //2.check parameters.
         const key=path.join("_");
         if(!params[key]){
             return Error.throw("UNKNOWN_CAINVALID_INPUTLL", "system",`No parameters types record` );
@@ -444,13 +457,13 @@ const RUNTIME = {
             }
         }
 
-        //2.check permission
+        //3.check permission
         if(alink!=="SYSTEM"){
             if(debug) Userinterface.debug(`Checking call ( ${path.join("_")} ) permission`);
-            //2.1. check wether permission setting;
+            //3.1. check wether permission setting;
             self.checkPermit(alink,path,(allowed)=>{
                 if(!allowed){
-                    //2.2. user action to confirm the permission;
+                    //3.2. user action to confirm the permission;
                     Userinterface.confirm(`Calling "${path.join("_")}" needs permission.\n From "${alink}"`,(confirmed)=>{
                         if(!confirmed){
                             if(index!==false){
@@ -459,26 +472,26 @@ const RUNTIME = {
                                 return Error.throw("USER_REJECT_ACTION", "system");
                             }
                         }
-                        //2.2 save the permission for the next call;
+                        //3.2 save the permission for the next call;
                         self.savePermit(alink,path,(saved)=>{
-                            //2.3. if failed to save setting, call the callback or warning in console. 
+                            //3.3. if failed to save setting, call the callback or warning in console. 
                             if(!saved){
                                 Error.throw("FAILED_SAVE_SETTING", "system", `Permission is not saved for ${alink}`);
                             }
 
-                            //3.0.call the real function, when get confirm from user action
+                            //4.0.call the real function, when get confirm from user action
                             Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission checked`);
                             router[cat][mod][fun].apply(null,input);
                         });
                     });
                 }else{
-                   //3.1.call the real function, when the alink is recorded "allowed"
+                   //4.1.call the real function, when the alink is recorded "allowed"
                    if(debug) Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission allowed.`);
                    router[cat][mod][fun].apply(null,input); 
                 }
             });
         }else{
-            //3.2.call the real function, when it is called by system
+            //4.2.call the real function, when it is called by system
             if(debug) Userinterface.debug(`System call ( ${path.join("_")} ), ignore permission checking`);
             router[cat][mod][fun].apply(null,input);
         }

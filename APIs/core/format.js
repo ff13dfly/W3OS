@@ -27,6 +27,13 @@ const map={
     },
     message:{},
     payment:{},
+    node:{
+        linker:null,
+        status:2,               //[ 0,not yet; 1.normal; 2.pendding; 4.failed; ]
+        type:"websocket",       //["websocket","http"]
+        start:0,                //timestamp of 
+        creator:"",             //alink as creator
+    },
 }
 
 const agent={

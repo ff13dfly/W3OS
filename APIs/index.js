@@ -43,16 +43,17 @@ const W3 = {
 
         //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug mode.
-        RUNTIME.start((res) => {         //Start W3OS, will not reload. Even the call is failed.
+        RUNTIME.start((state) => {         //Start W3OS, will not reload. Even the call is failed.
+            
             //0.check wether login ( first time to run the W3OS API )
-            //TODO, here to login to the root then 
+            if(state!==1) return Error.throw("FAILED_LOGIN", "core");
 
             //1.check input type;
             const type = typeof input;
             if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
             if(input===null) return Error.throw("INVALID_CALL_PATH", "core");
             
-            //2.format input;  
+            //2.format input, get the proper call parameters 
             let method, alink, path;
             if (type === "object") {
                 if (!Array.isArray(input)){
@@ -78,6 +79,7 @@ const W3 = {
                 }
             }
 
+            //4. sent the real call, need to check login status.
             return RUNTIME.call(path, params, alink);
             
         });

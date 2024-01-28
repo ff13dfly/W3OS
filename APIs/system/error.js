@@ -29,8 +29,12 @@ const errs={
             msg:"Invalid anchor link .",
         },
         "NO_ACTIVE_NODE":{
-            error:40003,
+            error:40004,
             msg:"Failed to link to Anchor Network nodes, please try later.",
+        },
+        "FAILED_LOGIN":{
+            error:40005,
+            msg:"Failed login, please fresh to try.",
         },
         "UNKNOWN_CALL":{
             error:40010,

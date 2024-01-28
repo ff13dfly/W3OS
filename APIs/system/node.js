@@ -42,11 +42,7 @@ const Node={
     },
     reg:()=>{
         return {
-            get:["callback","integer"],
-            set:["object","callback"],
-            remove:["integer","callback"],
-            load:["string","callback"],
-            download:["password","callback","integer"]
+            get:["string","callback","string","string"],
         }
     },
     permit:()=>{
@@ -64,14 +60,19 @@ const Node={
     /***************************************************/
 
     //create the websocket for url
-    get:(url,ck,network)=>{
+    get:(url,ck,type,network)=>{
         if(map[url]) return ck && ck(map[url]);
 
-        const way=network===undefined?"polkadot":network;
-        if(!router[way]) return ck && ck(Error.get("NETWORK_NOT_SUPPORT","system",`${network} is not support yet.`));
-        router[way](url,ck);
+        console.log(url,type,network);
+
+        // const way=network===undefined?"polkadot":network;
+        // if(!router[way]) return ck && ck(Error.get("NETWORK_NOT_SUPPORT","system",`${network} is not support yet.`));
+        // router[way](url,ck);
     },
     remove:(url,ck)=>{
+
+    },
+    status:(ck)=>{
 
     },
 }

@@ -36,9 +36,15 @@ function App() {
     
     //2. start W3OS
     W3.debug();   //set to the debug mode
+
+    const input_0={method:["system","node","get"],alink:"anchor://bad/12345"};
+    const url="ws://127.0.0.1:7788";
+    W3.call(input_0,url,(res)=>{
+      console.log(res);
+    },"websocket");
     //const input={method:"account_local_get",alink:"anchor://good/12345"};
     //const input={method:["account","local","get"],alink:"anchor://good/12345"};
-    const input={method:["contact","friend","list"],alink:"anchor://good/12345"};
+    //const input={method:["contact","friend","list"],alink:"anchor://good/12345"};
     //const input={method:["contact","friend","add"],alink:"anchor://good/12345"};
     //const input={method:["contact","friend","remove"],alink:"anchor://good/12345"};
     //const input={method:"account_local_get"};
@@ -46,6 +52,7 @@ function App() {
     //const input="account_local_get";
     //const input=["account","local","get"];
     //const input=null;
+    //const input={method:["system","node","get"],alink:"anchor://bad/12345"};
     const mine="5CSTSUDaBdmET2n6ju9mmpEKwFVqaFtmB8YdB23GMYCJSgmw";
     const addr="5D5K7bHqrjqEMd9sgNeb28w9TsR8hFTTHYs6KTGSAZBhcePg";
 
@@ -53,12 +60,14 @@ function App() {
     //# contact list
     //# load eth 
 
+    
+
     //localStorage.account={}
     //localStorage.account=[{},{},{}]
 
-    W3.call(input,mine,(res)=>{
-      console.log(res);
-    });
+    // W3.call(input,mine,(res)=>{
+    //   console.log(res);
+    // });
     // W3.call(input,mine,addr,(res)=>{
     //   console.log(res);
     //   W3.call(
