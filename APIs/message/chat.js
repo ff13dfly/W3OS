@@ -7,6 +7,13 @@
 *  1. sent message from one SS58 account to another SS58 account
 */
 
+//WebRTC can create P2P message channel
+//https://web.dev/articles/webrtc-basics?hl=zh-cn
+
+//IMGC server will exchange the peers information to create the link between them.
+//Problem is that, the cached message can not be send properly.
+//Will notice the user about this.
+
 const Chat={
     /**********************************************************/
     /******************** W3OS system hook ********************/

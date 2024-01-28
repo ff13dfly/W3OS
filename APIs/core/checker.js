@@ -35,7 +35,6 @@ const router={
         return true;
     },
     ss58:(param)=>{
-        //return true;
         if(param.length!==48) return false;
         //TODO, need to check the SS58 account by Polkadot suggestion
 
@@ -55,10 +54,13 @@ const router={
     },
 }
 
-//support array to check, call as follow
-//Checker(value,type)
-//Checker(value[],type[])
-
+/* check the data type
+* support array to check, call as follow
+* @param input any || any[]         //the input need to check
+* @param type  string || string[]   //the defined input data type
+* return 
+* true || false
+*/
 const Checker=(input,type)=>{
     //console.log(input,type);
     if(Array.isArray(type)){

@@ -178,6 +178,16 @@ const self={
     },
 };
 
+/* get the needed on-chain SDKs by default setting
+* support array to check, call as follow
+* @param 	url 	string			//The target Anchor Network node
+* @param	libs	alink[]			//support libraries anchor links
+* @param	ck		callback		//when all done, callback
+* @param	map		anchorData[]	//raw data get from Anchor Network
+* return 
+* ck && ck (map)	//the data got from network
+*/
+
 const Launch=(url,libs,ck,map)=>{
     if(!map) map=[];
     if(libs.length===0){

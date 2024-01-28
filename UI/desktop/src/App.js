@@ -49,6 +49,13 @@ function App() {
     const mine="5CSTSUDaBdmET2n6ju9mmpEKwFVqaFtmB8YdB23GMYCJSgmw";
     const addr="5D5K7bHqrjqEMd9sgNeb28w9TsR8hFTTHYs6KTGSAZBhcePg";
 
+    //bash version
+    //# contact list
+    //# load eth 
+
+    //localStorage.account={}
+    //localStorage.account=[{},{},{}]
+
     W3.call(input,mine,(res)=>{
       console.log(res);
     });

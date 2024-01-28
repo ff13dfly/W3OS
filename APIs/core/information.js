@@ -14,7 +14,9 @@ const Information={
     version:"0.0.2",            //version of W3OS APIs
     nick:"Flamingo",            //nick name for this version, a place everytime
     description:[               //description for this version
-        "Isolate APIs of W3OS, command line support",
+        "Isolated APIs of W3OS, command line support",
+        "First version of W3API",
+        "Welcome to Web3.0, a decentralized world"
     ],             
     licence:{
         type:"Apache2.0",       //licence type
