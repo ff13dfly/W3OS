@@ -38,8 +38,8 @@ function App() {
     
     //2. start W3OS
     Tester.service.network.get();
-    // Tester.system.node.get();
-    // Tester.contact.friend.list();
+    Tester.system.node.get();
+    Tester.contact.friend.list();
 
   }, []);
   return (

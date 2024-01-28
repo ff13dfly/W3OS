@@ -326,7 +326,7 @@ const RUNTIME = {
                 RUNTIME.start(ck);
             }, 200);
         }
-        if (Status.code() !== 0) return ck && ck(true);        //if system is not init status, return
+        if (Status.code() !== 0) return ck && ck(Status.code());        //if system is not init status, return
         if (debug) Userinterface.debug("W3OS start...");
         Status.flip(6);
 

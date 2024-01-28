@@ -13,7 +13,8 @@
 import RUNTIME from "./core/runtime.js";
 import Error from "./system/error.js";
 
-let debug = false;       //debug module
+const queue=[];         //call queue, the call need to cache here then run after login
+let debug = false;      //debug module
 const W3 = {
     /*
     * W3 caller, only way to call the functions W3OS supported
@@ -35,53 +36,57 @@ const W3 = {
     //W3.call("account_local_get", ... );
     //W3.call(["account","local","get"], ... )
     //W3.call({method:["account","local","get"]}, ... )
-    //W3.call({method:["account","local","get"],alink:"w3os"}, ... )
+    //W3.call({method:["account","local","get"],alink:"anchor://w3os"}, ... )
     //W3.call({method:"account_local_get"}, ... )
-    //W3.call({method:"account_local_get",alink:"w3os"}, ... )
+    //W3.call({method:"account_local_get",alink:"anchor://w3os/2343"}, ... )
 
     call: function (input) { // need to function way, or can not get the arguments
+        //1.check input type;
+        const type = typeof input;
+        if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
+        if(input===null) return Error.throw("INVALID_CALL_PATH", "core");
         
+        //2.format input, get the proper call parameters 
+        let method, alink, path;
+        if (type === "object") {
+            if (!Array.isArray(input)){
+                if (!input.method) return Error.throw("INVALID_CALL_OBJECT", "core");
+                method = input.method;
+                path=!Array.isArray(method)?method.split("_"):method;
+
+                if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_ANCHOR_LINK", "core");
+                alink = !input.alink ? "SYSTEM" : input.alink;
+            } else {
+                path = input;
+            }
+        } else {
+            alink = "SYSTEM";
+            path = input.split("_");
+        }
+
+        //3.format the parameters
+        const params = [];
+        if (arguments.length > 1) {
+            for (let i = 1; i < arguments.length; i++) {
+                params.push(arguments[i]);
+            }
+        }
+
+        queue.push({path:path,params:params,alink:alink});
+
         //0.start the W3 API anyway.
         RUNTIME.setDebug(debug);    //W3OS API debug mode.
-        RUNTIME.start((state) => {         //Start W3OS, will not reload. Even the call is failed.
-            
+        RUNTIME.start((state) => {         //Start W3OS, will not reload. Even the call is failed.        
             //0.check wether login ( first time to run the W3OS API )
             if(state!==1) return Error.throw("FAILED_LOGIN", "core");
-
-            //1.check input type;
-            const type = typeof input;
-            if (!["string","object"].includes(type)) return Error.throw("INVALID_CALL_PATH", "core");
-            if(input===null) return Error.throw("INVALID_CALL_PATH", "core");
-            
-            //2.format input, get the proper call parameters 
-            let method, alink, path;
-            if (type === "object") {
-                if (!Array.isArray(input)){
-                    if (!input.method) return Error.throw("INVALID_CALL_OBJECT", "core");
-                    method = input.method;
-                    path=!Array.isArray(method)?method.split("_"):method;
-
-                    if (input.alink && typeof input.alink !== "string") return Error.throw("INVALID_ANCHOR_LINK", "core");
-                    alink = !input.alink ? "SYSTEM" : input.alink;
-                } else {
-                    path = input;
-                }
-            } else {
-                alink = "SYSTEM";
-                path = input.split("_");
-            }
-
-            //3.format the parameters
-            const params = [];
-            if (arguments.length > 1) {
-                for (let i = 1; i < arguments.length; i++) {
-                    params.push(arguments[i]);
-                }
-            }
-
-            //4. sent the real call, need to check login status.
-            return RUNTIME.call(path, params, alink);
-            
+            const loop=()=>{
+                if(queue.length===0) return true;
+                const task=queue.pop();
+                const {path,params,alink}=task;
+                RUNTIME.call(path, params, alink);
+                loop();
+            };
+            loop();
         });
     },
 
