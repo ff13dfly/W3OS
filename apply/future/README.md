@@ -5,7 +5,9 @@
 
 ## Steps
 
-- Descibe W3OS in details.
+- Descibe W3OS in details. Post to the [forum](https://forum.polkadot.network/c/ecosystem/24/none), ask the questions.
+
+- Fill the forms to apply.
 
 ## Resource
 

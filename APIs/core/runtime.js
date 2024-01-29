@@ -486,7 +486,7 @@ const RUNTIME = {
                     });
                 }else{
                    //4.1.call the real function, when the alink is recorded "allowed"
-                   if(debug) Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), permission allowed.`);
+                   if(debug) Userinterface.debug(`The ${alink} call ( ${path.join("_")} ), operation allowed.`);
                    router[cat][mod][fun].apply(null,input); 
                 }
             });
