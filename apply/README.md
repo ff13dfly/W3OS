@@ -12,3 +12,9 @@
     3. roadmap.numbers, tables of W3OS
 
 - This project is a new one since 2024.
+
+## History
+
+- Web3 Grants, [https://grants.web3.foundation/applications](https://grants.web3.foundation/applications)
+
+- Polkadot 2023 Hackathon Winter, [Link of result]()
