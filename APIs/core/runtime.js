@@ -46,6 +46,7 @@ import Sell from "../exchange/sell.js";
 
 import Xloader from "../util/xloader.js";
 import Convertor from "../util/convertor.js";
+import Deploy from "../util/deploy.js";
 
 import Permit from "../system/permit.js";
 
@@ -114,6 +115,7 @@ const router = {
     util: {        //Tools support by W3
         xloader: Xloader,    //Raw Dapps loader, different from W3 loader, no need W3 support
         convertor: Convertor,//Convert application and deploy on chain. Only NodeJS support
+        deploy:Deploy,       //SDK deploy tool
     }
 }
 
