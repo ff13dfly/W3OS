@@ -17,6 +17,7 @@
     "dependencies": {
         "@polkadot/api": "^10.10.1",
         "esbuild": "^0.19.11",
+        "inquirer": "^9.2.13",
         "websocket": "^1.0.34"
     },
     "devDependencies": {
