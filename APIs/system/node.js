@@ -8,27 +8,62 @@
 */
 
 import Error from "../system/error.js";
+import FORMAT from "../core/format.js";
+import tools from "../lib/tools.js";
 
 //storage the network status
-const map={
-
-}
+const map={}
 
 const router={      //different router to manage the link
-    polkadot:{
-        get:(url,ck)=>{
+    polkadot:(url,ck)=>{
 
-        },
     },
-    kusama:{
-        get:(url,ck)=>{
+    kusama:(url,ck)=>{
 
-        },
     },
-    solana:{
-        get:(url,ck)=>{
+    solana:(url,ck)=>{
 
-        },
+    },
+    bitcoin:(url,ck)=>{
+
+    },
+}
+
+const self={
+    //try to check the type by url.
+    getType:(url)=>{
+        const arr=url.split("://");
+        const types={
+            "ws":"websocket",
+            "wss":"websocket",
+            "http":"web",
+            "https":"web"
+        }
+        if(arr.length!==2) return false;
+        if(types[arr[0]]) return types[arr[0]];
+        return false;
+    },
+    webLinker:(url,ck)=>{
+
+    },
+    websocketLinker:(url,ck)=>{
+        const linker=new WebSocket(url);
+        linker.onopen=(res)=>{
+            console.log(res);
+            const data=FORMAT.data.get("node");
+            data.linker=linker;
+            data.start=tools.stamp();
+            data.type="websocket";
+            map[url]=data;
+            return ck && ck(map[url]);
+        };
+        linker.onclose=(res)=>{
+            Error.throw("NETWORK_CLOSED","system",`${url} is closed.`);
+            delete map[url];
+        };
+        linker.onerror=(res)=>{
+            Error.throw("NETWORK_ERROR","system",`Error message from ${url}, data:${JSON.stringify(res)}`);
+        };
     },
 }
 
@@ -65,15 +100,29 @@ const Node={
     //create wsAPI of different nodes.
     //TODO, need to try to link to different nodes
     get:(url,ck,type,network)=>{
+        if(map[url]!==undefined) return ck && ck(map[url]);
+        //1.create link by network type at first
+        if(network!==undefined){
+            if(!router[network]) return ck && ck(Error.get("NETWORK_NOT_SUPPORT","system",`${network} is not support yet.`));
+            router[network](url,ck);
+        }else{
+            //2.no type and no network, try websocket first
+            const tp=type===undefined?self.getType(url):type;
+            if(tp===false) return ck && ck(Error.get("INVALID_INPUT","system",`Unknown web protocol.`));
 
-        console.log(url);
-        //if(map[url]) return ck && ck(map[url]);
+            switch (tp) {
+                case 'websocket':
+                    self.websocketLinker(url,ck);
+                    break;
 
-        //console.log(url,type,network);
-
-        // const way=network===undefined?"polkadot":network;
-        // if(!router[way]) return ck && ck(Error.get("NETWORK_NOT_SUPPORT","system",`${network} is not support yet.`));
-        // router[way](url,ck);
+                case 'web':
+                    //self.websocketLinker(url,ck);
+                    break;
+            
+                default:
+                    break;
+            }
+        }
     },
 
     //subcribe different type data from Anchor network

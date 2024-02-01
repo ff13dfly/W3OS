@@ -37,9 +37,9 @@ function App() {
     setPlugin(ps);
     
     //2. start W3OS
-    Tester.service.network.get();
+    //Tester.service.network.get();
     Tester.system.node.get();
-    Tester.contact.friend.list();
+    //Tester.contact.friend.list();
 
   }, []);
   return (

@@ -75,7 +75,15 @@ const errs={
         "NETWORK_NOT_SUPPORT":{
             error:40140,
             msg:"Network is not support by W3OS right now.",
-        },  
+        },
+        "NETWORK_CLOSED":{
+            error:40141,
+            msg:"Network is closed, please reconnect.",
+        }, 
+        "NETWORK_ERROR":{
+            error:40144,
+            msg:"Error from network node.",
+        }, 
     },
     message:{
         
