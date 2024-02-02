@@ -8,7 +8,35 @@
 *  2. get data from Anchor Network
 */
 
+const self={
+
+}
+
 const Anchor={
+    /**********************************************************/
+    /******************** W3OS system hook ********************/
+    /**********************************************************/
+    init:()=>{
+
+    },
+    reg:()=>{
+        return {
+            set:["string","string","callback"],
+            get:["string","callback"]
+        }
+    },
+    permit:()=>{
+        //if no record, default to allow
+        //[0,refused; 1. accepted; 2.not confirm yet; ]
+        return {
+            set:2,       //need to check permit
+            get:2,        
+        }
+    },
+
+    /***************************************************/
+    /******************** Functions ********************/
+    /***************************************************/
     set:(key,val,ck)=>{
 
     },

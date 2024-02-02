@@ -21,6 +21,31 @@ const router={
 };
 
 const Market={
+    /**********************************************************/
+    /******************** W3OS system hook ********************/
+    /**********************************************************/
+    init:()=>{
+
+    },
+    reg:()=>{
+        return {
+            list:["string[]"],
+            exchange:["string"],
+        }
+    },
+    permit:()=>{
+        //if no record, default to allow
+        //[0,refused; 1. accepted; 2.not confirm yet; ]
+        return {
+            get:2,       //need to check permit
+            load:2,         
+            download:2, 
+        }
+    },
+
+    /***************************************************/
+    /******************** Functions ********************/
+    /***************************************************/
     list:(page,ck)=>{
 
     },

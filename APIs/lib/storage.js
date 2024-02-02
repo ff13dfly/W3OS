@@ -9,7 +9,6 @@
 */
 
 import Encry from "./encry.js";
-//import Error from "../system/error.js";
 
 const prefix="w3api";  //prefix for localstorage;
 

@@ -8,6 +8,10 @@
 *  2. network nodes management
 */
 
+import Error from "../system/error.js";
+import FORMAT from "../core/format.js";
+import tools from "../lib/tools.js";
+
 const map={};       //network cache
 
 const router={      //different router to manage the link

@@ -207,11 +207,10 @@ const self = {
     //hooks will be triggerd, such as "init","permit"
     regModules: (ck) => {
         if (debug) Userinterface.debug("Ready to run modules init hook.");
-
         const hooks = Format.hook;
-        const rkey = hooks.reg.name;
-        const pkey = hooks.permit.name;
-        const ikey = hooks.init.name;
+        const rkey = hooks.register.name;
+        const pkey = hooks.permission.name;
+        const ikey = hooks.initialization.name;
 
         for (var cat in router) {
             const funs = router[cat];
