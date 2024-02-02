@@ -1,4 +1,4 @@
-import W3 from "./index.js";
+import W3 from "../../index.js";
 
 // const code=';(function(){console.log("Trying eval")})();';
 // eval(code);

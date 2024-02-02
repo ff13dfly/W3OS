@@ -140,9 +140,13 @@ let call_dapp="";
 /************************** Private Functions ***************************/
 /************************************************************************/
 const self = {
+    //Try to get websock both in frontend and backend 
     getWebsocket:(url)=>{
         return state.env==="frontend"?new WebSocket(url):new NodeWS.client(url);
     },
+
+    //Checking the supplied nodes to find the one is valid
+    //Both frontend and backend support.
     checkServers: (ck) => {
         if (debug) Userinterface.debug("Try linking to Anchor Network node ...");
         const url = Default.node[state.index];     //get the default node
@@ -190,6 +194,7 @@ const self = {
             ws.connect(url);
         }
     },
+    //check wether NodeJS
     envNodeJS: () => {
         if (typeof process !== 'undefined' && typeof process.env === 'object') {
             return true;
@@ -197,6 +202,9 @@ const self = {
             return false;
         }
     },
+
+    //register all modules grouped to the "router"
+    //hooks will be triggerd, such as "init","permit"
     regModules: (ck) => {
         if (debug) Userinterface.debug("Ready to run modules init hook.");
 
@@ -298,15 +306,26 @@ const self = {
 /************************************************************************/
 
 const RUNTIME = {
+    /* Set W3API to debug mode
+    * @param    val     boolean     //wether to debug mode
+    */
     setDebug: (val) => {
         debug = !!val;
         return true;
     },
+    
+    /* Set W3API bind to special alink
+    *
+    */
     setDapp:(alink)=>{
         if(!Checker(alink,"alink")) return false;
         call_dapp=alink;
         return true;
     },
+
+    /* Get W3API binded alink
+    * When this is set to special anchor link. All call need to use this one to get permission.
+    */
     getDapp:()=>{
         return call_dapp;
     },
