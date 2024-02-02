@@ -8,6 +8,8 @@
 //Basic system status
 let SYSTEM_STATUS=0;
 
+//TODO, this module should be regroup carefully.
+
 const map={
     0:{
         msg:"W3OS init status.",
@@ -55,8 +57,11 @@ const Status={
         
     },
     
-    //switch the system status
+    /* switch the system status
+    * @param    code    number  //system status
+    */
     flip:(code)=>{
+
         SYSTEM_STATUS=parseInt(code);
     },
 }

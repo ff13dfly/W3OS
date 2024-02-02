@@ -21,6 +21,12 @@ const limits={
 	address:48,				//SS58 address length
 };
 const self={
+
+	/*Decode the anchor link,
+	* @param	alink	string		//alink input
+	* @param	ck		function	//callbak
+	* result: [anchor_name,block_number]
+	*/
     decode:(alink,ck)=>{
         //console.log(alink);
         const prefix="anchor://";
@@ -40,6 +46,12 @@ const self={
 	/**********************************************************/
     /******************** Anchor Functions ********************/
     /**********************************************************/
+	/* Get the owner of anchor
+	 * @param	anchor	string		//anchor name
+	 * @param	ck		function	//callback
+	 * result
+	 *  SS58 account of the anchor owner
+	 */
     owner:(anchor,ck)=>{
 		let unsub = null;
 		wsAPI.query.anchor.anchorOwner(anchor, (res) => {
@@ -52,6 +64,14 @@ const self={
 			unsub = fun;
 		});
 	},
+	
+	/* Get Anchor data by anchor_name and block_number
+	 * @param	anchor	string		//anchor name
+	 * @param	block	number		//block number
+	 * @param	ck		function	//callback
+	 * result
+	 *  target block data
+	*/
     target:(anchor,block,ck)=>{
 		if (wsAPI===null) return ck && ck({error:"No websocke link."});
 		anchor = anchor.toLocaleLowerCase();

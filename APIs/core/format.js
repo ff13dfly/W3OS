@@ -22,9 +22,7 @@ const map={
         type: "stranger",
         network: "anchor",  //network name
     },
-    app:{
-        
-    },
+    app:{},
     message:{},
     payment:{},
     node:{
@@ -54,16 +52,17 @@ const agent={
     }
 }
 
+//difinition of hooks
 const hooks={
-    reg:{       //reg module functions and parameters
+    register:{       //reg module functions and parameters
         name:"reg",
         info:"Reg the parameters to W3OS, to check the input",
     },
-    init:{
+    initialization:{
         name:"init",
         info:"Module autorun function, only one time."
     },
-    permit:{
+    permission:{
         name:"permit",
         info:"Module permission setting."
     },

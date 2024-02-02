@@ -252,12 +252,15 @@ const self = {
 
         return ck && ck();
     },
+    //get callback parameters from register data
     filterCallback:(input,type)=>{
         for(let i=0;i<type.length;i++){
             if(type[i]==="callback" && input[i]) return i;
         }
         return false;
     },
+
+    //check alink permission
     checkPermit:(alink,path,ck)=>{
         //1.get the account; if not, record as "SYSTEM"
         Account.get((res)=>{
@@ -274,6 +277,7 @@ const self = {
             return ck && ck(true);        
         });
     },
+    //save alink permission
     savePermit:(alink,path,ck)=>{
         //TODO,here to save the permission.
         //console.log("Saving...",alink);

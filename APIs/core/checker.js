@@ -11,6 +11,7 @@
 
 import Error from "../system/error.js";
 
+//different type of data checker
 const router={
     callback:(param)=>{
         if(param===undefined) return true
