@@ -15,10 +15,7 @@ const Group={
     init:()=>{},
     reg:()=>{
         return {
-            list:["ss58","callback","integer","integer"],
-            add:["ss58","ss58","callback"],
-            remove:["ss58","ss58","callback"],
-            update:["ss58","ss58","kv","callback"],
+            message:["ss58","gid","string","callback","string"],
         }
     },
     permit:()=>{
@@ -36,7 +33,23 @@ const Group={
     /***************************************************/
     /******************** Functions ********************/
     /***************************************************/
-    asset:(list,ck)=>{
+    create:()=>{
+
+    },
+    detail:()=>{
+
+    },
+    members:()=>{},
+    join:()=>{},
+    leave:()=>{},
+    divert:()=>{},
+    deport:()=>{},
+    recover:()=>{},
+    destory:()=>{},
+    notice:()=>{},
+    announce:()=>{},
+    update:()=>{},
+    message:(from,to,message,ck,type)=>{
 
     }
 }

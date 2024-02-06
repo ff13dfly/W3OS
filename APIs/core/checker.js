@@ -13,38 +13,41 @@ import Error from "../system/error.js";
 
 //different type of data checker
 const router={
-    callback:(param)=>{
+    callback:(param,isArray)=>{
         if(param===undefined) return true
         if(typeof param === 'function') return true;
         return false;
     },
-    string:(param)=>{
+    string:(param,isArray)=>{
         if(typeof param !== 'string') return false;
         return true;
     },
-    password:(param)=>{
+    password:(param,isArray)=>{
         if(typeof param !== 'string') return false;
         if(param.length>64) return false;
         return true;
     },
-    function:(param)=>{
+    function:(param,isArray)=>{
         if(typeof param !== 'function') return false;
         return true;
     },
-    integer:(param)=>{
+    integer:(param,isArray)=>{
         if(!Number.isInteger(param)) return false;
         return true;
     },
-    ss58:(param)=>{
+    ss58:(param,isArray)=>{
         if(param.length!==48) return false;
         //TODO, need to check the SS58 account by Polkadot suggestion
 
         return true;
     },
-    kv:(param)=>{   //one levev key-value object
+    gid:(param,isArray)=>{      //group ID check
         return true;
     },
-    alink:(param)=>{
+    kv:(param,isArray)=>{   //one levev key-value object
+        return true;
+    },
+    alink:(param,isArray)=>{
         const prefix="anchor://";
         if(param.length<=prefix.length) return false;
         const str=param.toLocaleLowerCase();
@@ -52,6 +55,14 @@ const router={
 
         if(head!==prefix)  return false;
         return true;
+    },
+}
+
+const self={
+    //check wether type array, for example, "string[]" means the input param are ["string","string"]
+    isTypeArray:(type)=>{
+        //TODO, here to check wether array type.
+        return false
     },
 }
 
@@ -69,13 +80,15 @@ const Checker=(input,type)=>{
         for(let i=0;i<input.length;i++){
             const param=input[i]!==undefined?input[i]:undefined,tp=type[i];
             if(!router[tp]) return Error.get("INVALID_INPUT","system",`No such type: ${tp}, index: ${i}`);
-            if(!router[tp](param)){
+            const is=self.isTypeArray(tp);
+            if(!router[tp](param,is)){
                 return Error.get("INVALID_INPUT","system",`Param is not such type: ${tp}, index: ${i}`);
             }
         }
         return true;
     }else{
         if(!router[type]) return Error.get("INVALID_INPUT","system",`No such type: ${type}`);
+        const is=self.isTypeArray(type);
         return router[type](input);
     }
 }

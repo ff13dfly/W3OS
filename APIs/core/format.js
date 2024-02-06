@@ -36,7 +36,12 @@ const map={
         name:"",                //short name of service, ["IM","GC","VS", ... ]
         desc:"",                //description of service
         node:[],
-    }
+    },
+    websocket:{     //websocket standard
+        act:"",             //action of this websocket message
+        index:0,            //message index, if need order, this is important
+        params:{}           //params that is sent to server
+    },
 }
 
 const agent={

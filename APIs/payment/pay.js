@@ -18,6 +18,7 @@ const Pay={
     reg:()=>{
         return {
             to:["ss58","ss58","integer","callback"],
+            list:["ss58"],
         }
     },
     permit:()=>{
@@ -37,7 +38,7 @@ const Pay={
         
 
     },
-    list:(acc)=>{
+    list:(mine)=>{
 
     },
 }

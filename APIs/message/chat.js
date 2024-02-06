@@ -10,6 +10,8 @@
 //WebRTC can create P2P message channel
 //https://web.dev/articles/webrtc-basics?hl=zh-cn
 
+//https://github.com/webrtc/samples/tree/gh-pages/src/content/peerconnection/pc1
+
 //IMGC server will exchange the peers information to create the link between them.
 //Problem is that, the cached message can not be send properly.
 //Will notice the user about this.
@@ -38,10 +40,20 @@ const Chat={
             download:2, 
         }
     },
-    target:(mine,addr,msg,ck)=>{
+    /***************************************************/
+    /******************** Functions ********************/
+    /***************************************************/
+    message:(mine,addr,msg,ck)=>{
 
     },
-    group:(mine,gid,msg,ck)=>{
+    online:(mine,gid,msg,ck)=>{
+
+    },
+    offline:(mine,gid,msg,ck)=>{
+
+    },
+    
+    link:()=>{
 
     },
 }
