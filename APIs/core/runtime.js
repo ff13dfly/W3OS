@@ -43,6 +43,7 @@ import Market from "../exchange/market.js";
 import Price from "../exchange/price.js";
 import Buy from "../exchange/buy.js";
 import Sell from "../exchange/sell.js";
+import NFT from "../exchange/nft.js";
 
 import Xloader from "../util/xloader.js";
 import Convertor from "../util/convertor.js";
@@ -111,6 +112,7 @@ const router = {
         buy: Buy,            //buy coins function
         sell: Sell,          //sell coins function
         market: Market,      //market APIs to exchange
+        NFT:NFT,             //NFT mint function, iNFT format
     },
     util: {        //Tools support by W3
         xloader: Xloader,    //Raw Dapps loader, different from W3 loader, no need W3 support

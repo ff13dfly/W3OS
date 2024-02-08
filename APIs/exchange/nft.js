@@ -8,7 +8,7 @@
 *  2.base on Anchor, sold just one time
 */
 
-const Price={
+const NFT={
     /**********************************************************/
     /******************** W3OS system hook ********************/
     /**********************************************************/
@@ -41,4 +41,4 @@ const Price={
 
     },
 }
-export default Price;
+export default NFT;

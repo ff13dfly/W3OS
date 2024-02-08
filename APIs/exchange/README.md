@@ -16,10 +16,10 @@
         {
             name:"iNFT_Resource",
             raw:{
-                img:"BASE64_IMAGE_STRING",
-                format:"png",
-                grid:[40,40],       //cell size
-                size:[20,10],       //lines and rows
+                img:"BASE64_IMAGE_STRING",      //Raw data of image without prefix
+                format:"png",                   //image format
+                grid:[40,40],                   //cell size
+                size:[20,10],                   //lines and rows
             },
             protocol:{
                 type:"data",
@@ -39,15 +39,35 @@
                 source:"Alink_Of_Image",
                 type:"2D",
                 size:["SIZE_X","SIZE_Y"],
-                puzzle:[        //pieces of iNFT
+                puzzle:[        //pieces of iNFT. Will render by the array order, 0 is the background
                     {
-                        hash:["START","END","DIVIDE"],
-                        img:["LINE","ROW","LINE_EXT","ROW_EXT"],    //LINE_EXT and ROW_EXT is optional
-                        position:["POSITION_X","POSITION_Y"]        //Position of this piece         
-                        color:["START","END","DIVIDE"],             //this is optional
-                        center:["X","Y"],                           //this is optional, default is center of cell
-                        rotation:"IMAGE_ROTATION",                  //this is optional
-                        scale:1,                                    //this is optional
+                        value:[      //where to get the number of hash
+                            "START",        //start position of hash string
+                            "STEP",         //how many string to get from
+                            "DIVIDE"        //how to divide, result%n, the value of "n"
+                            ],
+                        img:[       //the position of image start, get by order, related ti "hash"
+                            "LINE",         //line number of iNFT resource
+                            "ROW",          //row number of iNFT resource
+                            "LINE_EXT",     //default is 0,optional, line extend 
+                            "ROW_EXT"       //default is 0,optional, row extend 
+                            ],    //LINE_EXT and ROW_EXT is optional
+                        position:[  //Position of this piece
+                            "POSITION_X",   // The X position of this piece on iNFT
+                            "POSITION_Y"    // The Y position of this piece on iNFT
+                            ],
+                        center:[    //this is optional, default is center of cell
+                            "X",            //center X position        
+                            "Y"             //center Y position     
+                        ],
+                        rotation:"IMAGE_ROTATION",      //this is optional
+                        scale:1,                        //this is optional                 
+                        color:[     //this is optional
+                            "START",        //start position of hash string 
+                            "STEP",         //default is 6,optional
+                            "DIVIDE",       //optional, reduce the color amount. 
+                            ["RED_OFFSET","GREEN_OFFSET","BLUE_OFFSET"]     //optional, adjust the color
+                        ]
                     },
                     ...         //iNFT is combined by pieces
                 ]
