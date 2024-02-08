@@ -2,13 +2,13 @@
 
 ## Overview
 
-- W3OS basic system functions, this part is the core part, to load the system and manage the runtime. 
+- W3OS basic system functions, this part is the core part, to load the system and manage the runtime.
 
 ## Functions
 
 ### Loader
 
-- CDapps loader is the majoy 
+- CDapps loader is the majoy entry for on-chain application, will supply the limited W3API to CDapps.
 
 ### Permit
 
