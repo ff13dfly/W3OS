@@ -13,6 +13,7 @@
 - Resource of iNFT is a single file, the definition is in the raw of Anchor. The start position [0,0] of image is left-top.
 
     ```Javascript
+        //iNFT resource format
         {
             name:"iNFT_Resource",
             raw:{
@@ -30,16 +31,12 @@
         }
     ```
 
-- One single png file is used as resource to mint the NFT, the format of NFT will be write to as **raw** on Anchor data.
-
     ```Javascript
+        //iNFT template
         {
-            name:"iNFT_Name",
-            raw:{
-                source:"Alink_Of_Image",
-                type:"2D",
-                size:["SIZE_X","SIZE_Y"],
-                puzzle:[        //pieces of iNFT. Will render by the array order, 0 is the background
+            type:"2D",
+            size:["SIZE_X","SIZE_Y"],
+            puzzle:[        //pieces of iNFT. Will render by the array order, 0 is the background
                     {
                         value:[      //where to get the number of hash
                             "START",        //start position of hash string
@@ -71,6 +68,21 @@
                     },
                     ...         //iNFT is combined by pieces
                 ]
+            version:"VERSTION",     //iNFT template
+            auth:["AUTH_NAME"]      //auth name list
+        }
+    ```
+
+
+- One single png file is used as resource to mint the NFT, the format of NFT will be write to as **raw** on Anchor data.
+
+    ```Javascript
+        //instance of an iNFT
+        {
+            name:"iNFT_Name",
+            raw:{
+                source:"Alink_Of_Image",            //for example, "anchor://flamingo/23412"
+                template:"Alink_Of_Template",       //for example, "anchor://colorful/23445"
                 stamp:[         //This is used to confirm the timestamp of iNFT
                     {
                         network:"btc",
@@ -105,7 +117,5 @@
             pre:0
         }
     ```
-
-
 
 - Identifiable NFT which in short iNFT will be part of W3OS, the iNFT recognizability feature  means that anybody even who just know about NFT can distinguish between high and low prices. The scarcity is determined by random numbers.

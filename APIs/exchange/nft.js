@@ -4,9 +4,13 @@
 *  @creator Fuu
 *  @date 2024-02-08
 *  @functions
-*  1.create NFT from single png file
+*  1.create iNFT ( Identifiable NFT ) from single png file
 *  2.base on Anchor, sold just one time
 */
+
+const self={
+    
+}
 
 const NFT={
     /**********************************************************/
@@ -18,6 +22,7 @@ const NFT={
     reg:()=>{
         return {
             view:["alink","callback"],
+            source:["file","number[]","number[]","callback"],
             mint:["string","alink","callback"],
         }
     },
@@ -34,10 +39,19 @@ const NFT={
     /***************************************************/
     /******************** Functions ********************/
     /***************************************************/
+
+    //review the iNFT.
     view:(alink,ck)=>{
 
     },
-    mint:(name,source,ck)=>{
+
+    //write the image resource to chain
+    source:(file,cell,size,ck)=>{
+
+    },
+
+    //mint an iNFT from "tpl" by target "source"
+    mint:(tpl,source,ck)=>{
 
     },
 }

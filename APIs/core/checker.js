@@ -56,6 +56,9 @@ const router={
         if(head!==prefix)  return false;
         return true;
     },
+    file:(param,isArray)=>{
+        return true;
+    },
 }
 
 const self={
