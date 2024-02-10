@@ -78,3 +78,21 @@ You will find the header of the packaged file like this, you need to modify it.
 - All unit test is in the folder **test**
 
 - Functions can be tested one by one to confirm.
+
+## Difficulties
+
+### W3API part
+
+- W3API permission control, complex task issue. Need a test framework to confirm the W3API works properly.
+
+- WebRTC support. By this way, IM will be P2P security.
+
+- Anchor standard SDK testing. Need to test all SDK functions then intergrated to W3API
+
+- iNFT support. Need to read hash from different networks. Need to support combine an new NFT from a template. Both template and the combining application are on Anchor Network.
+
+### Service Part
+
+- IMGC server automatic networking. Need to figure out how to share the accounts between service.
+
+- WASM support. JS from Anchor Network is easy to modify, WASM is better for the use case.
