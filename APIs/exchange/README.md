@@ -41,7 +41,8 @@
                         value:[      //where to get the number of hash
                             "START",        //start position of hash string
                             "STEP",         //how many string to get from
-                            "DIVIDE"        //how to divide, result%n, the value of "n"
+                            "DIVIDE" ,      //how to divide, result%n, the value of "n"
+                            "OFFSET",       //Random number offset to avoid same result
                             ],
                         img:[       //the position of image start, get by order, related ti "hash"
                             "LINE",         //line number of iNFT resource
