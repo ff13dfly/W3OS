@@ -96,3 +96,17 @@ You will find the header of the packaged file like this, you need to modify it.
 - IMGC server automatic networking. Need to figure out how to share the accounts between service.
 
 - WASM support. JS from Anchor Network is easy to modify, WASM is better for the use case.
+
+### Needed SDKs
+
+- Ethers.js, [https://docs.ethers.org/v6/](https://docs.ethers.org/v6/)
+
+- Web3.js, [https://web3js.readthedocs.io/en/v1.10.0/index.html](https://web3js.readthedocs.io/en/v1.10.0/index.html)
+
+- BitcoinJS, [https://github.com/bitcoinjs/bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib)
+
+- Solana,
+
+- Cosmos,
+
+- Sui/Sei ? BTC Lay2 ?
