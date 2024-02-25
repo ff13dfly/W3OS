@@ -11,13 +11,15 @@
 
 ### 核心功能
 
+- 文件目录：[https://github.com/ff13dfly/W3OS/blob/main/APIs/core](https://github.com/ff13dfly/W3OS/blob/main/APIs/core)
+
 - W3API的初始化逻辑开发。由于W3API的操作对象是各种不同的区块链，又是基于Anchor Network来运行的，默认将连接到Anchor Network才能正确的运行。初始化的过程就需要处理W3API自身状态、网络检测、节点切换、网络状态维持等工作。主要文件为：
 
-  | 文件 | 简介 | Github |
-  | ------ |------ | ----------- |
-  | runtime.js | 核心组件，加载逻辑控制 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js) |
-  | launch.js | Anchor Network加载管理 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/launch.js) |
-  | status.js | W3API系统状态管理 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/status.js) |
+  | 文件 | 状态 | 简介 | Github |
+  | ------ |------ |------ | ----------- |
+  | runtime.js | 已开发，优化中 | 核心组件，加载逻辑控制 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js) |
+  | launch.js | 已开发，优化中 | Anchor Network加载管理 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/launch.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/launch.js) |
+  | status.js | 有框架，待开发 | W3API系统状态管理 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/status.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/status.js) |
 
 - 统一访问管理，实现单入口访问W3API的所有功能，支持多种不同格式进行访问。需要处理的工作有，对输入进行解析、传入参数的类型控制及合法性检测等。
 
@@ -31,24 +33,28 @@
         W3.call({method:"account_local_get",alink:"anchor://w3os/2343"}, ... )
     ```
 
-    | 文件 | 简介 | Github |
-    | ------ |------ | ----------- |
-    | check.js | 参数检测 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js) |
+    | 文件 |  状态 | 简介 | Github |
+    | ------ | ------ | ------ | ----------- |
+    | check.js | 有框架，待开发 | 参数检测 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/checker.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/checker.js) |
 
 - 基于统一访问建立的权限控制，对限制性的功能进行授权访问及授权管理。
 
-- 出错信息的统一管理
+    | 文件 | 状态 | 简介 | Github |
+    | ------ |------ |------ | ----------- |
+    | runtime.js | 已开发，优化中 | 精确到Alink的权限控制逻辑 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/runtime.js) |
 
+- 统一的数据格式、系统信息及基础配置部分。
+    | 文件 | 状态 | 简介 | Github |
+    | ------ |------ |------ | ----------- |
+    | default.js | 已开发 | W3API的基础配置 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/default.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/default.js) |
+    | information.js | 已开发 | W3API的版本信息 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/information.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/information.js) |
+    | format.js | 已开发 | 所有W3OS内部格式 | [https://github.com/ff13dfly/W3OS/blob/main/APIs/core/format.js](https://github.com/ff13dfly/W3OS/blob/main/APIs/core/format.js) |
 
-- 全链部署，是W3API的一个显著特点，无论是W3API自身，还是其引用的各种JS的SDK，都通过Anchor的方式部署在链上，这样，就没有被篡改的风险。同时，只要你连上了Anchor Network，就能连接到整个Web3.0的世界。
-
-- 访问权限控制。控制的逻辑是 Anchor Link 对API中单一功能的使用，需要获取到用户的同意。
-
-- Anchor Network完全访问能力，包括读取和写入，设置Anchor的销售状态。
-
-- 提供对Chain Application（Capp）的支持。提供一个独立W3API精简版供Capp使用，实现对Capp的沙箱隔离。
+- 针对核心部分功能的充分测试。
 
 ### 系统管理
+
+- 文件目录：[https://github.com/ff13dfly/W3OS/blob/main/APIs/system](https://github.com/ff13dfly/W3OS/blob/main/APIs/system)
 
 ### 连接管理功能
 
