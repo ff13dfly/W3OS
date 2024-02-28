@@ -107,6 +107,8 @@ You will find the header of the packaged file like this, you need to modify it.
 
 - Solana,
 
-- Cosmos,
+- Cosmos [ Injective,Celestia ], [https://mp.weixin.qq.com/s/DBD5cIpx3KE7uDtgF2KZag](https://mp.weixin.qq.com/s/DBD5cIpx3KE7uDtgF2KZag)
 
 - Sui/Sei ? BTC Lay2 ?
+
+- Tron
