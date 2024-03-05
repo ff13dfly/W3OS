@@ -41,7 +41,10 @@
         //iNFT template
         {
             type:"2D",
-            //size:["SIZE_X","SIZE_Y"],
+            size:[
+                "OUTPUT_SIZE_X",
+                "OUTPUT_SIZE_Y"
+            ],
             puzzle:[        //pieces of iNFT. Will render by the array order, 0 is the background
                     {
                         value:[      //where to get the number of hash
