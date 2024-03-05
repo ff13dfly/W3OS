@@ -19,8 +19,14 @@
             raw:{
                 img:"BASE64_IMAGE_STRING",      //Raw data of image without prefix
                 format:"png",                   //image format
-                grid:[40,40],                   //cell size
-                size:[20,10],                   //lines and rows
+                cell:[40,40],                   //cell size
+                grid:[20,10],                   //lines and rows
+                series:[
+                    {
+                        name:"NAME_OF_SERIES",
+                        desc:"DESCRIPTION_OF_SERIES"
+                    }
+                ],
             },
             protocol:{
                 type:"data",
@@ -35,7 +41,7 @@
         //iNFT template
         {
             type:"2D",
-            size:["SIZE_X","SIZE_Y"],
+            //size:["SIZE_X","SIZE_Y"],
             puzzle:[        //pieces of iNFT. Will render by the array order, 0 is the background
                     {
                         value:[      //where to get the number of hash
@@ -58,13 +64,23 @@
                             "X",            //center X position        
                             "Y"             //center Y position     
                         ],
-                        rotation:"IMAGE_ROTATION",      //this is optional
-                        scale:1,                        //this is optional                 
+                        rotation:[  //this is optional 
+                            "IMAGE_ROTATION",
+                            "ROTATION_POSITION_X",
+                            "ROTATION_POSITION_Y",
+                        ],      
+                        scale:1,                        //this is optional        
+                        fill:1,                         //this is optional, wether fill the empty background     
                         color:[     //this is optional
                             "START",        //start position of hash string 
                             "STEP",         //default is 6,optional
                             "DIVIDE",       //optional, reduce the color amount. 
                             ["RED_OFFSET","GREEN_OFFSET","BLUE_OFFSET"]     //optional, adjust the color
+                        ],
+                        rarity:[            //How the part categoried to series. Parts can be multi used.
+                            ["INDEX","INDEX", ... ],    //index parts, such as [0,2,3]
+                            ["INDEX","INDEX", ... ],
+                            ["INDEX","INDEX", ... ],
                         ]
                     },
                     ...         //iNFT is combined by pieces
