@@ -93,7 +93,6 @@
         }
     ```
 
-
 - One single png file is used as resource to mint the NFT, the format of NFT will be write to as **raw** on Anchor data.
 
     ```Javascript
@@ -101,8 +100,9 @@
         {
             name:"iNFT_Name",
             raw:{
-                source:"Alink_Of_Image",            //for example, "anchor://flamingo/23412"
-                template:"Alink_Of_Template",       //for example, "anchor://colorful/23445"
+                //source:"Alink_Of_Image",            //for example, "anchor://flamingo/23412"
+                tpl:"Alink_Of_Template",       //for example, "anchor://colorful/23445"
+                hash:"block",                   //[ "block", "transaction", "function" ]
                 stamp:[         //This is used to confirm the timestamp of iNFT
                     {
                         network:"btc",
@@ -139,3 +139,5 @@
     ```
 
 - Identifiable NFT which in short iNFT will be part of W3OS, the iNFT recognizability feature  means that anybody even who just know about NFT can distinguish between high and low prices. The scarcity is determined by random numbers.
+
+- The iNFT is combined by two parts, one is the definition, another is the decoder, they are both deployed on chain, then the iNFT result can be decoded.
