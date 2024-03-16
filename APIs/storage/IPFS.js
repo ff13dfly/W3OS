@@ -8,6 +8,9 @@
 *  2. get file from IPFS;
 */
 
+//implementation target
+//https://github.com/ipfs/js-ipfs
+
 const IPFS={
     /**********************************************************/
     /******************** W3OS system hook ********************/

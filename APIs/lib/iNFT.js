@@ -7,8 +7,17 @@
 *  1.decode the iNFT definition on hash.
 */
 
+const self={
+  loadImage:(bs64,ck)=>{
+
+  },
+  cutImage:()=>{
+
+  },
+}
+
 const iNFT = {
-  
+
     //decode the iNFT from hash
     //create a bs64 image file
     //return ck ( BASE64_RAW_FILE, FILE_TYPE )
