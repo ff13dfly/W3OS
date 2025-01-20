@@ -9,7 +9,7 @@ import RUNTIME from "../lib/runtime";
 function Board(props) {
   const size = [6, 6];
 
-  let [btc, setBTC] = useState(40000.01);
+  let [btc, setBTC] = useState(40000);
   let [eth, setETH] = useState(2200.68);
   let [dot, setDOT] =  useState(7.01);
   let [ksm, setKSM] = useState(30.02);
@@ -31,7 +31,14 @@ function Board(props) {
     PRICE.init((data)=>{
       if(data!==false){
         for(var k in data){
-          if(router[k])router[k](data[k]);
+          if(router[k]){
+            if(k==="bitcoin"){
+              router[k](parseInt(data[k]));
+            }else{
+              router[k](data[k]);
+            }
+            
+          }
         }
       }
     });

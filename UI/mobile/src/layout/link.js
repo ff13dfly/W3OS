@@ -73,9 +73,7 @@ function Link(props) {
       <Navbar className="bg-body-tertiary">
         <Container>
           <Row style={{ width: "100%", margin: "0 auto" }}>
-            <Col
-              xs={size.head[0]}
-              sm={size.head[0]}
+            <Col xs={size.head[0]} sm={size.head[0]}
               md={size.head[0]}
               lg={size.head[0]}
               xl={size.head[0]}

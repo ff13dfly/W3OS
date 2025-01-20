@@ -1,8 +1,8 @@
 module.exports = {
   basic: {
     //OS basic parameters
-    endpoint: ["ws://127.0.0.1:9944","wss://dev2.metanchor.net"],
-    //endpoint: ["wss://dev2.metanchor.net","ws://127.0.0.1:9944"],
+    //endpoint: ["ws://127.0.0.1:9944","wss://dev2.metanchor.net"],
+    endpoint: ["wss://node.hashlottery.fun","ws://127.0.0.1:9944"],
     //endpoint: ["wss://fraa-flashbox-2026-rpc.a.stagenet.tanssi.network","wss://dev2.metanchor.net","ws://127.0.0.1:9944"],
     name: "W3OS",
     desc: "Full on chain OS for Web3.0, base on Anchor Network.",
@@ -11,8 +11,8 @@ module.exports = {
     loader: "loader.html",
     protocol: ["Easy Protocol"],
     avatar: ["https://robohash.org"],
-    //talking:["ws://127.0.0.1:7788","wss://chat.metanchor.net"],
-    talking:["wss://chat.metanchor.net","ws://127.0.0.1:7788"],
+    talking:["ws://127.0.0.1:7788","wss://talking.w3os.net"],
+    //talking:["wss://talking.w3os.net","ws://127.0.0.1:7788"],
     theme:2,
   },
   APIs: {
@@ -80,14 +80,14 @@ module.exports = {
   },
   network: {
     //support networks
-    anchor: ["ws://127.0.0.1:9944", "wss://dev.metanchor.net"],
+    anchor: ["ws://127.0.0.1:9944", "wss://node.hashlottery.fun"],
     polkadot: [],
     bitcoin: [],
   },
   apps: {
     contact: {
       node: [
-        "wss://chat.metanchor.net",
+        "wss://talking.w3os.net",
         "ws://android.im:7788",
         "ws://45.63.91.147:7788",
         "ws://localhost:7788",
